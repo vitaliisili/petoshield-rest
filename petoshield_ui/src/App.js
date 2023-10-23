@@ -8,6 +8,10 @@ import Blog from "./pages/Blog";
 import Team from "./pages/Team";
 import FAQ from "./pages/FAQ";
 import Giveback from "./pages/Giveback";
+import Login from "./pages/Login";
+import NotFound from "./pages/NotFound";
+import Register from "./pages/Register";
+import PasswordRecovery from "./pages/PasswordRecovery";
 
 const App = () => {
     return (
@@ -21,6 +25,10 @@ const App = () => {
                 <Route exact path='/team' element={<Team/>}/>
                 <Route exact path='/question' element={<FAQ/>}/>
                 <Route exact path='/giveback' element={<Giveback/>}/>
+                <Route exact path='/login' element={<Login/>}/>
+                <Route exact path='/register' element={<Register/>}/>
+                <Route exact path='/pass-recovery' element={<PasswordRecovery/>}/>
+                <Route exact path='*' element={<NotFound/>}/>
             </Routes>
         </BrowserRouter>
     )
