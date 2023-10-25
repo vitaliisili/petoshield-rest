@@ -1,10 +1,10 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-
+from apps.core.models import BaseModel
 from apps.pet.models import Pet
 
 
-class ServiceProvider(models.Model):
+class ServiceProvider(BaseModel):
     company_name = models.CharField(max_length=255)
     email = models.EmailField()
     phone = models.CharField(max_length=15)
@@ -13,7 +13,7 @@ class ServiceProvider(models.Model):
     iban = models.CharField(max_length=34)
 
 
-class Policy(models.Model):
+class Policy(BaseModel):
     POLICY_STATUS = (
         ('valid', _('Valid')),
         ('invalid', _('Invalid')),
@@ -34,7 +34,7 @@ class Policy(models.Model):
     class Meta:
         verbose_name_plural = 'policies'
 
-class InsuranceCase(models.Model):
+class InsuranceCase(BaseModel):
     INSURANCE_STATUS = (
         ('accept', _('Accept')),
         ('process', _('Process')),
@@ -47,7 +47,7 @@ class InsuranceCase(models.Model):
     service_provider = models.ForeignKey(
         ServiceProvider, on_delete=models.SET_NULL, related_name='insurance_cases', null=True)
 
-class IncomingInvoice(models.Model):
+class IncomingInvoice(BaseModel):
     date = models.DateField()
     amount = models.DecimalField(max_digits=8, decimal_places=2)
     insurance_case = models.OneToOneField(InsuranceCase, on_delete=models.CASCADE, related_name='incoming_invoice')
