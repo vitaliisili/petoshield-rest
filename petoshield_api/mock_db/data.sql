@@ -2,6 +2,10 @@ truncate table pet_breed RESTART IDENTITY CASCADE;
 truncate table pet_pet RESTART IDENTITY CASCADE;
 truncate table policy_policy RESTART IDENTITY CASCADE;
 truncate table user_user RESTART IDENTITY CASCADE;
+truncate table policy_incominginvoice RESTART IDENTITY CASCADE;
+truncate table policy_insurancecase RESTART IDENTITY CASCADE;
+truncate table policy_policy_providers RESTART IDENTITY CASCADE;
+truncate table policy_serviceprovider RESTART IDENTITY CASCADE;
 
 -- USER_TABLE
 
