@@ -1,11 +1,12 @@
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from apps.core.models import BaseModel
 
 def get_default_breed():
     return Breed.objects.get_or_create(name='deleted', age_min=1, age_max=20)[0]
 
-class Breed(models.Model):
+class Breed(BaseModel):
     BREED_SPECIES = (
         ('cat', _('Cat')),
         ('dog', _('Dog')),
@@ -18,7 +19,7 @@ class Breed(models.Model):
     risk_level = models.IntegerField(choices=[(i, i) for i in range(11)], default=5)
     species = models.CharField(max_length=3, choices=BREED_SPECIES)
 
-class Pet(models.Model):
+class Pet(BaseModel):
     PET_GENDER = (
         ('M', _('Male')),
         ('F', _('Female')),
