@@ -3,7 +3,8 @@ from apps.pet.models import Pet, Breed
 
 
 class PetSerializer(serializers.ModelSerializer):
-   class Meta:
+    breed = serializers.CharField(source='breed.name')
+    class Meta:
        model = Pet
        fields = '__all__'
        read_only_fields = ['id']
