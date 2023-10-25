@@ -7,9 +7,8 @@ class PetViewSet(viewsets.ModelViewSet):
     serializer_class = PetSerializer
     queryset = Pet.objects.all()
     permission_classes = (IsStaffOrOwner,)
-    search_fields = ['name', 'type']  # Example fields for search
-    ordering_fields = ['created_at', 'name']  # Example fields for ordering
-    ordering = ['created_at']
+    search_fields = ['name', 'type']
+    ordering_fields = ['created_at', 'name']
 
     def create(self, request, *args, **kwargs):
         if not request.user.is_staff:
@@ -19,9 +18,8 @@ class PetViewSet(viewsets.ModelViewSet):
 class BreedViewSet(viewsets.ModelViewSet):
     queryset = Breed.objects.all()
     permission_classes = (IsStaffOrOwner,)
-    search_fields = ['name']  # Example fields for search
-    ordering_fields = ['name']  # Example fields for ordering
-    ordering = ['name']
+    search_fields = ['name']
+    ordering_fields = ['name', 'created_at']
 
     def get_serializer_class(self):
         if self.request.user.is_staff:
