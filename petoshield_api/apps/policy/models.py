@@ -33,6 +33,7 @@ class Policy(BaseModel):
 
     class Meta:
         verbose_name_plural = 'policies'
+        
 
 class InsuranceCase(BaseModel):
     INSURANCE_STATUS = (
@@ -51,8 +52,6 @@ class IncomingInvoice(BaseModel):
     invoice_date = models.DateField()
     amount = models.DecimalField(max_digits=8, decimal_places=2)
     insurance_case = models.ForeignKey(InsuranceCase, on_delete=models.CASCADE, related_name='incoming_invoice')
-
-
 
 
 
