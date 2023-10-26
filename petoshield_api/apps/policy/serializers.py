@@ -27,5 +27,5 @@ class IncomingInvoiceSerializer(ModelSerializer):
     
     class Meta:
         model = IncomingInvoice
-        fields = "__all__"
+        fields = ['invoice_date', 'amount', 'insurance_case']
         read_only_fields = ["id"]

@@ -1,5 +1,5 @@
 from rest_framework import viewsets
-from apps.policy.models import ServiceProvider, Policy, InsuranceCase
+from apps.policy.models import ServiceProvider, Policy, InsuranceCase, IncomingInvoice
 from apps.policy.serializers import (
     ServiceProviderSerializer,
     PolicySerializer,
@@ -32,6 +32,6 @@ class InsuranceCaseViewSet(viewsets.ModelViewSet):
 
 class IncomingInvoiceViewSet(viewsets.ModelViewSet):
     serializer_class = IncomingInvoiceSerializer
-    queryset = InsuranceCase.objects.all()
+    queryset = IncomingInvoice.objects.all()
     # permission_classes =  # TODO: add permission class
-    ordering_fields = ['created_at', 'date', 'amount']
+    ordering_fields = ['created_at', 'invoice_date', 'amount']

@@ -3,7 +3,6 @@ from apps.pet.models import Pet, Breed
 
 
 class PetSerializer(serializers.ModelSerializer):
-    breed = serializers.CharField(source='breed.name')
     class Meta:
        model = Pet
        fields = '__all__'

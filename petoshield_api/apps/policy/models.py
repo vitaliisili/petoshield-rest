@@ -48,9 +48,9 @@ class InsuranceCase(BaseModel):
         ServiceProvider, on_delete=models.SET_NULL, related_name='insurance_cases', null=True)
 
 class IncomingInvoice(BaseModel):
-    date = models.DateField()
+    invoice_date = models.DateField()
     amount = models.DecimalField(max_digits=8, decimal_places=2)
-    insurance_case = models.OneToOneField(InsuranceCase, on_delete=models.CASCADE, related_name='incoming_invoice')
+    insurance_case = models.ForeignKey(InsuranceCase, on_delete=models.CASCADE, related_name='incoming_invoice')
 
 
 
