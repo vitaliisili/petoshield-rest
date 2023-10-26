@@ -25,7 +25,7 @@ class CustomPolicy(admin.ModelAdmin):
 
     @admin.display(description = "providers")
     def get_providers(self,obj):
-        return ", ".join([provider.name for provider in obj.provider.all()])
+        return ", ".join([providers.company_name for providers in obj.providers.all()])
     
     @admin.display(description='pet_name')
     def get_pet_name(self,obj):
