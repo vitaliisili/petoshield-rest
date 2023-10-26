@@ -27,3 +27,9 @@ install-web:
 
 start-web:
 	cd petoshield_ui && npm start
+
+test:
+	cd petoshield_api && python -m pytest
+
+testprint:
+	cd petoshield_api && python -m pytest -s
