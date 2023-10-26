@@ -13,13 +13,13 @@ class PetSerializer(serializers.ModelSerializer):
         representation['breed'] = instance.breed.name
         return representation
 
-class BreedSimpleSerializer(serializers.ModelSerializer):
+class BaseBreedSerializer(serializers.ModelSerializer):
     class Meta:
         model = Breed
         fields = ['id', 'name', 'description', 'species']
         read_only_fields = ['id']
 
-class BreedAdminSerializer(serializers.ModelSerializer):
+class ExtendBreedSerializer(serializers.ModelSerializer):
     class Meta:
         model = Breed
         fields = '__all__'
