@@ -1,8 +1,9 @@
 from django.contrib.auth.models import PermissionsMixin, BaseUserManager, AbstractBaseUser
 from django.db import models
+from apps.core.models import BaseModel
 
 
-class Role(models.Model):
+class Role(BaseModel):
     name = models.CharField(max_length=100)
     description = models.TextField(blank=True, null=True)
 
