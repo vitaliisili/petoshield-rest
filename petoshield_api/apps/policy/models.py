@@ -1,3 +1,4 @@
+from django.contrib.auth import get_user_model
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from apps.core.models import BaseModel
@@ -6,12 +7,11 @@ from apps.pet.models import Pet
 
 class ServiceProvider(BaseModel):
     company_name = models.CharField(max_length=255)
-    email = models.EmailField()
     phone = models.CharField(max_length=15)
     registration_number = models.CharField(max_length=255)
     address = models.CharField(max_length=255)
     iban = models.CharField(max_length=34)
-
+    user = models.OneToOneField(get_user_model(), on_delete=models.CASCADE, related_name='provider')
 
 class Policy(BaseModel):
     POLICY_STATUS = (
@@ -50,7 +50,7 @@ class InsuranceCase(BaseModel):
 class IncomingInvoice(BaseModel):
     invoice_date = models.DateField()
     amount = models.DecimalField(max_digits=8, decimal_places=2)
-    insurance_case = models.ForeignKey(InsuranceCase, on_delete=models.CASCADE, related_name='incoming_invoice')
+    insurance_case = models.OneToOneField(InsuranceCase, on_delete=models.CASCADE, related_name='incoming_invoice')
 
 
 
