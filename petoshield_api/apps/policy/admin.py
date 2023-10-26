@@ -26,10 +26,10 @@ class CustomPolicy(admin.ModelAdmin):
     @admin.display(description = "providers")
     def get_providers(self,obj):
         return ", ".join([providers.company_name for providers in obj.providers.all()])
-    
+
     @admin.display(description='pet_name')
     def get_pet_name(self,obj):
-        return obj.pet.name   
+        return obj.pet.name
 
 class CustomInsuranceCase(admin.ModelAdmin):
     list_display= (
@@ -37,15 +37,15 @@ class CustomInsuranceCase(admin.ModelAdmin):
         'description',
         'status',
         'service_provider',
-        'get_service_provider'   
+        'get_service_provider'
     )
     @admin.display(description='service_provider_name')
     def get_service_provider(self,obj):
-        return obj.service_provider.company_name 
+        return obj.service_provider.company_name
 
 class CustomIncomingInvoice(admin.ModelAdmin):
     list_display = (
-        'date',
+        'invoice_date',
         'amount',
         'insurance_case'
     )
