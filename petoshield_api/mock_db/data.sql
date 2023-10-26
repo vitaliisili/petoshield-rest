@@ -139,11 +139,22 @@ INSERT INTO public.policy_policy_providers (policy_id, serviceprovider_id) VALUE
 
 -- INSURANCE_CASES_TABLE
 -- service provider with id 1
-INSERT INTO policy_insurancecase(created_at, updated_at, claim_date, service_provider_id, status, description) VALUES ('2022-12-20 00:00:00.000000 +00:00', '2023-10-19 00:00:00.000000', '2022-12-20 00:00:00.000000 +00:00', 1, 'accept', 'case 1 description');
-INSERT INTO policy_insurancecase(created_at, updated_at, claim_date, service_provider_id, status, description) VALUES ('2022-12-20 00:00:00.000000 +00:00', '2023-10-19 00:00:00.000000', '2022-12-20 00:00:00.000000 +00:00', 1, 'accept', 'case 2 description');
+INSERT INTO policy_insurancecase(created_at, updated_at, claim_date, service_provider_id, status, description) VALUES ('2022-12-20 00:00:00.000000 +00:00', '2023-10-19 00:00:00.000000', '2022-12-20 00:00:00.000000 +00:00', 1, 'accept',  'case 1 description');
+INSERT INTO policy_insurancecase(created_at, updated_at, claim_date, service_provider_id, status, description) VALUES ('2022-12-20 00:00:00.000000 +00:00', '2023-10-19 00:00:00.000000', '2022-12-20 00:00:00.000000 +00:00', 1, 'accept',  'case 2 description');
 INSERT INTO policy_insurancecase(created_at, updated_at, claim_date, service_provider_id, status, description) VALUES ('2022-12-20 00:00:00.000000 +00:00', '2023-10-19 00:00:00.000000', '2022-12-20 00:00:00.000000 +00:00', 1, 'process', 'case 3 description');
-INSERT INTO policy_insurancecase(created_at, updated_at, claim_date, service_provider_id, status, description) VALUES ('2022-12-20 00:00:00.000000 +00:00', '2023-10-19 00:00:00.000000', '2022-12-20 00:00:00.000000 +00:00', 1, 'reject', 'case 3 description');
+INSERT INTO policy_insurancecase(created_at, updated_at, claim_date, service_provider_id, status, description) VALUES ('2022-12-20 00:00:00.000000 +00:00', '2023-10-19 00:00:00.000000', '2022-12-20 00:00:00.000000 +00:00', 1, 'reject',  'case 3 description');
 -- service provider with id 2
-INSERT INTO policy_insurancecase(created_at, updated_at, claim_date, service_provider_id, status, description) VALUES ('2022-12-20 00:00:00.000000 +00:00', '2023-10-19 00:00:00.000000', '2022-12-20 00:00:00.000000 +00:00', 2, 'accept', 'case 4 description');
-INSERT INTO policy_insurancecase(created_at, updated_at, claim_date, service_provider_id, status, description) VALUES ('2022-12-20 00:00:00.000000 +00:00', '2023-10-19 00:00:00.000000', '2022-12-20 00:00:00.000000 +00:00', 2, 'accept', 'case 5 description');
-INSERT INTO policy_insurancecase(created_at, updated_at, claim_date, service_provider_id, status, description) VALUES ('2022-12-20 00:00:00.000000 +00:00', '2023-10-19 00:00:00.000000', '2022-12-20 00:00:00.000000 +00:00', 2, 'reject', 'case 6 description');
+INSERT INTO policy_insurancecase(created_at, updated_at, claim_date, service_provider_id, status, description) VALUES ('2022-12-20 00:00:00.000000 +00:00', '2023-10-19 00:00:00.000000', '2022-12-20 00:00:00.000000 +00:00', 2, 'accept',  'case 4 description');
+INSERT INTO policy_insurancecase(created_at, updated_at, claim_date, service_provider_id, status, description) VALUES ('2022-12-20 00:00:00.000000 +00:00', '2023-10-19 00:00:00.000000', '2022-12-20 00:00:00.000000 +00:00', 2, 'accept',  'case 5 description');
+INSERT INTO policy_insurancecase(created_at, updated_at, claim_date, service_provider_id, status, description) VALUES ('2022-12-20 00:00:00.000000 +00:00', '2023-10-19 00:00:00.000000', '2022-12-20 00:00:00.000000 +00:00', 2, 'reject',  'case 6 description');
+-- service provider with id 3
+INSERT INTO policy_insurancecase(created_at, updated_at, claim_date, service_provider_id, status, description) VALUES ('2022-12-20 00:00:00.000000 +00:00', '2023-10-19 00:00:00.000000', '2022-12-20 00:00:00.000000 +00:00', 3, 'accept',  'case 7 description');
+
+-- INSURANCE_INCOMING_INVOICES_TABLE
+INSERT INTO policy_incominginvoice(created_at, updated_at, insurance_case_id, amount, invoice_date) VALUES ('2022-12-20 00:00:00.000000 +00:00', '2023-10-19 00:00:00.000000', 1,  200.00,  '2023-10-19 00:00:00.000000');
+INSERT INTO policy_incominginvoice(created_at, updated_at, insurance_case_id, amount, invoice_date) VALUES ('2022-12-20 00:00:00.000000 +00:00', '2023-10-19 00:00:00.000000', 2,  250.00,  '2023-10-19 00:00:00.000000');
+INSERT INTO policy_incominginvoice(created_at, updated_at, insurance_case_id, amount, invoice_date) VALUES ('2022-12-20 00:00:00.000000 +00:00', '2023-10-19 00:00:00.000000', 3,  150.00,  '2023-10-19 00:00:00.000000');
+INSERT INTO policy_incominginvoice(created_at, updated_at, insurance_case_id, amount, invoice_date) VALUES ('2022-12-20 00:00:00.000000 +00:00', '2023-10-19 00:00:00.000000', 4,  123.33,  '2023-10-19 00:00:00.000000');
+INSERT INTO policy_incominginvoice(created_at, updated_at, insurance_case_id, amount, invoice_date) VALUES ('2022-12-20 00:00:00.000000 +00:00', '2023-10-19 00:00:00.000000', 5,  1231.65, '2023-10-19 00:00:00.000000');
+INSERT INTO policy_incominginvoice(created_at, updated_at, insurance_case_id, amount, invoice_date) VALUES ('2022-12-20 00:00:00.000000 +00:00', '2023-10-19 00:00:00.000000', 6,  49.12,   '2023-10-19 00:00:00.000000');
+INSERT INTO policy_incominginvoice(created_at, updated_at, insurance_case_id, amount, invoice_date) VALUES ('2022-12-20 00:00:00.000000 +00:00', '2023-10-19 00:00:00.000000', 7,  100.00,  '2023-10-19 00:00:00.000000');
