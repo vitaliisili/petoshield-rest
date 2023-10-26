@@ -1,6 +1,14 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
+from apps.user.models import Role
+
+
+class RoleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Role
+        fields = '__all__'
+        read_only_fields = ['id', 'created_at', 'updated_at']
 
 class BaseUserSerializer(serializers.ModelSerializer):
     class Meta:
