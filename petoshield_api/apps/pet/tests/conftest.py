@@ -46,6 +46,7 @@ def breed(db):
         risk_level=3,
         species='dog'
     )
+    assert breed.name == 'German Shepherd'
     return breed
 
 @pytest.fixture
@@ -55,22 +56,23 @@ def pet_created_by_admin(db,breed,admin_user):
         age=5,
         gender='M',
         species='dog',
-        breed=f'{breed.id}',
-        user=f'{admin_user.id}'
+        breed=breed,
+        user=admin_user
         )
+    assert pet_created_by_admin.age == 5
     return pet_created_by_admin
 
 @pytest.fixture
 def pet_created_by_user(db,breed,simple_user):
-    pet_created_by_admin = Pet.objects.create(
+    pet_created_by_user = Pet.objects.create(
         name='Simple User dog 1',
         age=5,
         gender='M',
         species='dog',
-        breed=f'{breed.id}',
-        user=f'{simple_user.id}'
+        breed=breed,
+        user=simple_user
         )
-    return pet_created_by_admin
+    return pet_created_by_user
 
 @pytest.fixture
 def breeds_list(db,breed):
@@ -127,8 +129,8 @@ def pets_list(db,breed, pet_created_by_admin,pet_created_by_user, simple_user, a
             age=5,
             gender='M',
             species='dog',
-            breed=f'{breed.id}',
-            user=f'{simple_user.id}'
+            breed=breed,
+            user=simple_user
             ),
         
         Pet.objects.create(
@@ -136,8 +138,8 @@ def pets_list(db,breed, pet_created_by_admin,pet_created_by_user, simple_user, a
             age=3,
             gender='M',
             species='dog',
-            breed=f'{breed.id}',
-            user=f'{admin_user.id}'
+            breed=breed,
+            user=admin_user
             ),
 
         Pet.objects.create(
@@ -145,24 +147,24 @@ def pets_list(db,breed, pet_created_by_admin,pet_created_by_user, simple_user, a
             age=8,
             gender='M',
             species='dog',
-            breed=f'{breed.id}',
-            user=f'{admin_user.id}'
+            breed=breed,
+            user=admin_user
             ),
         Pet.objects.create(
             name='Leo Simple User',
             age=5,
             gender='M',
             species='dog',
-            breed=f'{breed.id}',
-            user=f'{simple_user.id}'
+            breed=breed,
+            user=simple_user
             ),  
         Pet.objects.create(
             name='Linda',
             age=7,
             gender='F',
             species='cat',
-            breed=f'{breed.id}',
-            user=f'{simple_user.id}'
+            breed=breed,
+            user=simple_user
             ),       
     ]
     return pets_list
