@@ -27,17 +27,6 @@ def simple_user(db):
 
 
 @pytest.fixture
-def users_list(db, staff_user, simple_user):
-    users_list = [
-        staff_user,
-        simple_user,
-        get_user_model().objects.create_user(email='example1@mail.com', password='password1A@', name='Example Name1'),
-        get_user_model().objects.create_user(email='example2@mail.com', password='password1A@', name='Example Name2'),
-        get_user_model().objects.create_user(email='example3@mail.com', password='password1A@', name='Example Name3'),
-    ]
-    return users_list
-
-@pytest.fixture
 def breed(db):
     breed = Breed.objects.create(
         name='German Shepherd',
