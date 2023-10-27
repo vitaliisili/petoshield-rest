@@ -8,13 +8,18 @@ class PetSerializer(serializers.ModelSerializer):
        fields = '__all__'
        read_only_fields = ['id']
 
-class BreedSimpleSerializer(serializers.ModelSerializer):
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        representation['breed'] = instance.breed.name
+        return representation
+
+class BaseBreedSerializer(serializers.ModelSerializer):
     class Meta:
         model = Breed
         fields = ['id', 'name', 'description', 'species']
         read_only_fields = ['id']
 
-class BreedAdminSerializer(serializers.ModelSerializer):
+class ExtendBreedSerializer(serializers.ModelSerializer):
     class Meta:
         model = Breed
         fields = '__all__'
