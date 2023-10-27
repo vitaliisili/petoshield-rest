@@ -19,6 +19,7 @@ class Breed(BaseModel):
     risk_level = models.IntegerField(choices=[(i, i) for i in range(11)], default=5)
     species = models.CharField(max_length=3, choices=BREED_SPECIES)
     
+    
     def __str__(self):
         return self.name
 
@@ -42,3 +43,4 @@ class Pet(BaseModel):
     
     def __str__(self):
         return self.name
+    

@@ -4,6 +4,8 @@ class IsStaffOrOwner(permissions.BasePermission):
 
     def has_permission(self, request, view):
         if view.action == 'list':
+            if view.basename == 'pets':
+                return request.user.is_authenticated and request.user.is_staff
             return request.user.is_authenticated
         elif view.action == 'create':
             if view.basename == 'breeds':

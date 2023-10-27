@@ -40,6 +40,7 @@ class Policy(BaseModel):
 
     class Meta:
         verbose_name_plural = 'policies'
+        
 
 class InsuranceCase(BaseModel):
     INSURANCE_STATUS = (
@@ -64,8 +65,6 @@ class IncomingInvoice(BaseModel):
 
     def __str__(self):
         return self.amount
-
-
 
 
 
