@@ -1,7 +1,7 @@
 from rest_framework import viewsets
 from apps.pet.models import Pet, Breed
 from apps.pet.permissions import IsStaffOrOwner
-from apps.pet.serializers import PetSerializer, BreedAdminSerializer, BreedSimpleSerializer
+from apps.pet.serializers import PetSerializer, BaseBreedSerializer, ExtendBreedSerializer
 
 class PetViewSet(viewsets.ModelViewSet):
     serializer_class = PetSerializer
@@ -23,6 +23,6 @@ class BreedViewSet(viewsets.ModelViewSet):
 
     def get_serializer_class(self):
         if self.request.user.is_staff:
-            return BreedAdminSerializer
-        return BreedSimpleSerializer
+            return ExtendBreedSerializer
+        return BaseBreedSerializer
 

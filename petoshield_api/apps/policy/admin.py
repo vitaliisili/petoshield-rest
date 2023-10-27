@@ -4,11 +4,11 @@ from apps.policy import models
 class CustomServiceProvider(admin.ModelAdmin):
     list_display= (
         'company_name',
-        'email',
         'phone',
         'registration_number',
         'address',
-        'iban'
+        'iban',
+        'user'
     )
 class CustomPolicy(admin.ModelAdmin):
     list_display= (
