@@ -13,9 +13,9 @@ class ServiceProvider(BaseModel):
     iban = models.CharField(max_length=34)
     user = models.OneToOneField(get_user_model(), on_delete=models.CASCADE, related_name='provider')
         
+        
     def __str__(self):
         return self.company_name
-
 
 class Policy(BaseModel):
     POLICY_STATUS = (
@@ -55,14 +55,15 @@ class InsuranceCase(BaseModel):
         ServiceProvider, on_delete=models.SET_NULL, related_name='insurance_cases', null=True)
     
     def __str__(self):
-        return self.claim_date
+        return f'{self.claim_date}-{self.status}'
 
 class IncomingInvoice(BaseModel):
     invoice_date = models.DateField()
     amount = models.DecimalField(max_digits=8, decimal_places=2)
-    insurance_case = models.ForeignKey(InsuranceCase, on_delete=models.CASCADE, related_name='incoming_invoice')
+    insurance_case = models.OneToOneField(InsuranceCase, on_delete=models.CASCADE, related_name='incoming_invoice')
 
-
+    def __str__(self):
+        return self.amount
 
 
 
