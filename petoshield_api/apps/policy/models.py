@@ -62,7 +62,7 @@ class IncomingInvoice(BaseModel):
     insurance_case = models.ForeignKey(InsuranceCase, on_delete=models.CASCADE, related_name='incoming_invoice')
     
     def __str__(self):
-        return self.invoice_date
+        return self.amount
 
 
 
