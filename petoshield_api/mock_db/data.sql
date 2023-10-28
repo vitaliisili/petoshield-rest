@@ -4,44 +4,53 @@ truncate table policy_policy RESTART IDENTITY CASCADE;
 truncate table user_user RESTART IDENTITY CASCADE;
 truncate table policy_incominginvoice RESTART IDENTITY CASCADE;
 truncate table policy_insurancecase RESTART IDENTITY CASCADE;
-truncate table policy_policy_providers RESTART IDENTITY CASCADE;
+-- truncate table policy_policy_providers RESTART IDENTITY CASCADE;
 truncate table policy_serviceprovider RESTART IDENTITY CASCADE;
 truncate table user_role RESTART IDENTITY CASCADE;
 
+
+
+-- ROLE_TABLE
 insert into user_role(created_at, updated_at, name, description) values ('2023-09-20 00:00:00.000000 +00:00', '2023-10-14 00:00:00.000000 +00:00', 'client', 'Role for clients with base permissions');
 insert into user_role(created_at, updated_at, name, description) values ('2023-09-20 00:00:00.000000 +00:00', '2023-10-14 00:00:00.000000 +00:00', 'admin', 'Role for staff with super user permissions');
 insert into user_role(created_at, updated_at, name, description) values ('2023-09-20 00:00:00.000000 +00:00', '2023-10-14 00:00:00.000000 +00:00', 'provider', 'Role for provider with provider only permissions');
+
+
+
 
 -- USER_TABLE
 INSERT INTO public.user_user (role_id, password, last_login, is_superuser, email, name, is_active, is_staff, created_at, updated_at) VALUES (2, 'pbkdf2_sha256$600000$NxtDXwYFo349VfKTw1lQJN$ywdRommTzYnkiQWbk1oCwJqSh8gESadpWzlIi0tBmrU=', '2023-08-23 00:00:00.000000 +00:00', true, 'admin@mail.com', 'Admin User', true, true, '2023-09-20 00:00:00.000000 +00:00', '2023-10-14 00:00:00.000000 +00:00');
 INSERT INTO public.user_user (role_id, password, last_login, is_superuser, email, name, is_active, is_staff, created_at, updated_at) VALUES (1, 'pbkdf2_sha256$600000$NxtDXwYFo349VfKTw1lQJN$ywdRommTzYnkiQWbk1oCwJqSh8gESadpWzlIi0tBmrU=', '2023-05-24 00:00:00.000000 +00:00', false, 'simple@mail.com', 'Simple User', true, false, '2023-02-06 00:00:00.000000 +00:00', '2023-04-30 00:00:00.000000 +00:00');
 --simple users start with id 3
-INSERT INTO public.user_user (role_id, password, last_login, is_superuser, email, name, is_active, is_staff, created_at, updated_at) VALUES (1, '$2a$04$oEMmPwjI4DSGC7rwB7SnrOXCj7ph0v2Ban1xwjxy23ifPiDIDOrtS', '2023-05-27 00:00:00.000000 +00:00', false, 'jjoisce0@ameblo.jp', 'Jaymie Joisce', true, false, '2023-02-10 00:00:00.000000 +00:00', '2023-07-17 00:00:00.000000 +00:00');
-INSERT INTO public.user_user (role_id, password, last_login, is_superuser, email, name, is_active, is_staff, created_at, updated_at) VALUES (1, '$2a$04$QilfslJNfHah6qBZBEECDOawo8VDsKmFHUr2KmjejO5wXoWJPB8E.', '2023-08-26 00:00:00.000000 +00:00', false, 'sarmiger1@youtube.com', 'Sully Armiger', true, false, '2023-09-23 00:00:00.000000 +00:00', '2022-10-29 00:00:00.000000 +00:00');
-INSERT INTO public.user_user (role_id, password, last_login, is_superuser, email, name, is_active, is_staff, created_at, updated_at) VALUES (1, '$2a$04$k7bebtLdSiStAUt63zh45eQbguspJCgqWPbk9f0qHKp.5DCf45TkC', '2023-05-09 00:00:00.000000 +00:00', false, 'dastle2@nbcnews.com', 'Danny Astle', true, false, '2023-06-30 00:00:00.000000 +00:00', '2022-12-02 00:00:00.000000 +00:00');
-INSERT INTO public.user_user (role_id, password, last_login, is_superuser, email, name, is_active, is_staff, created_at, updated_at) VALUES (1, '$2a$04$Dg3FbdcoFjL/UE.MGBYDGOEAxHLGbxtCbBwfFdAL3JbjyYdsEUL6i', '2023-10-14 00:00:00.000000 +00:00', false, 'vcrittal3@live.com', 'Vivyanne Crittal', true, false, '2023-05-14 00:00:00.000000 +00:00', '2022-12-05 00:00:00.000000 +00:00');
-INSERT INTO public.user_user (role_id, password, last_login, is_superuser, email, name, is_active, is_staff, created_at, updated_at) VALUES (1, '$2a$04$z8LYF3alv0CroxlwUboOfOc0Glq/6qy4Vq2k.9JYy.Dwx3UQ0a/P2', '2023-05-10 00:00:00.000000 +00:00', false, 'vpicard4@si.edu', 'Vivyanne Picard', true, false, '2023-08-07 00:00:00.000000 +00:00', '2022-11-03 00:00:00.000000 +00:00');
-INSERT INTO public.user_user (role_id, password, last_login, is_superuser, email, name, is_active, is_staff, created_at, updated_at) VALUES (1, '$2a$04$BM26EaYAvTldmi8dcirISOIQv4hPijuvDp9aORN/6MqlCS3cte0Ia', '2023-03-17 00:00:00.000000 +00:00', false, 'adurbin5@networksolutions.com', 'Arlina Durbin', true, false, '2023-03-20 00:00:00.000000 +00:00', '2022-11-21 00:00:00.000000 +00:00');
-INSERT INTO public.user_user (role_id, password, last_login, is_superuser, email, name, is_active, is_staff, created_at, updated_at) VALUES (1, '$2a$04$VnzUghwiI2JdMyBNC.nMtuL9MPir8CX8e.EpoqQLvoG7loFweOKwS', '2023-01-13 00:00:00.000000 +00:00', false, 'avedyasov6@lycos.com', 'Augustus Vedyasov', true, false, '2023-08-31 00:00:00.000000 +00:00', '2023-07-30 00:00:00.000000 +00:00');
-INSERT INTO public.user_user (role_id, password, last_login, is_superuser, email, name, is_active, is_staff, created_at, updated_at) VALUES (1, '$2a$04$3LtKyx1ZMjG7HvOQDd5q7.cpHKBtrn62sFaoFCS0kOGTNoUwsxVny', '2023-01-24 00:00:00.000000 +00:00', false, 'bsackett7@scribd.com', 'Birgitta Sackett', true, false, '2023-01-28 00:00:00.000000 +00:00', '2023-07-02 00:00:00.000000 +00:00');
-INSERT INTO public.user_user (role_id, password, last_login, is_superuser, email, name, is_active, is_staff, created_at, updated_at) VALUES (1, '$2a$04$0kLMpaCkqUdGGb0or.0SHeYi37KG4Nik1cI.vJ50uizBfavILBuby', '2023-08-05 00:00:00.000000 +00:00', false, 'gmougel8@e-recht24.de', 'Gwynne Mougel', true, false, '2022-11-06 00:00:00.000000 +00:00', '2023-06-08 00:00:00.000000 +00:00');
-INSERT INTO public.user_user (role_id, password, last_login, is_superuser, email, name, is_active, is_staff, created_at, updated_at) VALUES (1, '$2a$04$ElN.Styc0u/yOZ3t6Pf/YeAQCd5OW6N2Kfz5rqIW2hXEpXB8FjqWS', '2022-11-11 00:00:00.000000 +00:00', false, 'hgebbe9@cyberchimps.com', 'Hermia Gebbe', true, false, '2023-10-10 00:00:00.000000 +00:00', '2023-09-02 00:00:00.000000 +00:00');
-INSERT INTO public.user_user (role_id, password, last_login, is_superuser, email, name, is_active, is_staff, created_at, updated_at) VALUES (1, '$2a$04$rH4f5Amn/xzVOj0aBm.N3eFxE/TF/jzbYvY7NxyQYjeZBfZd95yvi', '2023-10-15 00:00:00.000000 +00:00', false, 'yculmera@wix.com', 'Yard Culmer', true, false, '2023-09-26 00:00:00.000000 +00:00', '2023-09-02 00:00:00.000000 +00:00');
-INSERT INTO public.user_user (role_id, password, last_login, is_superuser, email, name, is_active, is_staff, created_at, updated_at) VALUES (1, '$2a$04$4iBKvgXJwzavU0eYpGIRNOo30QoJriCMs9Awjhn0eVg4iAFORnyci', '2022-12-27 00:00:00.000000 +00:00', false, 'ebecerrab@tripod.com', 'Edita Becerra', true, false, '2023-07-22 00:00:00.000000 +00:00', '2023-02-14 00:00:00.000000 +00:00');
-INSERT INTO public.user_user (role_id, password, last_login, is_superuser, email, name, is_active, is_staff, created_at, updated_at) VALUES (1, '$2a$04$SXzrPHppTGg/WE9MCkuJqeIXa1RL0/5xufd3zEPLDCCUOLy0k8DeC', '2023-09-15 00:00:00.000000 +00:00', false, 'aswainsc@nbcnews.com', 'Aloysius Swains', true, false, '2022-12-01 00:00:00.000000 +00:00', '2023-08-14 00:00:00.000000 +00:00');
-INSERT INTO public.user_user (role_id, password, last_login, is_superuser, email, name, is_active, is_staff, created_at, updated_at) VALUES (1, '$2a$04$i41aPARFTzbBJO9So114QuzTSIeWLyTbzlcokefdeAy4vHUy01z9e', '2022-12-31 00:00:00.000000 +00:00', false, 'fcordled@answers.com', 'Florry Cordle', true, false, '2023-05-09 00:00:00.000000 +00:00', '2023-05-28 00:00:00.000000 +00:00');
-INSERT INTO public.user_user (role_id, password, last_login, is_superuser, email, name, is_active, is_staff, created_at, updated_at) VALUES (1, '$2a$04$5r1fXAhpQwDX2nz84BTZWeEarBMYY5w5JHFumC7nQ5zpIrD1hjjEa', '2023-06-14 00:00:00.000000 +00:00', false, 'schmiele@mit.edu', 'Sarita Chmiel', true, false, '2023-06-11 00:00:00.000000 +00:00', '2023-01-30 00:00:00.000000 +00:00');
-INSERT INTO public.user_user (role_id, password, last_login, is_superuser, email, name, is_active, is_staff, created_at, updated_at) VALUES (1, '$2a$04$d2rlgcp/xQLuJMoGVEf9CujUEvi3SBFhlcGJ0Vtu5WZIBI8o2kOy.', '2023-05-11 00:00:00.000000 +00:00', false, 'ilennoxf@princeton.edu', 'Iona Lennox', true, false, '2023-04-19 00:00:00.000000 +00:00', '2023-07-28 00:00:00.000000 +00:00');
-INSERT INTO public.user_user (role_id, password, last_login, is_superuser, email, name, is_active, is_staff, created_at, updated_at) VALUES (1, '$2a$04$gMEFU2T3zvIIsWwChn0AEenBd8C5Gad7MzwieqoFu6mk2w34a5sFO', '2023-08-27 00:00:00.000000 +00:00', false, 'nschruyerg@archive.org', 'Nani Schruyer', true, false, '2022-11-20 00:00:00.000000 +00:00', '2023-01-05 00:00:00.000000 +00:00');
-INSERT INTO public.user_user (role_id, password, last_login, is_superuser, email, name, is_active, is_staff, created_at, updated_at) VALUES (1, '$2a$04$WC9O2EY1SdBe6qoH6riUWOJ6oGo5WSVBIiS9i176OmFq.M7tGvSry', '2023-04-16 00:00:00.000000 +00:00', false, 'aprandyh@wufoo.com', 'Arden Prandy', true, false, '2023-06-19 00:00:00.000000 +00:00', '2022-12-20 00:00:00.000000 +00:00');
-INSERT INTO public.user_user (role_id, password, last_login, is_superuser, email, name, is_active, is_staff, created_at, updated_at) VALUES (1, '$2a$04$WC9O2EY1SdBe6qoH6riUWOJ6oGo5WSVBIiS9i176OmFq.M7tGvSry', '2023-04-16 00:00:00.000000 +00:00', false, 'aprandasd@wufoo.com', 'Arden Goren', true, false, '2023-06-19 00:00:00.000000 +00:00', '2022-12-20 00:00:00.000000 +00:00');
-INSERT INTO public.user_user (role_id, password, last_login, is_superuser, email, name, is_active, is_staff, created_at, updated_at) VALUES (1, '$2a$04$WC9O2EY1SdBe6qoH6riUWOJ6oGo5WSVBIiS9i176OmFq.M7tGvSry', '2023-04-16 00:00:00.000000 +00:00', false, 'aasd@wufoo.com', 'Lily Soren', true, false, '2023-06-19 00:00:00.000000 +00:00', '2022-12-20 00:00:00.000000 +00:00');
+INSERT INTO public.user_user (role_id, password, last_login, is_superuser, email, name, is_active, is_staff, created_at, updated_at) VALUES (1, 'pbkdf2_sha256$600000$NxtDXwYFo349VfKTw1lQJN$ywdRommTzYnkiQWbk1oCwJqSh8gESadpWzlIi0tBmrU=', '2023-05-27 00:00:00.000000 +00:00', false, 'jjoisce0@ameblo.jp', 'Jaymie Joisce', true, false, '2023-02-10 00:00:00.000000 +00:00', '2023-07-17 00:00:00.000000 +00:00');
+INSERT INTO public.user_user (role_id, password, last_login, is_superuser, email, name, is_active, is_staff, created_at, updated_at) VALUES (1, 'pbkdf2_sha256$600000$NxtDXwYFo349VfKTw1lQJN$ywdRommTzYnkiQWbk1oCwJqSh8gESadpWzlIi0tBmrU=', '2023-08-26 00:00:00.000000 +00:00', false, 'sarmiger1@youtube.com', 'Sully Armiger', true, false, '2023-09-23 00:00:00.000000 +00:00', '2022-10-29 00:00:00.000000 +00:00');
+INSERT INTO public.user_user (role_id, password, last_login, is_superuser, email, name, is_active, is_staff, created_at, updated_at) VALUES (1, 'pbkdf2_sha256$600000$NxtDXwYFo349VfKTw1lQJN$ywdRommTzYnkiQWbk1oCwJqSh8gESadpWzlIi0tBmrU=', '2023-05-09 00:00:00.000000 +00:00', false, 'dastle2@nbcnews.com', 'Danny Astle', true, false, '2023-06-30 00:00:00.000000 +00:00', '2022-12-02 00:00:00.000000 +00:00');
+INSERT INTO public.user_user (role_id, password, last_login, is_superuser, email, name, is_active, is_staff, created_at, updated_at) VALUES (1, 'pbkdf2_sha256$600000$NxtDXwYFo349VfKTw1lQJN$ywdRommTzYnkiQWbk1oCwJqSh8gESadpWzlIi0tBmrU=', '2023-10-14 00:00:00.000000 +00:00', false, 'vcrittal3@live.com', 'Vivyanne Crittal', true, false, '2023-05-14 00:00:00.000000 +00:00', '2022-12-05 00:00:00.000000 +00:00');
+INSERT INTO public.user_user (role_id, password, last_login, is_superuser, email, name, is_active, is_staff, created_at, updated_at) VALUES (1, 'pbkdf2_sha256$600000$NxtDXwYFo349VfKTw1lQJN$ywdRommTzYnkiQWbk1oCwJqSh8gESadpWzlIi0tBmrU=', '2023-05-10 00:00:00.000000 +00:00', false, 'vpicard4@si.edu', 'Vivyanne Picard', true, false, '2023-08-07 00:00:00.000000 +00:00', '2022-11-03 00:00:00.000000 +00:00');
+INSERT INTO public.user_user (role_id, password, last_login, is_superuser, email, name, is_active, is_staff, created_at, updated_at) VALUES (1, 'pbkdf2_sha256$600000$NxtDXwYFo349VfKTw1lQJN$ywdRommTzYnkiQWbk1oCwJqSh8gESadpWzlIi0tBmrU=', '2023-03-17 00:00:00.000000 +00:00', false, 'adurbin5@networksolutions.com', 'Arlina Durbin', true, false, '2023-03-20 00:00:00.000000 +00:00', '2022-11-21 00:00:00.000000 +00:00');
+INSERT INTO public.user_user (role_id, password, last_login, is_superuser, email, name, is_active, is_staff, created_at, updated_at) VALUES (1, 'pbkdf2_sha256$600000$NxtDXwYFo349VfKTw1lQJN$ywdRommTzYnkiQWbk1oCwJqSh8gESadpWzlIi0tBmrU=', '2023-01-13 00:00:00.000000 +00:00', false, 'avedyasov6@lycos.com', 'Augustus Vedyasov', true, false, '2023-08-31 00:00:00.000000 +00:00', '2023-07-30 00:00:00.000000 +00:00');
+INSERT INTO public.user_user (role_id, password, last_login, is_superuser, email, name, is_active, is_staff, created_at, updated_at) VALUES (1, 'pbkdf2_sha256$600000$NxtDXwYFo349VfKTw1lQJN$ywdRommTzYnkiQWbk1oCwJqSh8gESadpWzlIi0tBmrU=', '2023-01-24 00:00:00.000000 +00:00', false, 'bsackett7@scribd.com', 'Birgitta Sackett', true, false, '2023-01-28 00:00:00.000000 +00:00', '2023-07-02 00:00:00.000000 +00:00');
+INSERT INTO public.user_user (role_id, password, last_login, is_superuser, email, name, is_active, is_staff, created_at, updated_at) VALUES (1, 'pbkdf2_sha256$600000$NxtDXwYFo349VfKTw1lQJN$ywdRommTzYnkiQWbk1oCwJqSh8gESadpWzlIi0tBmrU=', '2023-08-05 00:00:00.000000 +00:00', false, 'gmougel8@e-recht24.de', 'Gwynne Mougel', true, false, '2022-11-06 00:00:00.000000 +00:00', '2023-06-08 00:00:00.000000 +00:00');
+INSERT INTO public.user_user (role_id, password, last_login, is_superuser, email, name, is_active, is_staff, created_at, updated_at) VALUES (1, 'pbkdf2_sha256$600000$NxtDXwYFo349VfKTw1lQJN$ywdRommTzYnkiQWbk1oCwJqSh8gESadpWzlIi0tBmrU=', '2022-11-11 00:00:00.000000 +00:00', false, 'hgebbe9@cyberchimps.com', 'Hermia Gebbe', true, false, '2023-10-10 00:00:00.000000 +00:00', '2023-09-02 00:00:00.000000 +00:00');
+INSERT INTO public.user_user (role_id, password, last_login, is_superuser, email, name, is_active, is_staff, created_at, updated_at) VALUES (1, 'pbkdf2_sha256$600000$NxtDXwYFo349VfKTw1lQJN$ywdRommTzYnkiQWbk1oCwJqSh8gESadpWzlIi0tBmrU=', '2023-10-15 00:00:00.000000 +00:00', false, 'yculmera@wix.com', 'Yard Culmer', true, false, '2023-09-26 00:00:00.000000 +00:00', '2023-09-02 00:00:00.000000 +00:00');
+INSERT INTO public.user_user (role_id, password, last_login, is_superuser, email, name, is_active, is_staff, created_at, updated_at) VALUES (1, 'pbkdf2_sha256$600000$NxtDXwYFo349VfKTw1lQJN$ywdRommTzYnkiQWbk1oCwJqSh8gESadpWzlIi0tBmrU=', '2022-12-27 00:00:00.000000 +00:00', false, 'ebecerrab@tripod.com', 'Edita Becerra', true, false, '2023-07-22 00:00:00.000000 +00:00', '2023-02-14 00:00:00.000000 +00:00');
+INSERT INTO public.user_user (role_id, password, last_login, is_superuser, email, name, is_active, is_staff, created_at, updated_at) VALUES (1, 'pbkdf2_sha256$600000$NxtDXwYFo349VfKTw1lQJN$ywdRommTzYnkiQWbk1oCwJqSh8gESadpWzlIi0tBmrU=', '2023-09-15 00:00:00.000000 +00:00', false, 'aswainsc@nbcnews.com', 'Aloysius Swains', true, false, '2022-12-01 00:00:00.000000 +00:00', '2023-08-14 00:00:00.000000 +00:00');
+INSERT INTO public.user_user (role_id, password, last_login, is_superuser, email, name, is_active, is_staff, created_at, updated_at) VALUES (1, 'pbkdf2_sha256$600000$NxtDXwYFo349VfKTw1lQJN$ywdRommTzYnkiQWbk1oCwJqSh8gESadpWzlIi0tBmrU=', '2022-12-31 00:00:00.000000 +00:00', false, 'fcordled@answers.com', 'Florry Cordle', true, false, '2023-05-09 00:00:00.000000 +00:00', '2023-05-28 00:00:00.000000 +00:00');
+INSERT INTO public.user_user (role_id, password, last_login, is_superuser, email, name, is_active, is_staff, created_at, updated_at) VALUES (1, 'pbkdf2_sha256$600000$NxtDXwYFo349VfKTw1lQJN$ywdRommTzYnkiQWbk1oCwJqSh8gESadpWzlIi0tBmrU=', '2023-06-14 00:00:00.000000 +00:00', false, 'schmiele@mit.edu', 'Sarita Chmiel', true, false, '2023-06-11 00:00:00.000000 +00:00', '2023-01-30 00:00:00.000000 +00:00');
+INSERT INTO public.user_user (role_id, password, last_login, is_superuser, email, name, is_active, is_staff, created_at, updated_at) VALUES (1, 'pbkdf2_sha256$600000$NxtDXwYFo349VfKTw1lQJN$ywdRommTzYnkiQWbk1oCwJqSh8gESadpWzlIi0tBmrU=', '2023-05-11 00:00:00.000000 +00:00', false, 'ilennoxf@princeton.edu', 'Iona Lennox', true, false, '2023-04-19 00:00:00.000000 +00:00', '2023-07-28 00:00:00.000000 +00:00');
+INSERT INTO public.user_user (role_id, password, last_login, is_superuser, email, name, is_active, is_staff, created_at, updated_at) VALUES (1, 'pbkdf2_sha256$600000$NxtDXwYFo349VfKTw1lQJN$ywdRommTzYnkiQWbk1oCwJqSh8gESadpWzlIi0tBmrU=', '2023-08-27 00:00:00.000000 +00:00', false, 'nschruyerg@archive.org', 'Nani Schruyer', true, false, '2022-11-20 00:00:00.000000 +00:00', '2023-01-05 00:00:00.000000 +00:00');
+INSERT INTO public.user_user (role_id, password, last_login, is_superuser, email, name, is_active, is_staff, created_at, updated_at) VALUES (1, 'pbkdf2_sha256$600000$NxtDXwYFo349VfKTw1lQJN$ywdRommTzYnkiQWbk1oCwJqSh8gESadpWzlIi0tBmrU=', '2023-04-16 00:00:00.000000 +00:00', false, 'aprandyh@wufoo.com', 'Arden Prandy', true, false, '2023-06-19 00:00:00.000000 +00:00', '2022-12-20 00:00:00.000000 +00:00');
+INSERT INTO public.user_user (role_id, password, last_login, is_superuser, email, name, is_active, is_staff, created_at, updated_at) VALUES (1, 'pbkdf2_sha256$600000$NxtDXwYFo349VfKTw1lQJN$ywdRommTzYnkiQWbk1oCwJqSh8gESadpWzlIi0tBmrU=', '2023-04-16 00:00:00.000000 +00:00', false, 'aprandasd@wufoo.com', 'Arden Goren', true, false, '2023-06-19 00:00:00.000000 +00:00', '2022-12-20 00:00:00.000000 +00:00');
+INSERT INTO public.user_user (role_id, password, last_login, is_superuser, email, name, is_active, is_staff, created_at, updated_at) VALUES (1, 'pbkdf2_sha256$600000$NxtDXwYFo349VfKTw1lQJN$ywdRommTzYnkiQWbk1oCwJqSh8gESadpWzlIi0tBmrU=', '2023-04-16 00:00:00.000000 +00:00', false, 'aasd@wufoo.com', 'Lily Soren', true, false, '2023-06-19 00:00:00.000000 +00:00', '2022-12-20 00:00:00.000000 +00:00');
 -- provider users start with id 23
-INSERT INTO public.user_user (role_id, password, last_login, is_superuser, email, name, is_active, is_staff, created_at, updated_at) VALUES (3, '$2a$04$WC9O2EY1SdBe6qoH6riUWOJ6oGo5WSVBIiS9i176OmFq.M7tGvSry', '2023-04-16 00:00:00.000000 +00:00', false, 'provider1@.com', 'Sasha Olimp', true, false, '2023-06-19 00:00:00.000000 +00:00', '2022-12-20 00:00:00.000000 +00:00');
-INSERT INTO public.user_user (role_id, password, last_login, is_superuser, email, name, is_active, is_staff, created_at, updated_at) VALUES (3, '$2a$04$WC9O2EY1SdBe6qoH6riUWOJ6oGo5WSVBIiS9i176OmFq.M7tGvSry', '2023-04-16 00:00:00.000000 +00:00', false, 'provider2@.com', 'Cara Morex', true, false, '2023-06-19 00:00:00.000000 +00:00', '2022-12-20 00:00:00.000000 +00:00');
-INSERT INTO public.user_user (role_id, password, last_login, is_superuser, email, name, is_active, is_staff, created_at, updated_at) VALUES (3, '$2a$04$WC9O2EY1SdBe6qoH6riUWOJ6oGo5WSVBIiS9i176OmFq.M7tGvSry', '2023-04-16 00:00:00.000000 +00:00', false, 'provider3@.com', 'Loren Dalos', true, false, '2023-06-19 00:00:00.000000 +00:00', '2022-12-20 00:00:00.000000 +00:00');
-INSERT INTO public.user_user (role_id, password, last_login, is_superuser, email, name, is_active, is_staff, created_at, updated_at) VALUES (3, '$2a$04$WC9O2EY1SdBe6qoH6riUWOJ6oGo5WSVBIiS9i176OmFq.M7tGvSry', '2023-04-16 00:00:00.000000 +00:00', false, 'provider4@.com', 'Iros Gamer', true, false, '2023-06-19 00:00:00.000000 +00:00', '2022-12-20 00:00:00.000000 +00:00');
-INSERT INTO public.user_user (role_id, password, last_login, is_superuser, email, name, is_active, is_staff, created_at, updated_at) VALUES (3, '$2a$04$WC9O2EY1SdBe6qoH6riUWOJ6oGo5WSVBIiS9i176OmFq.M7tGvSry', '2023-04-16 00:00:00.000000 +00:00', false, 'provider5@.com', 'Mira Golem', true, false, '2023-06-19 00:00:00.000000 +00:00', '2022-12-20 00:00:00.000000 +00:00');
+INSERT INTO public.user_user (role_id, password, last_login, is_superuser, email, name, is_active, is_staff, created_at, updated_at) VALUES (3, 'pbkdf2_sha256$600000$NxtDXwYFo349VfKTw1lQJN$ywdRommTzYnkiQWbk1oCwJqSh8gESadpWzlIi0tBmrU=', '2023-04-16 00:00:00.000000 +00:00', false, 'provider1@mail.com', 'Sasha Olimp', true, false, '2023-06-19 00:00:00.000000 +00:00', '2022-12-20 00:00:00.000000 +00:00');
+INSERT INTO public.user_user (role_id, password, last_login, is_superuser, email, name, is_active, is_staff, created_at, updated_at) VALUES (3, 'pbkdf2_sha256$600000$NxtDXwYFo349VfKTw1lQJN$ywdRommTzYnkiQWbk1oCwJqSh8gESadpWzlIi0tBmrU=', '2023-04-16 00:00:00.000000 +00:00', false, 'provider2@mail.com', 'Cara Morex', true, false, '2023-06-19 00:00:00.000000 +00:00', '2022-12-20 00:00:00.000000 +00:00');
+INSERT INTO public.user_user (role_id, password, last_login, is_superuser, email, name, is_active, is_staff, created_at, updated_at) VALUES (3, 'pbkdf2_sha256$600000$NxtDXwYFo349VfKTw1lQJN$ywdRommTzYnkiQWbk1oCwJqSh8gESadpWzlIi0tBmrU=', '2023-04-16 00:00:00.000000 +00:00', false, 'provider3@mail.com', 'Loren Dalos', true, false, '2023-06-19 00:00:00.000000 +00:00', '2022-12-20 00:00:00.000000 +00:00');
+INSERT INTO public.user_user (role_id, password, last_login, is_superuser, email, name, is_active, is_staff, created_at, updated_at) VALUES (3, 'pbkdf2_sha256$600000$NxtDXwYFo349VfKTw1lQJN$ywdRommTzYnkiQWbk1oCwJqSh8gESadpWzlIi0tBmrU=', '2023-04-16 00:00:00.000000 +00:00', false, 'provider4@mail.com', 'Iros Gamer', true, false, '2023-06-19 00:00:00.000000 +00:00', '2022-12-20 00:00:00.000000 +00:00');
+INSERT INTO public.user_user (role_id, password, last_login, is_superuser, email, name, is_active, is_staff, created_at, updated_at) VALUES (3, 'pbkdf2_sha256$600000$NxtDXwYFo349VfKTw1lQJN$ywdRommTzYnkiQWbk1oCwJqSh8gESadpWzlIi0tBmrU=', '2023-04-16 00:00:00.000000 +00:00', false, 'provider5@mail.com', 'Mira Golem', true, false, '2023-06-19 00:00:00.000000 +00:00', '2022-12-20 00:00:00.000000 +00:00');
+
+
+
 
 -- BREED_TABLE
 -- breed cats
@@ -67,6 +76,9 @@ INSERT INTO public.pet_breed (created_at, updated_at, name, description, age_min
 INSERT INTO public.pet_breed (created_at, updated_at, name, description, age_min, age_max, risk_level, species) VALUES ('2023-07-03 00:00:00.000000 +00:00', '2022-11-09 00:00:00.000000 +00:00', 'Ciconia ciconia', 'ac diam cras pellentesque volutpat dui maecenas tristique est et tempus semper est quam pharetra magna ac', 9, 19, 5, 'dog');
 INSERT INTO public.pet_breed (created_at, updated_at, name, description, age_min, age_max, risk_level, species) VALUES ('2023-04-03 00:00:00.000000 +00:00', '2023-09-17 00:00:00.000000 +00:00', 'Semnopithecus entellus', 'dapibus nulla suscipit ligula in lacus curabitur at ipsum ac tellus semper interdum mauris ullamcorper purus', 1, 20, 10, 'dog');
 
+
+
+
 -- PET_TABLE
 -- pets cats
 INSERT INTO public.pet_pet (created_at, updated_at, name, age, gender, species, breed_id, user_id) VALUES ('2023-01-15 00:00:00.000000 +00:00', '2023-04-14 00:00:00.000000 +00:00', 'Haze', 14, 'M', 'cat', 1, 3);
@@ -90,6 +102,13 @@ INSERT INTO public.pet_pet (created_at, updated_at, name, age, gender, species, 
 INSERT INTO public.pet_pet (created_at, updated_at, name, age, gender, species, breed_id, user_id) VALUES ('2023-08-28 00:00:00.000000 +00:00', '2023-03-10 00:00:00.000000 +00:00', 'Donovan', 12, 'M', 'dog', 14, 19);
 INSERT INTO public.pet_pet (created_at, updated_at, name, age, gender, species, breed_id, user_id) VALUES ('2022-11-02 00:00:00.000000 +00:00', '2023-07-02 00:00:00.000000 +00:00', 'Joycelin', 5, 'F', 'dog', 15, 20);
 INSERT INTO public.pet_pet (created_at, updated_at, name, age, gender, species, breed_id, user_id) VALUES ('2022-11-22 00:00:00.000000 +00:00', '2022-10-31 00:00:00.000000 +00:00', 'Brandy', 15, 'M', 'dog', 16, 20);
+-- pets for simple user with id 21, 22, 23
+INSERT INTO public.pet_pet (created_at, updated_at, name, age, gender, species, breed_id, user_id) VALUES ('2022-11-22 00:00:00.000000 +00:00', '2022-10-31 00:00:00.000000 +00:00', 'Margo', 15, 'F', 'cat', 1, 2);
+INSERT INTO public.pet_pet (created_at, updated_at, name, age, gender, species, breed_id, user_id) VALUES ('2022-11-22 00:00:00.000000 +00:00', '2022-10-31 00:00:00.000000 +00:00', 'Briko', 15, 'M', 'dog', 11, 2);
+INSERT INTO public.pet_pet (created_at, updated_at, name, age, gender, species, breed_id, user_id) VALUES ('2022-11-22 00:00:00.000000 +00:00', '2022-10-31 00:00:00.000000 +00:00', 'Lamer', 15, 'M', 'dog', 12, 2);
+
+
+
 
 -- POLICY_TABLE
 INSERT INTO public.policy_policy (created_at, updated_at, policy_number, start_date, end_date, status, initial_limit, current_limit, deductible, pet_id) VALUES ('2023-06-11 00:00:00.000000 +0200', '2023-06-11 00:00:00.000000 +0200', '84-121-4860', '2023-06-11', '2023-01-08', 'active', 10000.00, 10000.00, 250.00, 1);
@@ -112,6 +131,14 @@ INSERT INTO public.policy_policy (created_at, updated_at, policy_number, start_d
 INSERT INTO public.policy_policy (created_at, updated_at, policy_number, start_date, end_date, status, initial_limit, current_limit, deductible, pet_id) VALUES ('2023-09-26 00:00:00.000000 +0200', '2023-09-26 00:00:00.000000 +0200', '49-053-5404', '2023-09-26', '2023-07-22', 'expired', 10000.00, 10000.00, 250.00, 18);
 INSERT INTO public.policy_policy (created_at, updated_at, policy_number, start_date, end_date, status, initial_limit, current_limit, deductible, pet_id) VALUES ('2022-11-01 00:00:00.000000 +0200', '2022-11-01 00:00:00.000000 +0200', '35-544-9388', '2022-11-01', '2023-06-20', 'expired', 10000.00, 10000.00, 250.00, 19);
 INSERT INTO public.policy_policy (created_at, updated_at, policy_number, start_date, end_date, status, initial_limit, current_limit, deductible, pet_id) VALUES ('2023-10-12 00:00:00.000000 +0200', '2023-10-12 00:00:00.000000 +0200', '32-128-1016', '2023-10-12', '2022-12-11', 'expired', 10000.00, 10000.00, 250.00, 20);
+-- policy for simple user pets with id 21, 22, 23
+INSERT INTO public.policy_policy (created_at, updated_at, policy_number, start_date, end_date, status, initial_limit, current_limit, deductible, pet_id) VALUES ('2023-10-12 00:00:00.000000 +0200', '2023-10-12 00:00:00.000000 +0200', '34-227-2019', '2023-10-12', '2022-12-11', 'active', 10000.00, 10000.00, 250.00, 21);
+INSERT INTO public.policy_policy (created_at, updated_at, policy_number, start_date, end_date, status, initial_limit, current_limit, deductible, pet_id) VALUES ('2023-10-12 00:00:00.000000 +0200', '2023-10-12 00:00:00.000000 +0200', '35-323-3026', '2023-10-12', '2022-12-11', 'invalid', 10000.00, 10000.00, 250.00, 22);
+INSERT INTO public.policy_policy (created_at, updated_at, policy_number, start_date, end_date, status, initial_limit, current_limit, deductible, pet_id) VALUES ('2023-10-12 00:00:00.000000 +0200', '2023-10-12 00:00:00.000000 +0200', '36-425-4013', '2023-10-12', '2022-12-11', 'expired', 10000.00, 10000.00, 250.00, 23);
+
+
+
+
 
 -- SERVICE_PROVIDER_TABLE
 INSERT INTO public.policy_serviceprovider (user_id, created_at, updated_at, company_name, phone, registration_number, address, iban) VALUES (23, '2022-12-20 00:00:00.000000 +00:00', '2023-10-19 00:00:00.000000 +00:00', 'Breitenberg-Bashirian', '257-665-9176', '69-602-9552', 'Suite 35', 'EE59 5774 7361 0463 0291');
@@ -120,35 +147,54 @@ INSERT INTO public.policy_serviceprovider (user_id, created_at, updated_at, comp
 INSERT INTO public.policy_serviceprovider (user_id, created_at, updated_at, company_name, phone, registration_number, address, iban) VALUES (26, '2023-08-22 00:00:00.000000 +00:00', '2023-05-29 00:00:00.000000 +00:00', 'Wehner-Dickens', '166-249-6763', '42-961-3936', 'Suite 26', 'PK20 GAMB KSRA 6GY1 ABUU RFQE');
 INSERT INTO public.policy_serviceprovider (user_id, created_at, updated_at, company_name, phone, registration_number, address, iban) VALUES (27, '2023-07-05 00:00:00.000000 +00:00', '2023-01-03 00:00:00.000000 +00:00', 'Cole, Wolf and Jacobs', '873-198-5877', '91-303-5588', 'PO Box 18858', 'LV16 ROLV JWKU GEWB YGPS Z');
 
+
+
+
 -- POLICY__PROVIDER_RELATION_TABLE
-INSERT INTO public.policy_policy_providers (policy_id, serviceprovider_id) VALUES (1, 1);
-INSERT INTO public.policy_policy_providers (policy_id, serviceprovider_id) VALUES (2, 1);
-INSERT INTO public.policy_policy_providers (policy_id, serviceprovider_id) VALUES (3, 1);
-INSERT INTO public.policy_policy_providers (policy_id, serviceprovider_id) VALUES (4, 1);
-INSERT INTO public.policy_policy_providers (policy_id, serviceprovider_id) VALUES (5, 1);
-INSERT INTO public.policy_policy_providers (policy_id, serviceprovider_id) VALUES (6, 2);
-INSERT INTO public.policy_policy_providers (policy_id, serviceprovider_id) VALUES (7, 2);
-INSERT INTO public.policy_policy_providers (policy_id, serviceprovider_id) VALUES (8, 2);
-INSERT INTO public.policy_policy_providers (policy_id, serviceprovider_id) VALUES (9, 2);
-INSERT INTO public.policy_policy_providers (policy_id, serviceprovider_id) VALUES (10, 3);
-INSERT INTO public.policy_policy_providers (policy_id, serviceprovider_id) VALUES (11, 3);
-INSERT INTO public.policy_policy_providers (policy_id, serviceprovider_id) VALUES (12, 3);
-INSERT INTO public.policy_policy_providers (policy_id, serviceprovider_id) VALUES (13, 4);
-INSERT INTO public.policy_policy_providers (policy_id, serviceprovider_id) VALUES (14, 4);
-INSERT INTO public.policy_policy_providers (policy_id, serviceprovider_id) VALUES (15, 5);
+-- INSERT INTO public.policy_policy_providers (policy_id, serviceprovider_id) VALUES (1, 1);
+-- INSERT INTO public.policy_policy_providers (policy_id, serviceprovider_id) VALUES (2, 1);
+-- INSERT INTO public.policy_policy_providers (policy_id, serviceprovider_id) VALUES (3, 1);
+-- INSERT INTO public.policy_policy_providers (policy_id, serviceprovider_id) VALUES (4, 1);
+-- INSERT INTO public.policy_policy_providers (policy_id, serviceprovider_id) VALUES (5, 1);
+-- INSERT INTO public.policy_policy_providers (policy_id, serviceprovider_id) VALUES (6, 2);
+-- INSERT INTO public.policy_policy_providers (policy_id, serviceprovider_id) VALUES (7, 2);
+-- INSERT INTO public.policy_policy_providers (policy_id, serviceprovider_id) VALUES (8, 2);
+-- INSERT INTO public.policy_policy_providers (policy_id, serviceprovider_id) VALUES (9, 2);
+-- INSERT INTO public.policy_policy_providers (policy_id, serviceprovider_id) VALUES (10, 3);
+-- INSERT INTO public.policy_policy_providers (policy_id, serviceprovider_id) VALUES (11, 3);
+-- INSERT INTO public.policy_policy_providers (policy_id, serviceprovider_id) VALUES (12, 3);
+-- INSERT INTO public.policy_policy_providers (policy_id, serviceprovider_id) VALUES (13, 4);
+-- INSERT INTO public.policy_policy_providers (policy_id, serviceprovider_id) VALUES (14, 4);
+-- INSERT INTO public.policy_policy_providers (policy_id, serviceprovider_id) VALUES (15, 5);
+-- -- policy relation for simple user policies
+-- INSERT INTO public.policy_policy_providers (policy_id, serviceprovider_id) VALUES (21, 1);
+-- INSERT INTO public.policy_policy_providers (policy_id, serviceprovider_id) VALUES (22, 1);
+-- INSERT INTO public.policy_policy_providers (policy_id, serviceprovider_id) VALUES (23, 2);
+
+
+
 
 -- INSURANCE_CASES_TABLE
 -- service provider with id 1
-INSERT INTO policy_insurancecase(created_at, updated_at, claim_date, service_provider_id, status, description) VALUES ('2022-12-20 00:00:00.000000 +00:00', '2023-10-19 00:00:00.000000', '2022-12-20 00:00:00.000000 +00:00', 1, 'accept',  'case 1 description');
-INSERT INTO policy_insurancecase(created_at, updated_at, claim_date, service_provider_id, status, description) VALUES ('2022-12-20 00:00:00.000000 +00:00', '2023-10-19 00:00:00.000000', '2022-12-20 00:00:00.000000 +00:00', 1, 'accept',  'case 2 description');
-INSERT INTO policy_insurancecase(created_at, updated_at, claim_date, service_provider_id, status, description) VALUES ('2022-12-20 00:00:00.000000 +00:00', '2023-10-19 00:00:00.000000', '2022-12-20 00:00:00.000000 +00:00', 1, 'process', 'case 3 description');
-INSERT INTO policy_insurancecase(created_at, updated_at, claim_date, service_provider_id, status, description) VALUES ('2022-12-20 00:00:00.000000 +00:00', '2023-10-19 00:00:00.000000', '2022-12-20 00:00:00.000000 +00:00', 1, 'reject',  'case 3 description');
+INSERT INTO policy_insurancecase(created_at, updated_at, claim_date, policy_id, service_provider_id, status, description) VALUES ('2022-12-20 00:00:00.000000 +00:00', '2023-10-19 00:00:00.000000', '2022-12-20 00:00:00.000000 +00:00', 1, 1, 'accept',  'case 1 description');
+INSERT INTO policy_insurancecase(created_at, updated_at, claim_date, policy_id, service_provider_id, status, description) VALUES ('2022-12-20 00:00:00.000000 +00:00', '2023-10-19 00:00:00.000000', '2022-12-20 00:00:00.000000 +00:00', 2, 1, 'accept',  'case 2 description');
+INSERT INTO policy_insurancecase(created_at, updated_at, claim_date, policy_id, service_provider_id, status, description) VALUES ('2022-12-20 00:00:00.000000 +00:00', '2023-10-19 00:00:00.000000', '2022-12-20 00:00:00.000000 +00:00', 3, 1, 'process', 'case 3 description');
+INSERT INTO policy_insurancecase(created_at, updated_at, claim_date, policy_id, service_provider_id, status, description) VALUES ('2022-12-20 00:00:00.000000 +00:00', '2023-10-19 00:00:00.000000', '2022-12-20 00:00:00.000000 +00:00', 4, 1, 'reject',  'case 3 description');
 -- service provider with id 2
-INSERT INTO policy_insurancecase(created_at, updated_at, claim_date, service_provider_id, status, description) VALUES ('2022-12-20 00:00:00.000000 +00:00', '2023-10-19 00:00:00.000000', '2022-12-20 00:00:00.000000 +00:00', 2, 'accept',  'case 4 description');
-INSERT INTO policy_insurancecase(created_at, updated_at, claim_date, service_provider_id, status, description) VALUES ('2022-12-20 00:00:00.000000 +00:00', '2023-10-19 00:00:00.000000', '2022-12-20 00:00:00.000000 +00:00', 2, 'accept',  'case 5 description');
-INSERT INTO policy_insurancecase(created_at, updated_at, claim_date, service_provider_id, status, description) VALUES ('2022-12-20 00:00:00.000000 +00:00', '2023-10-19 00:00:00.000000', '2022-12-20 00:00:00.000000 +00:00', 2, 'reject',  'case 6 description');
+INSERT INTO policy_insurancecase(created_at, updated_at, claim_date, policy_id, service_provider_id, status, description) VALUES ('2022-12-20 00:00:00.000000 +00:00', '2023-10-19 00:00:00.000000', '2022-12-20 00:00:00.000000 +00:00', 5, 2, 'accept',  'case 4 description');
+INSERT INTO policy_insurancecase(created_at, updated_at, claim_date, policy_id, service_provider_id, status, description) VALUES ('2022-12-20 00:00:00.000000 +00:00', '2023-10-19 00:00:00.000000', '2022-12-20 00:00:00.000000 +00:00', 6, 2, 'accept',  'case 5 description');
+INSERT INTO policy_insurancecase(created_at, updated_at, claim_date, policy_id, service_provider_id, status, description) VALUES ('2022-12-20 00:00:00.000000 +00:00', '2023-10-19 00:00:00.000000', '2022-12-20 00:00:00.000000 +00:00', 7, 2, 'reject',  'case 6 description');
 -- service provider with id 3
-INSERT INTO policy_insurancecase(created_at, updated_at, claim_date, service_provider_id, status, description) VALUES ('2022-12-20 00:00:00.000000 +00:00', '2023-10-19 00:00:00.000000', '2022-12-20 00:00:00.000000 +00:00', 3, 'accept',  'case 7 description');
+INSERT INTO policy_insurancecase(created_at, updated_at, claim_date, policy_id, service_provider_id, status, description) VALUES ('2022-12-20 00:00:00.000000 +00:00', '2023-10-19 00:00:00.000000', '2022-12-20 00:00:00.000000 +00:00', 8, 3, 'accept',  'case 7 description');
+-- insurance case for simple users pets
+INSERT INTO policy_insurancecase(created_at, updated_at, claim_date, policy_id, service_provider_id, status, description) VALUES ('2022-12-20 00:00:00.000000 +00:00', '2023-10-19 00:00:00.000000', '2022-12-20 00:00:00.000000 +00:00', 21, 1, 'accept',  'case 1 for simple user pets');
+INSERT INTO policy_insurancecase(created_at, updated_at, claim_date, policy_id, service_provider_id, status, description) VALUES ('2022-12-20 00:00:00.000000 +00:00', '2023-10-19 00:00:00.000000', '2022-12-20 00:00:00.000000 +00:00', 21, 2, 'accept',  'case 2 for simple user pets');
+INSERT INTO policy_insurancecase(created_at, updated_at, claim_date, policy_id, service_provider_id, status, description) VALUES ('2022-12-20 00:00:00.000000 +00:00', '2023-10-19 00:00:00.000000', '2022-12-20 00:00:00.000000 +00:00', 22, 3, 'process', 'case 3 for simple user pets');
+INSERT INTO policy_insurancecase(created_at, updated_at, claim_date, policy_id, service_provider_id, status, description) VALUES ('2022-12-20 00:00:00.000000 +00:00', '2023-10-19 00:00:00.000000', '2022-12-20 00:00:00.000000 +00:00', 23, 4, 'reject',  'case 4 for simple user pets');
+
+
+
+
 
 -- INSURANCE_INCOMING_INVOICES_TABLE
 INSERT INTO policy_incominginvoice(created_at, updated_at, insurance_case_id, amount, invoice_date) VALUES ('2022-12-20 00:00:00.000000 +00:00', '2023-10-19 00:00:00.000000', 1,  200.00,  '2023-10-19 00:00:00.000000');
@@ -158,3 +204,6 @@ INSERT INTO policy_incominginvoice(created_at, updated_at, insurance_case_id, am
 INSERT INTO policy_incominginvoice(created_at, updated_at, insurance_case_id, amount, invoice_date) VALUES ('2022-12-20 00:00:00.000000 +00:00', '2023-10-19 00:00:00.000000', 5,  1231.65, '2023-10-19 00:00:00.000000');
 INSERT INTO policy_incominginvoice(created_at, updated_at, insurance_case_id, amount, invoice_date) VALUES ('2022-12-20 00:00:00.000000 +00:00', '2023-10-19 00:00:00.000000', 6,  49.12,   '2023-10-19 00:00:00.000000');
 INSERT INTO policy_incominginvoice(created_at, updated_at, insurance_case_id, amount, invoice_date) VALUES ('2022-12-20 00:00:00.000000 +00:00', '2023-10-19 00:00:00.000000', 7,  100.00,  '2023-10-19 00:00:00.000000');
+--invoice for simple user pets
+INSERT INTO policy_incominginvoice(created_at, updated_at, insurance_case_id, amount, invoice_date) VALUES ('2022-12-20 00:00:00.000000 +00:00', '2023-10-19 00:00:00.000000', 9,  234.18,  '2023-10-19 00:00:00.000000');
+INSERT INTO policy_incominginvoice(created_at, updated_at, insurance_case_id, amount, invoice_date) VALUES ('2022-12-20 00:00:00.000000 +00:00', '2023-10-19 00:00:00.000000', 10,  654.43,  '2023-10-19 00:00:00.000000');
