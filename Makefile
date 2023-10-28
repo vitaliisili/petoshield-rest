@@ -33,3 +33,7 @@ test:
 
 testprint:
 	cd petoshield_api && python -m pytest -s
+
+delete-migrations:
+	find petoshield_api -path "*/migrations/*.py" -not -name "__init__.py" -delete
+	find petoshield_api -path "*/migrations/*.pyc" -delete
