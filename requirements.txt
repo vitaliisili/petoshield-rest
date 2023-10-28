@@ -7,3 +7,5 @@ pytest-django==4.5.2
 django-environ==0.11.2
 djangorestframework-simplejwt==5.3.0
 django-filter==23.3
+drf-standardized-errors[openapi]==0.12.5
+pytest-cov==4.1.0
