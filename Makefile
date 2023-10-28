@@ -19,9 +19,6 @@ startapp:
 flake:
 	cd petoshield_api && flake8
 
-test:
-	python -m pytest petoshield_api -v
-
 install-web:
 	cd petoshield_ui && npm install
 
@@ -33,3 +30,6 @@ test:
 
 testprint:
 	cd petoshield_api && python -m pytest -s
+
+test-cov:
+	cd petoshield_api && python -m pytest --cov
