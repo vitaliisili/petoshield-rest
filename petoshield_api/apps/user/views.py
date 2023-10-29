@@ -9,8 +9,8 @@ from apps.user.serializers import BaseUserSerializer, ExtendUserSerializer
 class UserViewSet(viewsets.ModelViewSet):
     queryset = get_user_model().objects.all()
     permission_classes = (UserPermission,)
-    search_fields = ['username', 'email']
-    ordering_fields = ['username', 'created_at']
+    search_fields = ['$name']
+    ordering_fields = ['name', 'created_at']
 
     def get_serializer_class(self):
         if self.request.user.is_staff:
@@ -21,4 +21,4 @@ class UserViewSet(viewsets.ModelViewSet):
 class RoleViewSet(viewsets.ModelViewSet):
     queryset = Role.objects.all()
     permission_classes = (IsAuthenticated, IsAdminUser)
-    search_field = ['name']
+    search_field = ['$name']
