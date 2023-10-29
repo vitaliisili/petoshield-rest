@@ -28,6 +28,9 @@ start-web:
 test:
 	cd petoshield_api && python -m pytest
 
+test-class:
+	cd petoshield_api && python -m pytest -k $(class)
+
 testprint:
 	cd petoshield_api && python -m pytest -s
 
