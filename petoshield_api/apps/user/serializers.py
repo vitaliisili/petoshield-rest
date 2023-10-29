@@ -13,12 +13,20 @@ class RoleSerializer(serializers.ModelSerializer):
 class BaseUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = get_user_model()
-        fields = ['id', 'email', 'name', 'password']
-        extra_kwargs = {'password': {'write_only': True}}
+        fields = ['id', 'email', 'name']
         read_only_fields = ['id']
 
     def create(self, validated_data):
         return get_user_model().objects.create_user(**validated_data)
+
+
+
+class ExtendUserSerializer(BaseUserSerializer):
+    class Meta:
+        model = get_user_model()
+        fields = '__all__'
+        extra_kwargs = {'password': {'write_only': True}}
+        read_only_fields = ['id', 'created_at', 'updated_at']
 
     def update(self, instance, validated_data):
         password = validated_data.pop('password', None)
@@ -29,13 +37,6 @@ class BaseUserSerializer(serializers.ModelSerializer):
             user.save()
 
         return user
-
-class ExtendUserSerializer(BaseUserSerializer):
-    class Meta:
-        model = get_user_model()
-        fields = '__all__'
-        extra_kwargs = {'password': {'write_only': True}}
-        read_only_fields = ['id', 'created_at', 'updated_at']
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)
