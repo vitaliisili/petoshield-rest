@@ -10,6 +10,7 @@ class RoleSerializer(serializers.ModelSerializer):
         fields = '__all__'
         read_only_fields = ['id', 'created_at', 'updated_at']
 
+
 class BaseUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = get_user_model()
@@ -18,7 +19,6 @@ class BaseUserSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         return get_user_model().objects.create_user(**validated_data)
-
 
 
 class ExtendUserSerializer(BaseUserSerializer):

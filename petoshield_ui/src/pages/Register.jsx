@@ -3,9 +3,13 @@ import NavBar from "../components/NavBar";
 import HelpModal from "../components/HelpModal";
 import Footer from "../components/Footer";
 import cat from '../static/images/register/cat-round.gif'
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
+import axios from "axios";
+import {API_AUTH_TOKEN, API_USER_URL} from "../utils/apiUrls";
+import {toast, ToastContainer} from "react-toastify";
 
 const Register = () => {
+    const navigate = useNavigate()
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -13,16 +17,39 @@ const Register = () => {
     const [checkPassword, setCheckPassword] = useState('')
 
     const registerHandler = () => {
-        //     TODO: Register User and redirect to login page send email
+        const id = toast.loading('Please Wait...')
+        if (password !== checkPassword) {
+            setTimeout(()=> {
+                toast.update(id, {render: 'Password and check password not equals', type: "error", isLoading: false, autoClose: 10000})
+            }, 1000)
+            return
+        }
+        axios.post(API_USER_URL, {
+            email,
+            password,
+            "name": fullName
+        }).then((response) => {
+            if (response.status === 201) {
+                setTimeout(()=> {
+                    toast.update(id, {render: 'Success', type: "success", isLoading: false, autoClose: 500})
+                    navigate('/login')
+                }, 1000)
+            }
+        }).catch((error) => {
+            toast.update(id, {render: error.response.data.errors[0].detail, type: "error", isLoading: false, autoClose: 10000})
+        })
     }
 
     return (
         <div className='text-black flex flex-col h-screen bg-black-haze'>
+            <ToastContainer
+                closeOnClick
+            />
             <NavBar/>
             <HelpModal/>
 
             <main className='flex-grow pt-44 flex justify-center items-center bg-black-haze'>
-                <form action="#" className='flex flex-col p-4 rounded-sm w-[500px]'>
+                <div className='flex flex-col p-4 rounded-sm w-[500px]'>
                     <div>
                         <h1 className='text-center font-bold font-lato text-2xl pb-10'>Create your account</h1>
                     </div>
@@ -54,7 +81,7 @@ const Register = () => {
                     <div className='mt-8'>
                         <img className='w-full' src={cat} alt="dog"/>
                     </div>
-                </form>
+                </div>
             </main>
 
             <footer className=''>

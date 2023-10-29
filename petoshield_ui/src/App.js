@@ -12,6 +12,7 @@ import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
 import Register from "./pages/Register";
 import PasswordRecovery from "./pages/PasswordRecovery";
+import PetRegistration from "./pages/PetRegistration";
 
 const App = () => {
     return (
@@ -28,6 +29,7 @@ const App = () => {
                 <Route exact path='/login' element={<Login/>}/>
                 <Route exact path='/register' element={<Register/>}/>
                 <Route exact path='/pass-recovery' element={<PasswordRecovery/>}/>
+                <Route exact path='/pet-registration' element={<PetRegistration/>}/>
                 <Route exact path='*' element={<NotFound/>}/>
             </Routes>
         </BrowserRouter>
