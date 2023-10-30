@@ -1,25 +1,21 @@
 from rest_framework import permissions
 
+
 class IsStaffOrOwner(permissions.BasePermission):
 
     def has_permission(self, request, view):
-        if view.action == 'list':
-            if view.basename == 'pets':
-                return request.user.is_staff
-            return request.user.is_authenticated
-        elif view.action == 'create':
+        if view.action == 'create':
             if view.basename == 'breeds':
                 return request.user.is_staff
-            return request.user.is_authenticated
-        elif view.action in ['retrieve', 'update', 'partial_update', 'destroy']:
+            return request.user.role.name in ['client', 'admin']
+        elif view.action in ['list', 'retrieve', 'update', 'partial_update', 'destroy']:
+            return request.user.role.name in ['client', 'admin']
+        elif view.action == 'create_new_account':
             return True
         else:
             return False
 
     def has_object_permission(self, request, view, obj):
-        if not request.user.is_authenticated:
-            return False
-
         if view.action == 'retrieve':
             if view.basename == 'breeds':
                 return True
