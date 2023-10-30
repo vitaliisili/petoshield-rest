@@ -1,4 +1,6 @@
 from rest_framework import permissions
+
+
 class UserPermission(permissions.BasePermission):
 
     def has_permission(self, request, view):
@@ -8,6 +10,8 @@ class UserPermission(permissions.BasePermission):
             return True
         elif view.action in ['retrieve', 'update', 'partial_update', 'destroy']:
             return True
+        elif view.action == 'me':
+            return request.user.is_authenticated
         else:
             return False
 
@@ -21,5 +25,7 @@ class UserPermission(permissions.BasePermission):
             return obj == request.user or request.user.is_staff
         elif view.action == 'destroy':
             return request.user.is_staff
+        elif view.action == 'me':
+            return obj == request.user
         else:
             return False

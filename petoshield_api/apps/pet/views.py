@@ -1,4 +1,6 @@
 from rest_framework import viewsets
+from rest_framework.permissions import IsAuthenticated
+
 from apps.pet.models import Pet, Breed
 from apps.pet.permissions import IsStaffOrOwner
 from apps.pet.serializers import PetSerializer, BaseBreedSerializer, ExtendBreedSerializer
@@ -6,7 +8,7 @@ from apps.pet.serializers import PetSerializer, BaseBreedSerializer, ExtendBreed
 class PetViewSet(viewsets.ModelViewSet):
     serializer_class = PetSerializer
     queryset = Pet.objects.all()
-    permission_classes = (IsStaffOrOwner,)
+    permission_classes = (IsAuthenticated, IsStaffOrOwner)
     search_fields = ['name', 'type']
     ordering_fields = ['created_at', 'name']
 
@@ -17,7 +19,7 @@ class PetViewSet(viewsets.ModelViewSet):
 
 class BreedViewSet(viewsets.ModelViewSet):
     queryset = Breed.objects.all()
-    permission_classes = (IsStaffOrOwner,)
+    permission_classes = (IsAuthenticated, IsStaffOrOwner)
     search_fields = ['name']
     ordering_fields = ['name', 'created_at']
 
