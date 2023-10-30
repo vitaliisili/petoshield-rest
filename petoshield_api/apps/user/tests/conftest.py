@@ -9,14 +9,14 @@ def api_client():
     return APIClient()
 
 
-# @pytest.fixture
-# def roles(db):
-#     custom_roles = [
-#         Role.objects.create(name='client'),
-#         Role.objects.create(name='admin'),
-#         Role.objects.create(name='provider'),
-#     ]
-#     return custom_roles
+@pytest.fixture
+def roles(db):
+    custom_roles = [
+        Role.objects.create(name='client'),
+        Role.objects.create(name='admin'),
+        Role.objects.create(name='provider'),
+    ]
+    return custom_roles
 
 
 @pytest.fixture

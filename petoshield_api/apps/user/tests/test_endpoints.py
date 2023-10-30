@@ -5,7 +5,7 @@ import pytest
 class TestUserEndpoints:
     endpoint = '/api/users/'
 
-    def test_user_save_success(self,api_client, roles):
+    def test_user_save_success(self, api_client, roles):
         data = {
             'name': 'Test name',
             'email': 'example@mail.com',
@@ -49,6 +49,11 @@ class TestUserEndpoints:
         }
         response = api_client.post(self.endpoint, data=data)
         assert response.status_code == 400
+
+    def test_user_get_authenticated_user_account(self, simple_user, api_client):
+        api_client.force_authenticate(simple_user)
+        response = api_client.get(f'{self.endpoint}me/')
+        assert response.status_code == 200
 
     def test_user_list_with_staff_success(self, staff_user, api_client):
         api_client.force_authenticate(staff_user)
@@ -177,3 +182,20 @@ class TestUserEndpoints:
         api_client.force_authenticate(staff_user)
         response = api_client.delete(f"{self.endpoint}{wrong_id}/")
         assert response.status_code == 404
+
+    @pytest.mark.parametrize('name, length', [
+        ('simple', 1),
+        ('Example', 3),
+        ('example', 3),
+    ])
+    def test_user_search_by_name(self, staff_user, api_client, users_list, name, length):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}?search={name}')
+        assert response.status_code == 200
+        assert len(json.loads(response.content)) == length
+
+    def test_user_ordering_by_name(self, staff_user, api_client, users_list):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}?ordering=name')
+        assert response.status_code == 200
+        assert json.loads(response.content)[1].get('name') == 'Example Name1'
