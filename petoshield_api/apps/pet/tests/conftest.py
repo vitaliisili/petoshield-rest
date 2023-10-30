@@ -56,6 +56,18 @@ def breed(db):
 
 
 @pytest.fixture
+def pet(breed, simple_user):
+    custom_pet = Pet.objects.create(name='Lenore',
+                                    age=5,
+                                    gender='M',
+                                    species='dog',
+                                    breed=breed,
+                                    user=simple_user)
+    assert pet.name == 'Lenore'
+    return custom_pet
+
+
+@pytest.fixture
 def breeds_list(db, breed):
     breeds_list = [
         breed,
@@ -110,7 +122,7 @@ def pets_list(breed, simple_user, staff_user):
             gender='F',
             species='cat',
             breed=breed,
-            user=simple_user
+            user=staff_user
         ),
     ]
     return pets_list
