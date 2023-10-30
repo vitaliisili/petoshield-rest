@@ -5,6 +5,51 @@ import pytest
 class TestUserEndpoints:
     endpoint = '/api/users/'
 
+    def test_user_save_success(self,api_client, roles):
+        data = {
+            'name': 'Test name',
+            'email': 'example@mail.com',
+            'password': 'password1A@',
+            'role': 1
+        }
+        response = api_client.post(self.endpoint, data=data)
+        assert response.status_code == 201
+
+    @pytest.mark.parametrize('name, email, password', [
+        ('', 'example@mail.com', 'password1A@'),
+        (' ', 'example@mail.com', 'password1A@'),
+        ('Test name', '', 'password1A@'),
+        ('Test name', ' ', 'password1A@'),
+        ('Test name', 'example@mail.com', ''),
+        ('Test name', 'example@mail.com', ' '),
+    ])
+    def test_user_save_with_blank_or_empty_data(self, roles, api_client, name, email, password):
+        data = {
+            'name': name,
+            'email': email,
+            'password': password,
+        }
+        response = api_client.post(self.endpoint, data=data)
+        assert response.status_code == 400
+
+    @pytest.mark.parametrize('name, email, password', [
+        ('Test name', '@mail.com', 'password1A@'),
+        ('Test name', 'A@b@c@example.com', 'password1A@'),
+        ('Test name', 'just"not"right@example.com', 'password1A@'),
+        ('Test name', '\still\"notallowed@example.com', 'password1A@'),
+        ('Test name', '"not\allowed@example.com', 'password1A@'),
+        ('Test name', 'example@mail.com', 'pass'),
+        ('Test name', 'example@mail.com', '1234'),
+    ])
+    def test_user_save_with_wrong_data(self, roles, api_client, name, email, password):
+        data = {
+            'name': name,
+            'email': email,
+            'password': password,
+        }
+        response = api_client.post(self.endpoint, data=data)
+        assert response.status_code == 400
+
     def test_user_list_with_staff_success(self, staff_user, api_client):
         api_client.force_authenticate(staff_user)
         response = api_client.get(self.endpoint)
@@ -44,18 +89,6 @@ class TestUserEndpoints:
 
     @pytest.mark.parametrize('email', ['', ' ', '   '])
     def test_user_patch_with_empty_email_or_blank(self, simple_user, api_client, email):
-        api_client.force_authenticate(simple_user)
-        response = api_client.patch(f'{self.endpoint}{simple_user.id}/', {'email': email})
-        assert response.status_code == 400
-
-    @pytest.mark.parametrize('email', [
-        '@mail.com',
-        'A@b@c@example.com',
-        'just"not"right@example.com',
-        '\still\"notallowed@example.com',
-        '"not\allowed@example.com'
-    ])
-    def test_user_patch_with_wrong_email(self, simple_user, api_client, email):
         api_client.force_authenticate(simple_user)
         response = api_client.patch(f'{self.endpoint}{simple_user.id}/', {'email': email})
         assert response.status_code == 400
