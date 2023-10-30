@@ -73,6 +73,13 @@ def breeds_list(db, breed):
             risk_level=6,
             species='cat'
         ),
+        Breed.objects.create(
+            name='Arenol',
+            age_min=9,
+            age_max=11,
+            risk_level=6,
+            species='dog'
+        ),
     ]
     return breeds_list
 
@@ -94,6 +101,14 @@ def pets_list(breed, simple_user, staff_user):
             age=3,
             gender='M',
             species='dog',
+            breed=breed,
+            user=simple_user
+        ),
+        Pet.objects.create(
+            name='Samy',
+            age=4,
+            gender='F',
+            species='cat',
             breed=breed,
             user=simple_user
         ),

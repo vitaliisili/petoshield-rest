@@ -33,6 +33,11 @@ class TestBreedEndpoints:
         assert response.status_code == 200
         assert json.loads(response.content).get('age_max') == 20
 
+    def test_patch_breed_not_found(self, breed, staff_user, api_client):
+        api_client.force_authenticate(staff_user)
+        response = api_client.patch(f'{self.endpoint}999999/', {'age_max': 20})
+        assert response.status_code == 404
+
     def test_save_breed_with_simple_user(self, simple_user, api_client):
         api_client.force_authenticate(simple_user)
         response = api_client.post(f'{self.endpoint}', {"name": "Siameses cat1",
@@ -159,6 +164,19 @@ class TestBreedEndpoints:
         api_client.force_authenticate(staff_user)
         response = api_client.delete(f'{self.endpoint}999999/')
         assert response.status_code == 404
+
+    @pytest.mark.parametrize('name, length', [('Arenol', 1), ('arenol', 1), ('ol', 2)])
+    def test_breed_search_by_name(self, staff_user, api_client, breeds_list, name, length):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}?search={name}')
+        assert response.status_code == 200
+        assert len(json.loads(response.content)) == length
+
+    def test_breed_ordering_by_name(self, staff_user, api_client, breeds_list):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}?ordering=name')
+        assert response.status_code == 200
+        assert json.loads(response.content)[0].get('name') == 'Arenol'
 
 
 class TestPetsEndpoints:
