@@ -1,5 +1,8 @@
 from django.contrib.auth import get_user_model
+from django.contrib.auth.password_validation import validate_password
+from django.core.exceptions import ValidationError
 from rest_framework import viewsets
+from rest_framework.exceptions import ValidationError as RestValidationError
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 from apps.user.models import Role
@@ -18,6 +21,14 @@ class UserViewSet(viewsets.ModelViewSet):
         if self.request.user.is_staff:
             return ExtendUserSerializer
         return BaseUserSerializer
+
+    def create(self, request, *args, **kwargs):
+        try:
+            validate_password(request.data.get('password'))
+        except ValidationError as error:
+            raise RestValidationError(error)
+
+        return super().create(request, *args, **kwargs)
 
     @action(detail=False, methods=['get'])
     def me(self, request):

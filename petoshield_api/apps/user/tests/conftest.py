@@ -8,14 +8,16 @@ from apps.user.models import Role
 def api_client():
     return APIClient()
 
-@pytest.fixture
-def roles(db):
-    custom_roles = [
-        Role.objects.create(name='client'),
-        Role.objects.create(name='admin'),
-        Role.objects.create(name='provider'),
-    ]
-    return custom_roles
+
+# @pytest.fixture
+# def roles(db):
+#     custom_roles = [
+#         Role.objects.create(name='client'),
+#         Role.objects.create(name='admin'),
+#         Role.objects.create(name='provider'),
+#     ]
+#     return custom_roles
+
 
 @pytest.fixture
 def staff_user(roles):
@@ -24,6 +26,7 @@ def staff_user(roles):
     assert user_staff.is_superuser
     assert user_staff.is_staff
     return user_staff
+
 
 @pytest.fixture
 def simple_user(roles):
