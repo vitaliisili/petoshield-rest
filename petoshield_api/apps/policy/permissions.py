@@ -5,7 +5,7 @@ class ProviderPermissions(permissions.BasePermission):
     ROLES = ['admin', 'provider']
 
     def has_permission(self, request, view):
-        if view.action == ['list']:
+        if view.action == 'list':
             return request.user.is_staff and request.user.is_authenticated
         elif view.action == 'create':
             return True
