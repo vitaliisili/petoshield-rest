@@ -4,7 +4,6 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from apps.policy.models import ServiceProvider, Policy, InsuranceCase, IncomingInvoice
 from apps.user.models import Role
-from django.utils.translation import gettext_lazy as _
 from apps.policy.permissions import (PolicyPermissions,
                                      ProviderPermissions,
                                      InsuranceCasePermissions,
@@ -12,31 +11,30 @@ from apps.policy.permissions import (PolicyPermissions,
 from apps.policy.serializers import (PolicySerializer,
                                      InsuranceCaseSerializer,
                                      IncomingInvoiceSerializer,
-                                     UserServiceProviderSerializer)
+                                     UserServiceProviderSerializer,
+                                     ServiceProviderSerializer)
 
 
 class ServiceProviderViewSet(viewsets.ModelViewSet):
-    serializer_class = UserServiceProviderSerializer
+    serializer_class = ServiceProviderSerializer
     queryset = ServiceProvider.objects.all()
     permission_classes = (ProviderPermissions,)
     search_fields = ['$company_name', 'registration_number']
     ordering_fields = ['created_at']
 
     def create(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
+        serializer = UserServiceProviderSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
         user = serializer.validated_data['user']
         user['role'] = Role.objects.get(name='provider')
+        user_instance = get_user_model().objects.create_user(**user)
 
         provider = serializer.validated_data['service_provider']
-        user_instance = get_user_model().objects.create_user(**user)
         provider['user'] = user_instance
-
         ServiceProvider.objects.create(**provider)
 
-        return Response(data={'message': _("Service Provider was registered successfully")},
-                        status=status.HTTP_201_CREATED)
+        return Response(data=serializer.data, status=status.HTTP_201_CREATED)
 
 
 class PolicyViewSet(viewsets.ModelViewSet):
