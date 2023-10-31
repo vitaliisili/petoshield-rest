@@ -503,3 +503,59 @@ class TestPetsEndpoints:
         api_client.force_authenticate(simple_user)
         response = api_client.put(f'{self.endpoint}999999/', data={"name": "test name"}, format='json')
         assert response.status_code == 404
+
+    def test_pets_delete_with_staff_user_success(self, staff_user, api_client, pet):
+        api_client.force_authenticate(staff_user)
+        response = api_client.delete(f'{self.endpoint}{pet.id}/')
+        assert response.status_code == 204
+
+    def test_pets_delete_with_simple_user_success(self, simple_user, api_client, pet):
+        api_client.force_authenticate(simple_user)
+        response = api_client.delete(f'{self.endpoint}{pet.id}/')
+        assert response.status_code == 204
+
+    def test_pets_delete_with_simple_user_not_owned_not_found(self, simple_user, api_client, pets_list):
+        api_client.force_authenticate(simple_user)
+        response = api_client.delete(f'{self.endpoint}{pets_list[2]}/')
+        assert response.status_code == 404
+
+    def test_pets_delete_with_provider_user_permission_denied(self, provider_user, api_client, pet):
+        api_client.force_authenticate(provider_user)
+        response = api_client.delete(f'{self.endpoint}{pet.id}/')
+        assert response.status_code == 403
+
+    def test_pest_delete_not_found(self, staff_user, api_client):
+        api_client.force_authenticate(staff_user)
+        response = api_client.delete(f'{self.endpoint}999999/')
+        assert response.status_code == 404
+
+    @pytest.mark.parametrize('name, length', [
+        ('samy', 1),
+        ('SAMY', 1),
+        ('sam', 1),
+        ('a', 2),
+        ('', 3),
+    ])
+    def test_pets_search_by_name(self, staff_user, api_client, pets_list, name, length):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}?search={name}')
+        assert response.status_code == 200
+        assert len(json.loads(response.content)) == length
+
+    def test_pets_ordering_by_name(self, staff_user, api_client, pets_list):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}?ordering=name')
+        assert response.status_code == 200
+        assert json.loads(response.content)[0].get('name') == 'Jack'
+
+    def test_pets_ordering_by_age_ascending(self, staff_user, api_client, pets_list):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}?ordering=age')
+        assert response.status_code == 200
+        assert json.loads(response.content)[0].get('age') == 3
+
+    def test_pets_ordering_by_age_descending(self, staff_user, api_client, pets_list):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}?ordering__descending=age')
+        assert response.status_code == 200
+        assert json.loads(response.content)[0].get('age') == 5
