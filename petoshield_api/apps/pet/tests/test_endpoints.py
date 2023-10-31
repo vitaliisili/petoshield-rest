@@ -1,6 +1,5 @@
 import json
-
-import pytest
+import pytest  # noqa
 
 
 class TestBreedEndpoints:
@@ -37,6 +36,11 @@ class TestBreedEndpoints:
         api_client.force_authenticate(staff_user)
         response = api_client.patch(f'{self.endpoint}999999/', {'age_max': 20})
         assert response.status_code == 404
+
+    def test_patch_breed_with_provider_user_permission_denied(self, breed, provider_user, api_client):
+        api_client.force_authenticate(provider_user)
+        response = api_client.patch(f'{self.endpoint}{breed.id}/', {'min_age': 2})
+        assert response.status_code == 403
 
     def test_save_breed_with_simple_user(self, simple_user, api_client):
         api_client.force_authenticate(simple_user)
@@ -111,6 +115,16 @@ class TestBreedEndpoints:
                                                         })
         assert response.status_code == 400
 
+    def test_save_breed_with_provider_user_permission_denied(self, breed, provider_user, api_client):
+        api_client.force_authenticate(provider_user)
+        response = api_client.post(f'{self.endpoint}', {"name": "Test name",
+                                                        "age_min": 2,
+                                                        "age_max": 10,
+                                                        "risk_level": 5,
+                                                        "species": 'cat'
+                                                        })
+        assert response.status_code == 403
+
     def test_put_breed_with_simple_user(self, breed, simple_user, api_client):
         api_client.force_authenticate(simple_user)
         response = api_client.put(f'{self.endpoint}{breed.id}/', {"name": "Siameses cat new",
@@ -146,6 +160,15 @@ class TestBreedEndpoints:
                                                               "species": "cat"})
         assert response.status_code == 404
 
+    def test_put_breed_with_provider_user_permission_denied(self, breed, provider_user, api_client):
+        api_client.force_authenticate(provider_user)
+        response = api_client.put(f'{self.endpoint}{breed.id}/', {"name": "Siameses cat new",
+                                                                  "age_min": 10,
+                                                                  "age_max": 13,
+                                                                  "risk_level": 4,
+                                                                  "species": "cat"})
+        assert response.status_code == 403
+
     def test_delete_breed_with_simple_user(self, breed, simple_user, api_client):
         api_client.force_authenticate(simple_user)
         response = api_client.delete(f'{self.endpoint}{breed.id}/')
@@ -165,6 +188,11 @@ class TestBreedEndpoints:
         response = api_client.delete(f'{self.endpoint}999999/')
         assert response.status_code == 404
 
+    def test_delete_breed_with_provider_user_permission_denied(self, provider_user, breed, api_client):
+        api_client.force_authenticate(provider_user)
+        response = api_client.delete(f'{self.endpoint}{breed.id}/')
+        assert response.status_code == 403
+
     @pytest.mark.parametrize('name, length', [('Arenol', 1), ('arenol', 1), ('ol', 2)])
     def test_breed_search_by_name(self, staff_user, api_client, breeds_list, name, length):
         api_client.force_authenticate(staff_user)
@@ -182,88 +210,296 @@ class TestBreedEndpoints:
 class TestPetsEndpoints:
     endpoint = '/api/pet-profile/pets/'
 
+    def test_pets_save_success(self, simple_user, api_client, breed):
+        api_client.force_authenticate(simple_user)
+        data = {
+            "name": "new pet",
+            "age": 2,
+            "gender": "F",
+            "species": "cat",
+            "breed": breed.id,
+            "user": simple_user.id
+        }
+        response = api_client.post(self.endpoint, data=data, format='json')
+        assert response.status_code == 201
+
+    def test_pets_save_with_id_not_owned_success(self, simple_user, api_client, staff_user, breed):
+        api_client.force_authenticate(simple_user)
+        data = {
+            "name": "new pet",
+            "age": 2,
+            "gender": "F",
+            "species": "cat",
+            "breed": breed.id,
+            "user": staff_user.id
+        }
+        response = api_client.post(self.endpoint, data=data, format='json')
+        assert response.status_code == 201
+        assert json.loads(response.content).get('user') == simple_user.id
+
+    @pytest.mark.parametrize('breed_id, user_id', [
+        ('string', 2),
+        (1, 'string'),
+        (-1, 2),
+        (1, -2),
+        (1.1, 2),
+        (1, 2.1),
+        (1, ''),
+        ('', 1),
+    ])
+    def test_pets_save_with_wrong_id_bad_request(self, simple_user, api_client, breed_id, user_id):
+        api_client.force_authenticate(simple_user)
+        data = {
+            "name": "new pet",
+            "age": 2,
+            "gender": "F",
+            "species": "cat",
+            "breed": breed_id,
+            "user": user_id
+        }
+        response = api_client.post(self.endpoint, data=data, format='json')
+        assert response.status_code == 400
+
+    @pytest.mark.parametrize('name, age, gender, species', [
+        ('', 2, 'F', 'cat'),
+        (' ', 2, 'F', 'cat'),
+        ('Test Name', -1, 'F', 'cat'),
+        ('Test Name', 1.1, 'F', 'cat'),
+        ('Test Name', 200, 'F', 'cat'),
+        ('Test Name', 2, 1, 'cat'),
+        ('Test Name', 2, 'S', 'cat'),
+        ('Test Name', 2, 'Female', 'cat'),
+        ('Test Name', '', 'F', 'cat'),
+        ('Test Name', ' ', 'F', 'cat'),
+        ('Test Name', 2, '', 'cat'),
+        ('Test Name', 2, ' ', 'cat'),
+        ('Test Name', 2, 'F', 'Cat'),
+        ('Test Name', 2, 'F', ''),
+        ('Test Name', 2, 'F', ' '),
+        ('Test Name', 2, 'F', 'Dog'),
+        ('Test Name', 2, 'F', 1),
+    ])
+    def test_pets_save_with_wrong_data_bad_request(self, simple_user, api_client, breed, name, age, gender, species):
+        api_client.force_authenticate(simple_user)
+        data = {
+            "name": name,
+            "age": age,
+            "gender": gender,
+            "species": species,
+            "breed": breed.id,
+            "user": simple_user.id
+        }
+        response = api_client.post(self.endpoint, data=data, format='json')
+        assert response.status_code == 400
+
+    def test_save_with_provider_permission_denied(self, provider_user, api_client, breed):
+        api_client.force_authenticate(provider_user)
+        data = {
+            "name": "new pet",
+            "age": 2,
+            "gender": "F",
+            "species": "cat",
+            "breed": breed.id,
+            "user": provider_user.id
+        }
+        response = api_client.post(self.endpoint, data=data, format='json')
+        assert response.status_code == 403
+
     def test_pets_list_with_admin_success(self, staff_user, pets_list, api_client):
         api_client.force_authenticate(staff_user)
         response = api_client.get(self.endpoint)
         assert len(json.loads(response.content)) == len(pets_list)
         assert response.status_code == 200
 
-    def test_pets_list_with_unauthorized_user(self, simple_user, pets_list, api_client):
+    def test_pets_list_with_simple_user_user(self, simple_user, pets_list, api_client):
         api_client.force_authenticate(simple_user)
         response = api_client.get(self.endpoint)
-        assert response.status_code == 403
+        assert response.status_code == 200
+        assert len(json.loads(response.content)) == len(list(filter(lambda p: p.user == simple_user, pets_list)))
 
     def test_pets_list_with_unauthenticated_user(self, api_client):
         response = api_client.get(self.endpoint)
         assert response.status_code == 401
 
-    # def test_get_user_pet_by_id_with_staff_permission(self, staff_user, pet_created_by_user, api_client):
-    #     api_client.force_authenticate(staff_user)
-    #     response = api_client.get(f'{self.endpoint}{pet_created_by_user.id}/')
-    #     assert response.status_code == 200
-    #     assert json.loads(response.content).get('user') == pet_created_by_user.user.id
-    #
-    # def test_get_admin_pet_by_id_with_simple_user_not_allowed(self, simple_user, pet_created_by_admin, api_client):
-    #     api_client.force_authenticate(simple_user)
-    #     response = api_client.get(f'{self.endpoint}{pet_created_by_admin.id}/')
-    #     assert response.status_code == 403
-    #
-    # def test_put_user_pet_with_staff_permissions(self, staff_user, breed, simple_user, pet_created_by_user, api_client):
-    #     api_client.force_authenticate(staff_user)
-    #     response = api_client.put(f'{self.endpoint}{pet_created_by_user.id}/',
-    #                               {
-    #                                   "name": "Simple User dog1",
-    #                                   "age": 6,
-    #                                   "gender": 'M',
-    #                                   "species": 'dog',
-    #                                   "breed": breed.id,
-    #                                   "user": simple_user.id
-    #                               }
-    #                               )
-    #     assert response.status_code == 200
-    #     assert json.loads(response.content).get('name') == "Simple User dog1"
-    #     assert json.loads(response.content).get('age') == 6
-    #
-    # def test_put_admin_pet_with_user_not_allowed(self, staff_user, breed, simple_user, pet_created_by_admin,
-    #                                              api_client):
-    #     api_client.force_authenticate(simple_user)
-    #     response = api_client.put(f'{self.endpoint}{pet_created_by_admin.id}/',
-    #                               {
-    #                                   "name": "Admin Doggy dog1",
-    #                                   "age": 6,
-    #                                   "gender": 'M',
-    #                                   "species": 'dog',
-    #                                   "breed": breed.id,
-    #                                   "user": staff_user.id
-    #                               }
-    #                               )
-    #     assert response.status_code == 403
-    #
-    # def test_patch_user_pet_with_staff_permissions(self, staff_user, pet_created_by_user, api_client):
-    #     api_client.force_authenticate(staff_user)
-    #     response = api_client.patch(f'{self.endpoint}{pet_created_by_user.id}/',
-    #                                 {
-    #                                     "name": "Simple User dog1",
-    #                                 }
-    #                                 )
-    #     assert response.status_code == 200
-    #     assert json.loads(response.content).get('name') == "Simple User dog1"
-    #
-    # def test_patch_admin_pet_with_user_not_allowed(self, simple_user, pet_created_by_admin, api_client):
-    #     api_client.force_authenticate(simple_user)
-    #     response = api_client.patch(f'{self.endpoint}{pet_created_by_admin.id}/',
-    #                                 {
-    #                                     "name": "Admin Doggy dog1",
-    #                                 }
-    #                                 )
-    #     assert response.status_code == 403
-    #
-    # def test_delete_user_pet_with_staff_permissions(self, staff_user, pet_created_by_user, api_client):
-    #     api_client.force_authenticate(staff_user)
-    #     response = api_client.delete(f'{self.endpoint}{pet_created_by_user.id}/')
-    #     assert response.status_code == 204
-    #
-    # def test_delete_admin_pet_with_user_not_allowed(self, simple_user, pet_created_by_admin, api_client):
-    #     api_client.force_authenticate(simple_user)
-    #     response = api_client.delete(f'{self.endpoint}{pet_created_by_admin.id}/')
-    #     assert response.status_code == 403
+    def test_pets_list_with_provider_user_permission_denied(self, provider_user, pets_list, api_client):
+        api_client.force_authenticate(provider_user)
+        response = api_client.get(self.endpoint)
+        assert response.status_code == 403
+
+    def test_pets_get_by_id_with_staff_user_success(self, staff_user, pet, api_client):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}{pet.id}/')
+        assert response.status_code == 200
+        assert json.loads(response.content).get('name') == pet.name
+
+    def test_pets_get_by_id_with_simple_user_success(self, simple_user, pet, api_client):
+        api_client.force_authenticate(simple_user)
+        response = api_client.get(f'{self.endpoint}{pet.id}/')
+        assert response.status_code == 200
+        assert json.loads(response.content).get('name') == pet.name
+
+    def test_pets_get_by_id_with_simple_user_not_found(self, simple_user, pets_list, api_client):
+        api_client.force_authenticate(simple_user)
+        response = api_client.get(f'{self.endpoint}{pets_list[2].id}/')
+        assert response.status_code == 404
+
+    def test_pets_get_by_id_with_unauthenticated_user_permission_denied(self, pet, api_client):
+        response = api_client.get(f'{self.endpoint}{pet.id}/')
+        assert response.status_code == 401
+
+    def test_pets_get_by_id_with_provider_user_permission_denied(self, provider_user, pet, api_client):
+        api_client.force_authenticate(provider_user)
+        response = api_client.get(f'{self.endpoint}{pet.id}/')
+        assert response.status_code == 403
+
+    @pytest.mark.parametrize('id', [-1, 'one', '1.1', '', ' '])
+    def test_pets_get_by_id_with_wrong_id_bad_request(self, staff_user, api_client, pet, id):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}{id}/')
+        assert response.status_code == 404
+
+    def test_pets_by_id_check_data_success(self, staff_user, api_client, pet):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}{pet.id}/')
+        assert json.loads(response.content).get('name') == pet.name
+        assert json.loads(response.content).get('age') == pet.age
+        assert json.loads(response.content).get('gender') == pet.gender
+        assert json.loads(response.content).get('species') == pet.species
+        assert json.loads(response.content).get('breed') == pet.breed.name
+        assert json.loads(response.content).get('user') == pet.user.id
+
+    def test_pets_put_with_staff_user_success(self, staff_user, api_client, pet, breed):
+        api_client.force_authenticate(staff_user)
+        data = {
+            "name": "New Name",
+            "age": 3,
+            "gender": "M",
+            "species": "dog",
+            "breed": breed.id,
+            "user": staff_user.id
+        }
+        response = api_client.put(f'{self.endpoint}{pet.id}/', data=data, format='json')
+        assert response.status_code == 200
+
+    def test_pets_put_with_simple_user_success(self, simple_user, api_client, pet, breed):
+        api_client.force_authenticate(simple_user)
+        data = {
+            "name": "New Name",
+            "age": 3,
+            "gender": "M",
+            "species": "dog",
+            "breed": breed.id,
+            "user": simple_user.id
+        }
+        response = api_client.put(f'{self.endpoint}{pet.id}/', data=data, format='json')
+        assert response.status_code == 200
+
+    def test_pets_put_with_provider_user_permission_denied(self, provider_user, api_client, pet, breed):
+        api_client.force_authenticate(provider_user)
+        data = {
+            "name": "New Name",
+            "age": 3,
+            "gender": "M",
+            "species": "dog",
+            "breed": breed.id,
+            "user": provider_user.id
+        }
+        response = api_client.put(f'{self.endpoint}{pet.id}/', data=data, format='json')
+        assert response.status_code == 403
+
+    def test_pets_put_with_simple_user_for_not_owned_success(self, simple_user, staff_user, pet, api_client, breed):
+        api_client.force_authenticate(simple_user)
+        data = {
+            "name": "New Name",
+            "age": 3,
+            "gender": "M",
+            "species": "dog",
+            "breed": breed.id,
+            "user": staff_user.id
+        }
+        response = api_client.put(f'{self.endpoint}{pet.id}/', data=data, format='json')
+        assert response.status_code == 200
+        assert json.loads(response.content).get('user') == simple_user.id
+
+    @pytest.mark.parametrize('name, age, gender, species', [
+        ('', 2, 'F', 'cat'),
+        (' ', 2, 'F', 'cat'),
+        ('Test Name', -1, 'F', 'cat'),
+        ('Test Name', 1.1, 'F', 'cat'),
+        ('Test Name', 100, 'F', 'cat'),
+        ('Test Name', 2, 1, 'cat'),
+        ('Test Name', 2, 'S', 'cat'),
+        ('Test Name', 2, 'Female', 'cat'),
+        ('Test Name', '', 'F', 'cat'),
+        ('Test Name', ' ', 'F', 'cat'),
+        ('Test Name', 2, '', 'cat'),
+        ('Test Name', 2, ' ', 'cat'),
+        ('Test Name', 2, 'F', 'Cat'),
+        ('Test Name', 2, 'F', ''),
+        ('Test Name', 2, 'F', ' '),
+        ('Test Name', 2, 'F', 'Dog'),
+        ('Test Name', 2, 'F', 1),
+    ])
+    def test_pets_put_wrong_data_bad_request(self, simple_user, api_client, breed, name, age, gender, species, pet):
+        api_client.force_authenticate(simple_user)
+        data = {
+            "name": name,
+            "age": age,
+            "gender": gender,
+            "species": species,
+            "breed": breed.id,
+            "user": simple_user.id
+        }
+        response = api_client.put(f'{self.endpoint}{pet.id}/', data=data, format='json')
+        assert response.status_code == 400
+
+    def test_pets_put_id_not_found(self, simple_user, breed, api_client):
+        api_client.force_authenticate(simple_user)
+        data = {
+            "name": "New Name",
+            "age": 3,
+            "gender": "M",
+            "species": "dog",
+            "breed": breed.id,
+            "user": simple_user.id
+        }
+        response = api_client.put(f'{self.endpoint}999999/', data=data, format='json')
+        assert response.status_code == 404
+
+    def test_pets_put_not_owned_by_requested_user_not_found(self, simple_user, pets_list, api_client, breed):
+        api_client.force_authenticate(simple_user)
+        data = {
+            "name": "New Name",
+            "age": 3,
+            "gender": "M",
+            "species": "dog",
+            "breed": breed.id,
+            "user": simple_user.id
+        }
+        response = api_client.put(f'{self.endpoint}{pets_list[2].id}/', data=data, format='json')
+        assert response.status_code == 404
+
+    def test_pets_patch_with_staff_user_success(self, staff_user, api_client, pet):
+        api_client.force_authenticate(staff_user)
+        response = api_client.patch(f'{self.endpoint}{pet.id}/', data={"name": "new name"}, format='json')
+        assert response.status_code == 200
+
+    def test_pets_patch_with_simple_user_success(self, simple_user, api_client, pet):
+        api_client.force_authenticate(simple_user)
+        response = api_client.patch(f'{self.endpoint}{pet.id}/', data={"name": "new name"}, format='json')
+        assert response.status_code == 200
+
+    def test_pets_patch_with_provider_user_permission_denied(self, provider_user, api_client, pet):
+        api_client.force_authenticate(provider_user)
+        response = api_client.patch(f'{self.endpoint}{pet.id}/', data={"name": "new name"}, format='json')
+        assert response.status_code == 403
+
+    def test_pets_patch_not_owned_by_requested_user_not_found(self, simple_user, pets_list, api_client):
+        api_client.force_authenticate(simple_user)
+        response = api_client.put(f'{self.endpoint}{pets_list[2].id}/', data={"name": "test name"}, format='json')
+        assert response.status_code == 404
+
+    def test_pets_patch_id_not_found(self, simple_user, breed, api_client):
+        api_client.force_authenticate(simple_user)
+        response = api_client.put(f'{self.endpoint}999999/', data={"name": "test name"}, format='json')
+        assert response.status_code == 404

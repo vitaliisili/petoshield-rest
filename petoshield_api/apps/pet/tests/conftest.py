@@ -43,6 +43,15 @@ def simple_user(roles):
 
 
 @pytest.fixture
+def provider_user(roles):
+    provider = get_user_model().objects.create_user(email='provider@mail.com',
+                                                    password='password1A@',
+                                                    name='Provider User',
+                                                    role=roles[2])
+    return provider
+
+
+@pytest.fixture
 def breed(db):
     breed = Breed.objects.create(
         name='German Shepherd',
@@ -63,7 +72,7 @@ def pet(breed, simple_user):
                                     species='dog',
                                     breed=breed,
                                     user=simple_user)
-    assert pet.name == 'Lenore'
+    assert custom_pet.name == 'Lenore'
     return custom_pet
 
 
