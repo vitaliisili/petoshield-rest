@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from apps.pet.models import Pet, Breed
+from apps.user.serializers import BaseUserSerializer
 
 
 class PetSerializer(serializers.ModelSerializer):
@@ -12,6 +13,18 @@ class PetSerializer(serializers.ModelSerializer):
         representation = super().to_representation(instance)
         representation['breed'] = instance.breed.name
         return representation
+
+
+class ExtendPetSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Pet
+        exclude = ['user']
+        read_only_fields = ['id']
+
+
+class PetUserCombinedSerializer(serializers.Serializer):
+    user = BaseUserSerializer()
+    pet = ExtendPetSerializer()
 
 
 class BaseBreedSerializer(serializers.ModelSerializer):

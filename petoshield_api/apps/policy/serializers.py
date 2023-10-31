@@ -36,6 +36,7 @@ class InsuranceCaseSerializer(serializers.ModelSerializer):
             representation['total_cost'] = None
         return representation
 
+
 class IncomingInvoiceSerializer(serializers.ModelSerializer):
     class Meta:
         model = IncomingInvoice

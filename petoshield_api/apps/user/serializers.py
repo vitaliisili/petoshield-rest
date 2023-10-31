@@ -1,6 +1,5 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
-
 from apps.user.models import Role
 
 
@@ -18,6 +17,7 @@ class BaseUserSerializer(serializers.ModelSerializer):
         read_only_fields = ['id']
 
     def create(self, validated_data):
+        validated_data['role'] = Role.objects.get(name='client')
         return get_user_model().objects.create_user(**validated_data)
 
 

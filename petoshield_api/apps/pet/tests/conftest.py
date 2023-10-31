@@ -43,6 +43,15 @@ def simple_user(roles):
 
 
 @pytest.fixture
+def provider_user(roles):
+    provider = get_user_model().objects.create_user(email='provider@mail.com',
+                                                    password='password1A@',
+                                                    name='Provider User',
+                                                    role=roles[2])
+    return provider
+
+
+@pytest.fixture
 def breed(db):
     breed = Breed.objects.create(
         name='German Shepherd',
@@ -53,6 +62,18 @@ def breed(db):
     )
     assert breed.name == 'German Shepherd'
     return breed
+
+
+@pytest.fixture
+def pet(breed, simple_user):
+    custom_pet = Pet.objects.create(name='Lenore',
+                                    age=5,
+                                    gender='M',
+                                    species='dog',
+                                    breed=breed,
+                                    user=simple_user)
+    assert custom_pet.name == 'Lenore'
+    return custom_pet
 
 
 @pytest.fixture
@@ -72,6 +93,13 @@ def breeds_list(db, breed):
             age_max=11,
             risk_level=6,
             species='cat'
+        ),
+        Breed.objects.create(
+            name='Arenol',
+            age_min=9,
+            age_max=11,
+            risk_level=6,
+            species='dog'
         ),
     ]
     return breeds_list
@@ -96,6 +124,14 @@ def pets_list(breed, simple_user, staff_user):
             species='dog',
             breed=breed,
             user=simple_user
+        ),
+        Pet.objects.create(
+            name='Samy',
+            age=4,
+            gender='F',
+            species='cat',
+            breed=breed,
+            user=staff_user
         ),
     ]
     return pets_list
