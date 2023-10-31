@@ -20,6 +20,11 @@ class PetViewSet(viewsets.ModelViewSet):
             request.data['user'] = request.user.id
         return super().create(request, *args, **kwargs)
 
+    def update(self, request, *args, **kwargs):
+        if not request.user.is_staff:
+            request.data['user'] = request.user.id
+        return super().update(request, *args, **kwargs)
+
     @action(methods=['post'], detail=False)
     def create_new_account(self, request, pk=None):
         serializer = PetUserCombinedSerializer(data=request.data)
