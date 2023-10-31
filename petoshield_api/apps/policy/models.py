@@ -36,7 +36,6 @@ class Policy(BaseModel):
     def __str__(self):
         return self.policy_number
 
-
     class Meta:
         verbose_name_plural = 'policies'
 
@@ -59,6 +58,7 @@ class InsuranceCase(BaseModel):
 
     def __str__(self):
         return f'{self.claim_date}-{self.status}'
+
 
 class IncomingInvoice(BaseModel):
     invoice_date = models.DateField()

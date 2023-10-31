@@ -36,7 +36,7 @@ class TestUserEndpoints:
         ('Test name', '@mail.com', 'password1A@'),
         ('Test name', 'A@b@c@example.com', 'password1A@'),
         ('Test name', 'just"not"right@example.com', 'password1A@'),
-        ('Test name', '\still\"notallowed@example.com', 'password1A@'),
+        ('Test name', '\still\"notallowed@example.com', 'password1A@'),  # noqa
         ('Test name', '"not\allowed@example.com', 'password1A@'),
         ('Test name', 'example@mail.com', 'pass'),
         ('Test name', 'example@mail.com', '1234'),
