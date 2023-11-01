@@ -12,7 +12,6 @@ from datetime import timedelta
 from pathlib import Path
 import environ
 
-
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 env = environ.Env()
@@ -40,7 +39,6 @@ THIRD_PARTY_APPS = [
     'django_filters',
 ]
 
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -62,6 +60,7 @@ REST_FRAMEWORK = {
         'rest_framework.filters.SearchFilter',
         'rest_framework.filters.OrderingFilter',
     ],
+    'DEFAULT_PAGINATION_CLASS': 'apps.core.pagination.ResultSetPagination',
 }
 
 SIMPLE_JWT = {
