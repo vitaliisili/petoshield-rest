@@ -14,6 +14,7 @@ class PetViewSet(viewsets.ModelViewSet):
     search_fields = ['$name']
     ordering_fields = ['created_at', 'name', 'gender', 'species', 'age']
     filterset_class = PetFilterSet
+    
     def create(self, request, *args, **kwargs):
         if not request.user.is_staff:
             request.data['user'] = request.user.id
@@ -51,6 +52,7 @@ class BreedViewSet(viewsets.ModelViewSet):
     search_fields = ['$name']
     ordering_fields = ['name', 'created_at']
     filterset_class = BreedFilterSet
+    
     def get_serializer_class(self):
         if self.request.user.is_staff:
             return ExtendBreedSerializer

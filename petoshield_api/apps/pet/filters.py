@@ -28,7 +28,7 @@ class PetFilterSet(filter.FilterSet):
     age = filter.NumberFilter(field_name='age',lookup_expr='exact')
     gender = filter.ChoiceFilter(choices=PET_GENDER)
     breed = filter.ChoiceFilter(choices=BREED_SPECIES)
-    user = filter.ModelChoiceFilter(queryset=User.objects.all())
+    user = filter.CharFilter(field_name='user__name', lookup_expr='icontains')
         
     class Meta:
         model = Pet

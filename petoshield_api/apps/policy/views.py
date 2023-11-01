@@ -13,6 +13,11 @@ from apps.policy.serializers import (PolicySerializer,
                                      IncomingInvoiceSerializer,
                                      UserServiceProviderSerializer,
                                      ServiceProviderSerializer)
+from apps.policy.filters import (ServiceProviderFilterSet,
+                                 PolicyFilterSet,
+                                 InsuranceCaseFilterSet,
+                                 IncomingInvoiceFilterSet,
+                                 )
 
 
 class ServiceProviderViewSet(viewsets.ModelViewSet):
@@ -21,6 +26,7 @@ class ServiceProviderViewSet(viewsets.ModelViewSet):
     permission_classes = (ProviderPermissions,)
     search_fields = ['$company_name', 'registration_number']
     ordering_fields = ['created_at']
+    filterset_class = ServiceProviderFilterSet
 
     def create(self, request, *args, **kwargs):
         serializer = UserServiceProviderSerializer(data=request.data)
@@ -42,6 +48,7 @@ class PolicyViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated, PolicyPermissions)
     search_fields = ['policy_number']
     ordering_fields = ['created_at', 'start_date', 'end_date']
+    filterset_class = PolicyFilterSet
 
     def get_queryset(self):
         if self.request.user.role.name == 'client':
@@ -56,6 +63,7 @@ class InsuranceCaseViewSet(viewsets.ModelViewSet):
     serializer_class = InsuranceCaseSerializer
     permission_classes = (IsAuthenticated, InsuranceCasePermissions)
     ordering_fields = ['created_at', 'claim_date']
+    filterset_class = InsuranceCaseFilterSet
 
     def get_queryset(self):
         if self.request.user.role.name == 'client':
@@ -74,6 +82,7 @@ class IncomingInvoiceViewSet(viewsets.ModelViewSet):
     serializer_class = IncomingInvoiceSerializer
     permission_classes = (IsAuthenticated, IncomingInvoicePermissions)
     ordering_fields = ['created_at', 'invoice_date', 'amount']
+    filterset_class = IncomingInvoiceFilterSet
 
     def get_queryset(self):
         if self.request.user.role.name == 'provider':
