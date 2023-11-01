@@ -19,15 +19,10 @@ class CustomPolicy(admin.ModelAdmin):
         'initial_limit',
         'current_limit',
         'deductible',
-        'get_pet_name',
-        'get_providers'
+        'get_pet_name'
     )
-
-    @admin.display(description = "providers")
-    def get_providers(self,obj):
-        return ", ".join([providers.company_name for providers in obj.providers.all()])
-
-    @admin.display(description='pet_name')
+    
+    @admin.display(description="Pet's name")
     def get_pet_name(self,obj):
         return obj.pet.name
 
