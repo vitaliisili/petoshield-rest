@@ -7,14 +7,14 @@ from apps.pet.models import Pet, Breed
 from apps.pet.permissions import IsStaffOrOwner
 from apps.pet.serializers import PetSerializer, BaseBreedSerializer, ExtendBreedSerializer, PetUserCombinedSerializer
 from apps.user.models import Role
-
+from apps.pet.filters import BreedFilterSet, PetFilterSet
 
 class PetViewSet(viewsets.ModelViewSet):
     serializer_class = PetSerializer
     permission_classes = (IsAuthenticated, IsStaffOrOwner)
     search_fields = ['$name']
     ordering_fields = ['created_at', 'name', 'gender', 'species', 'age']
-
+    filterset_class = PetFilterSet
     def create(self, request, *args, **kwargs):
         if not request.user.is_staff:
             request.data['user'] = request.user.id
@@ -37,7 +37,7 @@ class PetViewSet(viewsets.ModelViewSet):
         pet = serializer.validated_data['pet']
         pet['user'] = user_instance
         Pet.objects.create(**pet)
-
+        
         return Response(data=serializer.data, status=status.HTTP_201_CREATED)
 
     def get_queryset(self):
@@ -51,7 +51,7 @@ class BreedViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated, IsStaffOrOwner)
     search_fields = ['$name']
     ordering_fields = ['name', 'created_at']
-
+    filterset_class = BreedFilterSet
     def get_serializer_class(self):
         if self.request.user.is_staff:
             return ExtendBreedSerializer
