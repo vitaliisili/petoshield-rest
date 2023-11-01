@@ -31,6 +31,7 @@ class CustomInsuranceCase(admin.ModelAdmin):
         'claim_date',
         'description',
         'status',
+        'policy',
         'service_provider',
         'get_service_provider'
     )
