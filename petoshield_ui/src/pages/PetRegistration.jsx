@@ -4,6 +4,7 @@ import NavBar from "../components/NavBar";
 import Footer from "../components/Footer";
 import {useLocation} from "react-router-dom";
 import useFetch from "../utils/useFetch";
+import {API_BREEDS_URL} from "../utils/apiUrls";
 
 const PetRegistration = () => {
     const location = useLocation()
@@ -15,11 +16,12 @@ const PetRegistration = () => {
     const [petSpecies, setPetSpecies] = useState(null)
     const [petBreed, setPetBreed] = useState(null)
 
-    const [userName, setUserName] = useState(null)
+    const [firstName, setFirstName] = useState(null)
+    const [lastName, setLastName] = useState(null)
     const [userEmail, setUserEmail] = useState(null)
     const [userPassword, setUserPassword] = useState(null)
 
-    const {data:breed, isPending, error} = useFetch("http://localhost:8080")
+    const {data:breed, isPending, error} = useFetch(API_BREEDS_URL)
     console.log(breed)
 
     return (
@@ -37,7 +39,7 @@ const PetRegistration = () => {
                 <Footer/>
             </footer>
         </div>
-    );
-};
+    )
+}
 
 export default PetRegistration;
