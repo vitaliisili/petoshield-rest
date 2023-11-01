@@ -5,7 +5,7 @@ import pytest  # noqa
 class TestBreedEndpoints:
     endpoint = '/api/pet-profile/breeds/'
 
-    def test_breed_list_admin_access(self, staff_user, api_client, breeds_list):
+    def test_breed_list_admin_access_success(self, staff_user, api_client, breeds_list):
         api_client.force_authenticate(staff_user)
         response = api_client.get(self.endpoint)
         assert len(json.loads(response.content)) == len(breeds_list)
@@ -17,16 +17,17 @@ class TestBreedEndpoints:
         assert len(json.loads(response.content)) == len(breeds_list)
         assert response.status_code == 200
 
-    def test_breed_list_with_unauthenticated_user(self, api_client):
+    def test_breed_list_with_unauthenticated_user_success(self, api_client, breeds_list):
         response = api_client.get(self.endpoint)
-        assert response.status_code == 401
+        assert response.status_code == 200
+        assert len(json.loads(response.content)) == len(breeds_list)
 
-    def test_patch_breed_with_simple_user(self, breed, simple_user, api_client):
+    def test_patch_breed_with_simple_user_forbidden(self, breed, simple_user, api_client):
         api_client.force_authenticate(simple_user)
         response = api_client.patch(f'{self.endpoint}{breed.id}/', {'min_age': 20})
         assert response.status_code == 403
 
-    def test_patch_breed_with_admin_user(self, breed, staff_user, api_client):
+    def test_patch_breed_with_admin_user_success(self, breed, staff_user, api_client):
         api_client.force_authenticate(staff_user)
         response = api_client.patch(f'{self.endpoint}{breed.id}/', {'age_max': 20})
         assert response.status_code == 200
@@ -42,7 +43,7 @@ class TestBreedEndpoints:
         response = api_client.patch(f'{self.endpoint}{breed.id}/', {'min_age': 2})
         assert response.status_code == 403
 
-    def test_save_breed_with_simple_user(self, simple_user, api_client):
+    def test_save_breed_with_simple_user_forbidden(self, simple_user, api_client):
         api_client.force_authenticate(simple_user)
         response = api_client.post(f'{self.endpoint}', {"name": "Siameses cat1",
                                                         "age_min": 9,
@@ -51,7 +52,7 @@ class TestBreedEndpoints:
                                                         "species": "cat"})
         assert response.status_code == 403
 
-    def test_save_breed_with_admin_user(self, staff_user, api_client):
+    def test_save_breed_with_admin_user_success(self, staff_user, api_client):
         api_client.force_authenticate(staff_user)
         response = api_client.post(f'{self.endpoint}', {"name": "Siameses cat1",
                                                         "age_min": 9,
@@ -60,7 +61,7 @@ class TestBreedEndpoints:
                                                         "species": "cat"})
         assert response.status_code == 201
 
-    def test_save_breed_with_unauthenticated_user(self, api_client):
+    def test_save_breed_with_unauthenticated_user_permission_denied(self, api_client):
         response = api_client.post(f'{self.endpoint}', {"name": "Siameses cat1",
                                                         "age_min": 9,
                                                         "age_max": 11,

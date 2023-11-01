@@ -1,17 +1,16 @@
 from django.contrib.auth import get_user_model
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from apps.pet.models import Pet, Breed
-from apps.pet.permissions import IsStaffOrOwner
+from apps.pet.permissions import BreedPermissions, PetPermission
 from apps.pet.serializers import PetSerializer, BaseBreedSerializer, ExtendBreedSerializer, PetUserCombinedSerializer
 from apps.user.models import Role
 from apps.pet.filters import BreedFilterSet, PetFilterSet
 
 class PetViewSet(viewsets.ModelViewSet):
     serializer_class = PetSerializer
-    permission_classes = (IsAuthenticated, IsStaffOrOwner)
+    permission_classes = (PetPermission, )
     search_fields = ['$name']
     ordering_fields = ['created_at', 'name', 'gender', 'species', 'age']
     filterset_class = PetFilterSet
@@ -48,7 +47,7 @@ class PetViewSet(viewsets.ModelViewSet):
 
 class BreedViewSet(viewsets.ModelViewSet):
     queryset = Breed.objects.all()
-    permission_classes = (IsAuthenticated, IsStaffOrOwner)
+    permission_classes = (BreedPermissions, )
     search_fields = ['$name']
     ordering_fields = ['name', 'created_at']
     filterset_class = BreedFilterSet
