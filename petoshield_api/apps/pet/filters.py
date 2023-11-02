@@ -5,7 +5,7 @@ class BreedFilter(filters.FilterSet):
     class Meta:
         model = Breed
         fields = {
-            'name': ['icontains'],
+            'name': ['iexact', 'icontains'],
             'age_min': ['exact', 'gt', 'lt'],
             'age_max': ['exact', 'gt', 'lt'],
             'risk_level': ['exact', 'gt', 'lt'],
@@ -22,7 +22,7 @@ class PetFilter(filters.FilterSet):
     class Meta:
         model = Pet
         fields = {
-            'name': ['icontains'],
+            'name': ['iexact', 'icontains'],
             'age': ['exact', 'gt', 'lt'],
             'gender': ['icontains'],
             'species': ['icontains'],

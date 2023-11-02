@@ -11,7 +11,7 @@ class ServiceProviderFilter(filters.FilterSet):
     class Meta:
         model = ServiceProvider
         fields = {
-            'company_name': ['iexact','icontains'], 
+            'company_name': ['iexact', 'icontains'], 
             'registration_number': ['exact'], 
             'address': ['iexact','icontains'], 
             'iban': ['exact'],
