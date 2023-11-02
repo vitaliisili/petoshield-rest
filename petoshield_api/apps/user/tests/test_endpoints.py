@@ -285,3 +285,41 @@ class TestRoleEndpoints:
         response = api_client.post(self.endpoint, data=data, format='json')
         assert response.status_code == 400
     
+    def test_role_get_list_with_staff_user_success(self, staff_user, api_client):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(self.endpoint)
+        assert response.status_code == 200
+
+    def test_role_get_list_with_simple_user_forbidden(self, simple_user, api_client):
+        api_client.force_authenticate(simple_user)
+        response = api_client.get(self.endpoint)
+        assert response.status_code == 403
+    
+    def test_role_get_list_with_provider_user_forbidden(self, provider_user, api_client):
+        api_client.force_authenticate(provider_user)
+        response = api_client.get(self.endpoint)
+        assert response.status_code == 403
+
+    def test_role_get_list_with_non_authenticated_unauthorized(self, api_client):
+        response = api_client.get(self.endpoint)
+        assert response.status_code == 401
+    
+    def test_role_retrieve_one_with_staff_user_status_success(self, staff_user, api_client, roles):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}{roles[0].id}/')
+        assert response.status_code == 200
+
+    def test_role_retrieve_one_with_provider_user_status_forbidden(self, provider_user, api_client, roles):
+        api_client.force_authenticate(provider_user)
+        response = api_client.get(f'{self.endpoint}{roles[0].id}/')
+        assert response.status_code == 403
+    
+    def test_role_retrieve_one_with_simple_user_status_forbidden(self, simple_user, api_client, roles):
+        api_client.force_authenticate(simple_user)
+        response = api_client.get(f'{self.endpoint}{roles[0].id}/')
+        assert response.status_code == 403
+    
+    def test_role_retrieve_one_with_unauthorized_status_unauthorized(self, api_client, roles):
+        response = api_client.get(f'{self.endpoint}{roles[0].id}/')
+        assert response.status_code == 401
+
