@@ -15,6 +15,17 @@ class TestUserEndpoints:
         response = api_client.post(self.endpoint, data=data)
         assert response.status_code == 201
 
+    def test_user_save_not_unique_email(self, api_client, staff_user):
+        data = {
+            'name': 'Test name',
+            'email': staff_user.email,
+            'password': 'password1A@',
+            'role': 1
+        }
+        
+        response = api_client.post(self.endpoint, data=data)
+        assert response.status_code == 400
+
     @pytest.mark.parametrize('name, email, password', [
         ('', 'example@mail.com', 'password1A@'),
         (' ', 'example@mail.com', 'password1A@'),
@@ -260,6 +271,15 @@ class TestRoleEndpoints:
         api_client.force_authenticate(staff_user)
         data = {
             "name": name,
+            "description": "new role description"
+        }
+        response = api_client.post(self.endpoint, data=data, format='json')
+        assert response.status_code == 400
+    
+    def test_role_save_already_existing(self, staff_user, api_client, roles):
+        api_client.force_authenticate(staff_user)
+        data = {
+            "name": roles[0].name,
             "description": "new role description"
         }
         response = api_client.post(self.endpoint, data=data, format='json')
