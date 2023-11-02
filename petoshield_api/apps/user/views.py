@@ -5,10 +5,12 @@ from rest_framework import viewsets
 from rest_framework.exceptions import ValidationError as RestValidationError
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
+from rest_framework.decorators import action
 from apps.user.models import Role
 from apps.user.permissions import UserPermission
 from apps.user.serializers import BaseUserSerializer, ExtendUserSerializer, RoleSerializer
-from rest_framework.decorators import action
+from apps.user.filters import RoleFilter, UserFilter
+
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -17,6 +19,7 @@ class UserViewSet(viewsets.ModelViewSet):
     search_fields = ['$name']
     ordering_fields = ['name', 'created_at']
     ordering = ['-created_at']
+    filterset_class = UserFilter 
 
     def get_serializer_class(self):
         if self.request.user.is_staff:
@@ -44,3 +47,4 @@ class RoleViewSet(viewsets.ModelViewSet):
     search_field = ['$name']
     ordering_fields = ['name', 'created_at']
     ordering = ['-created_at']
+    filterset_class = RoleFilter
