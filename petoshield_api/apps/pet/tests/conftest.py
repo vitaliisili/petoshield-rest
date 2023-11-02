@@ -77,9 +77,9 @@ def pet(breed, simple_user):
 
 
 @pytest.fixture
-def breeds_list(db, breed):
+def breeds_list(db):
     breeds_list = [
-        breed,
+        # breed,
         Breed.objects.create(
             name='Siameses cat',
             age_min=10,

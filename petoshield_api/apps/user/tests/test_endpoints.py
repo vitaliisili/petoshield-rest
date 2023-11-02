@@ -199,3 +199,32 @@ class TestUserEndpoints:
         response = api_client.get(f'{self.endpoint}?ordering=name')
         assert response.status_code == 200
         assert json.loads(response.content)[1].get('name') == 'Example Name1'
+
+    @pytest.mark.parametrize('page, length', [
+        (1, 2), (2, 2), (3, 1)
+    ])
+    def test_user_pagination_success(self, staff_user, users_list, api_client, page, length):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}?page={page}&page_size=2')
+        assert response.status_code == 200
+        assert len(json.loads(response.content).get('results')) == length
+
+    @pytest.mark.parametrize('page', [-1, 'one', 999999, '', ' '])
+    def test_user_pagination_not_found(self, staff_user, users_list, api_client, page):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}?page={page}&page_size=2')
+        assert response.status_code == 404
+
+
+class TestRoleEndpoints:
+    endpoint = '/api/roles/'
+
+    def test_role_save_with_staff_user_success(self, staff_user, api_client):
+        api_client.force_authenticate(staff_user)
+        data = {
+            "name": "new role",
+            "description": "new role description"
+        }
+        response = api_client.post(self.endpoint, data=data, format='json')
+        assert response.status_code == 201
+        assert json.loads(response.content).get('name') == data.get('name')

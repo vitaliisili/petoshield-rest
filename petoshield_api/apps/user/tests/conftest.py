@@ -42,6 +42,15 @@ def simple_user(roles):
 
 
 @pytest.fixture
+def provider_user(roles):
+    provider = get_user_model().objects.create_user(email='provider@mail.com',
+                                                    password='password1A@',
+                                                    name='Provider User',
+                                                    role=roles[2])
+    return provider
+
+
+@pytest.fixture
 def users_list(roles, staff_user, simple_user):
     users_list = [
         staff_user,

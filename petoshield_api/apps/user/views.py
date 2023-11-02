@@ -7,7 +7,7 @@ from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 from apps.user.models import Role
 from apps.user.permissions import UserPermission
-from apps.user.serializers import BaseUserSerializer, ExtendUserSerializer
+from apps.user.serializers import BaseUserSerializer, ExtendUserSerializer, RoleSerializer
 from rest_framework.decorators import action
 
 
@@ -16,6 +16,7 @@ class UserViewSet(viewsets.ModelViewSet):
     permission_classes = (UserPermission,)
     search_fields = ['$name']
     ordering_fields = ['name', 'created_at']
+    ordering = ['-created_at']
 
     def get_serializer_class(self):
         if self.request.user.is_staff:
@@ -37,6 +38,9 @@ class UserViewSet(viewsets.ModelViewSet):
 
 
 class RoleViewSet(viewsets.ModelViewSet):
+    serializer_class = RoleSerializer
     queryset = Role.objects.all()
     permission_classes = (IsAuthenticated, IsAdminUser)
     search_field = ['$name']
+    ordering_fields = ['name', 'created_at']
+    ordering = ['-created_at']

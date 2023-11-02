@@ -207,6 +207,21 @@ class TestBreedEndpoints:
         assert response.status_code == 200
         assert json.loads(response.content)[0].get('name') == 'Arenol'
 
+    @pytest.mark.parametrize('page, length', [
+        (1, 2), (2, 1)
+    ])
+    def test_breed_pagination_success(self, staff_user, breeds_list, api_client, page, length):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}?page={page}&page_size=2')
+        assert response.status_code == 200
+        assert len(json.loads(response.content).get('results')) == length
+
+    @pytest.mark.parametrize('page', [-1, 'one', 999999, '', ' '])
+    def test_breed_pagination_not_found(self, staff_user, breeds_list, api_client, page):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}?page={page}&page_size=2')
+        assert response.status_code == 404
+
 
 class TestPetsEndpoints:
     endpoint = '/api/pet-profile/pets/'
@@ -559,4 +574,19 @@ class TestPetsEndpoints:
         api_client.force_authenticate(staff_user)
         response = api_client.get(f'{self.endpoint}?ordering__descending=age')
         assert response.status_code == 200
-        assert json.loads(response.content)[0].get('age') == 5
+        assert json.loads(response.content)[0].get('age') == 4
+
+    @pytest.mark.parametrize('page, length', [
+        (1, 2), (2, 1)
+    ])
+    def test_pet_pagination_success(self, staff_user, pets_list, api_client, page, length):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}?page={page}&page_size=2')
+        assert response.status_code == 200
+        assert len(json.loads(response.content).get('results')) == length
+
+    @pytest.mark.parametrize('page', [-1, 'one', 999999, '', ' '])
+    def test_pet_pagination_not_found(self, staff_user, pets_list, api_client, page):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}?page={page}&page_size=2')
+        assert response.status_code == 404

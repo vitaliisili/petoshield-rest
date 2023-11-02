@@ -10,9 +10,10 @@ from apps.user.models import Role
 
 class PetViewSet(viewsets.ModelViewSet):
     serializer_class = PetSerializer
-    permission_classes = (PetPermission, )
+    permission_classes = (PetPermission,)
     search_fields = ['$name']
     ordering_fields = ['created_at', 'name', 'gender', 'species', 'age']
+    ordering = ['-created_at']
 
     def create(self, request, *args, **kwargs):
         if not request.user.is_staff:
@@ -47,9 +48,10 @@ class PetViewSet(viewsets.ModelViewSet):
 
 class BreedViewSet(viewsets.ModelViewSet):
     queryset = Breed.objects.all()
-    permission_classes = (BreedPermissions, )
+    permission_classes = (BreedPermissions,)
     search_fields = ['$name']
     ordering_fields = ['name', 'created_at']
+    ordering = ['-created_at']
 
     def get_serializer_class(self):
         if self.request.user.is_staff:
