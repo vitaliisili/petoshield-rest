@@ -15,12 +15,16 @@ class BreedFilter(filters.FilterSet):
 class PetFilter(filters.FilterSet):
     breed = filters.CharFilter(field_name='breed__name', lookup_expr='icontains')
     user = filters.CharFilter(field_name='user__name', lookup_expr='icontains')
-    
+    created_at__year__exact = filters.NumberFilter(field_name='created_at__year', lookup_expr='exact')
+    created_at__year__gt = filters.NumberFilter(field_name='created_at__year', lookup_expr='gt')
+    created_at__year__lt = filters.NumberFilter(field_name='created_at__year', lookup_expr='lt')
+         
     class Meta:
         model = Pet
         fields = {
             'name': ['icontains'],
             'age': ['exact', 'gt', 'lt'],
             'gender': ['icontains'],
-            'species': ['icontains']
+            'species': ['icontains'],
+            'created_at': ['exact', 'gt', 'lt']
         }
