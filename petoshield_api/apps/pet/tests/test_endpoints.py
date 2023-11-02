@@ -221,7 +221,12 @@ class TestBreedEndpoints:
         api_client.force_authenticate(staff_user)
         response = api_client.get(f'{self.endpoint}?page={page}&page_size=2')
         assert response.status_code == 404
-
+        
+    @pytest.mark.parametrize('name', ['German Shepherd', 'german shepherd', 'german', 'sheph'])
+    def test_breed_filter_by_name_success(self, staff_user, breeds_list, api_client, name):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}?name={name}')
+        assert response.status_code == 200        
 
 class TestPetsEndpoints:
     endpoint = '/api/pet-profile/pets/'
