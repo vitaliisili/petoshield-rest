@@ -5,7 +5,9 @@ from rest_framework.response import Response
 from apps.pet.models import Pet, Breed
 from apps.pet.permissions import BreedPermissions, PetPermission
 from apps.pet.serializers import PetSerializer, BaseBreedSerializer, ExtendBreedSerializer, PetUserCombinedSerializer
+from apps.pet.filters import BreedFilter, PetFilter
 from apps.user.models import Role
+
 
 
 class PetViewSet(viewsets.ModelViewSet):
@@ -14,6 +16,7 @@ class PetViewSet(viewsets.ModelViewSet):
     search_fields = ['$name']
     ordering_fields = ['created_at', 'name', 'gender', 'species', 'age']
     ordering = ['-created_at']
+    filterset_class = PetFilter
 
     def create(self, request, *args, **kwargs):
         if not request.user.is_staff:
@@ -52,6 +55,7 @@ class BreedViewSet(viewsets.ModelViewSet):
     search_fields = ['$name']
     ordering_fields = ['name', 'created_at']
     ordering = ['-created_at']
+    filterset_class = BreedFilter
 
     def get_serializer_class(self):
         if self.request.user.is_staff:
