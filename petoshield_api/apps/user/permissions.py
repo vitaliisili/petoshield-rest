@@ -8,9 +8,7 @@ class UserPermission(permissions.BasePermission):
             return request.user.is_authenticated and request.user.is_staff
         elif view.action == 'create':
             return True
-        elif view.action in ['retrieve', 'update', 'partial_update', 'destroy']:
-            return True
-        elif view.action == 'me':
+        elif view.action in ['retrieve', 'update', 'partial_update', 'destroy', 'me']:
             return request.user.is_authenticated
         else:
             return False

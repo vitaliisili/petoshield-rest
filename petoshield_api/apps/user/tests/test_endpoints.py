@@ -228,3 +228,40 @@ class TestRoleEndpoints:
         response = api_client.post(self.endpoint, data=data, format='json')
         assert response.status_code == 201
         assert json.loads(response.content).get('name') == data.get('name')
+    
+    def test_role_save_with_simple_user_forbidden(self, simple_user, api_client):
+        api_client.force_authenticate(simple_user)
+        data = {
+            "name": "new role",
+            "description": "new role description"
+        }
+        response = api_client.post(self.endpoint, data=data, format='json')
+        assert response.status_code == 403
+    
+    def test_role_save_with_provider_user_forbidden(self, provider_user, api_client):
+        api_client.force_authenticate(provider_user)
+        data = {
+            "name": "new role",
+            "description": "new role description"
+        }
+        response = api_client.post(self.endpoint, data=data, format='json')
+        assert response.status_code == 403
+
+    def test_role_save_with_anonymous_user_unauthenticated(self, api_client):
+        data = {
+            "name": "new role",
+            "description": "new role description"
+        }
+        response = api_client.post(self.endpoint, data=data, format='json')
+        assert response.status_code == 401
+    
+    @pytest.mark.parametrize('name', ['', ' '])
+    def test_role_save_with_wrong_data_bad_request(self, staff_user, api_client, name):
+        api_client.force_authenticate(staff_user)
+        data = {
+            "name": name,
+            "description": "new role description"
+        }
+        response = api_client.post(self.endpoint, data=data, format='json')
+        assert response.status_code == 400
+    
