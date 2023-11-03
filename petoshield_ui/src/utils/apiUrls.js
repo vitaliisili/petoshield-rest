@@ -7,6 +7,7 @@ export const API_USER_SELF = `${HOST}/users/me`
 export const API_USER_URL = `${HOST}/users/`
 export const API_ROLES_URL = `${HOST}/roles/`
 export const API_PETS_URL = `${HOST}/pet-profile/pets/`
+export const API_PETS_CRETE_WITH_USER_URL = `${HOST}/pet-profile/pets/create_new_account/`
 export const API_BREEDS_URL = `${HOST}/pet-profile/breeds/`
 export const API_SERVICE_PROVIDERS_URL = `${HOST}/insurance/service-providers/`
 export const API_POLICIES_URL = `${HOST}/insurance/policies/`
