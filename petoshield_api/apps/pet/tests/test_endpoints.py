@@ -221,8 +221,128 @@ class TestBreedEndpoints:
         api_client.force_authenticate(staff_user)
         response = api_client.get(f'{self.endpoint}?page={page}&page_size=2')
         assert response.status_code == 404
+        
 
+    @pytest.mark.parametrize('name, length', [('Arenol',1), ('arenol',0), ('reno',0), (" ", 3), (12, 0)])
+    def test_breed_filter_by_name__exact_success(self, staff_user, breeds_list, api_client, name, length):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}?name={name}')
+        assert response.status_code == 200   
+        assert len(json.loads(response.content)) == length
 
+    @pytest.mark.parametrize('name, length', [('Arenol',1), ('arenol',1), ('reno',1), (" ", 3), (12, 0)])
+    def test_breed_filter_by_name__icontains_success(self, staff_user, breeds_list, api_client, name, length):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}?name__icontains={name}')
+        assert response.status_code == 200   
+        assert len(json.loads(response.content)) == length
+        
+    def test_breed_filter_by_age_min_exact_success(self, staff_user, breeds_list, api_client):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}?age_min={9}')
+        assert response.status_code == 200      
+        assert len(json.loads(response.content)) == 2
+        
+    def test_breed_filter_by_age_min_exact_bad_request(self, staff_user, breeds_list, api_client):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}?age_min=nine')
+        assert response.status_code == 400      
+
+    def test_breed_filter_by_age_min_gt_success(self, staff_user, breeds_list, api_client):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}?age_min__gt={9}')
+        assert response.status_code == 200      
+        assert len(json.loads(response.content)) == 1
+
+    def test_breed_filter_by_age_min_gt_bad_request(self, staff_user, breeds_list, api_client):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}?age_min__gt=nine')
+        assert response.status_code == 400 
+    
+    def test_breed_filter_by_age_min_lt_success(self, staff_user, breeds_list, api_client):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}?age_min__lt={10}')
+        assert response.status_code == 200      
+        assert len(json.loads(response.content)) == 2
+    
+    def test_breed_filter_by_age_min_lt_bad_request(self, staff_user, breeds_list, api_client):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}?age_min__lt=ten')
+        assert response.status_code == 400      
+  
+    def test_breed_filter_by_age_max_exact_success(self, staff_user, breeds_list, api_client):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}?age_max={13}')
+        assert response.status_code == 200      
+        assert len(json.loads(response.content)) == 1
+
+    def test_breed_filter_by_age_max_exact_bad_request(self, staff_user, breeds_list, api_client):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}?age_max=ten')
+        assert response.status_code == 400      
+
+    def test_breed_filter_by_age_max_gt_success(self, staff_user, breeds_list, api_client):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}?age_max__gt={11}')
+        assert response.status_code == 200      
+        assert len(json.loads(response.content)) == 1
+
+    def test_breed_filter_by_age_max_gt_bad_request(self, staff_user, breeds_list, api_client):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}?age_max__gt=eleven')
+        assert response.status_code == 400      
+        
+    def test_breed_filter_by_age_max_lt_success(self, staff_user, breeds_list, api_client):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}?age_max__lt={13}')
+        assert response.status_code == 200      
+        assert len(json.loads(response.content)) == 2
+        
+    def test_breed_filter_by_age_max_lt_bad_request(self, staff_user, breeds_list, api_client):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}?age_max__lt=thirteen')
+        assert response.status_code == 400      
+        
+    def test_breed_filter_by_risk_level_exact_success(self, staff_user, breeds_list, api_client):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}?risk_level={4}')
+        assert response.status_code == 200      
+        assert len(json.loads(response.content)) == 1
+        
+    def test_breed_filter_by_risk_level_exact_bad_request(self, staff_user, breeds_list, api_client):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}?risk_level=four')
+        assert response.status_code == 400      
+
+    def test_breed_filter_by_risk_level_gt_success(self, staff_user, breeds_list, api_client):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}?risk_level__gt={4}')
+        assert response.status_code == 200      
+        assert len(json.loads(response.content)) == 2
+        
+    def test_breed_filter_by_risk_level_gt_bad_request(self, staff_user, breeds_list, api_client):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}?risk_level__gt=four')
+        assert response.status_code == 400      
+        
+    def test_breed_filter_by_risk_level_lt_success(self, staff_user, breeds_list, api_client):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}?risk_level__lt={6}')
+        assert response.status_code == 200      
+        assert len(json.loads(response.content)) == 1
+        
+    def test_breed_filter_by_risk_level_lt_bad_request(self, staff_user, breeds_list, api_client):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}?risk_level__lt=six')
+        assert response.status_code == 400      
+         
+    @pytest.mark.parametrize('species, length', [('cat', 2), ('CAT', 2), ('c', 2), (' ', 3), (1, 0) ])
+    def test_breed_filter_by_species_success(self, staff_user, breeds_list, api_client, species, length):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}?species__icontains={species}')
+        assert response.status_code == 200      
+        assert len(json.loads(response.content)) == length
+        
 class TestPetsEndpoints:
     endpoint = '/api/pet-profile/pets/'
 
@@ -590,3 +710,24 @@ class TestPetsEndpoints:
         api_client.force_authenticate(staff_user)
         response = api_client.get(f'{self.endpoint}?page={page}&page_size=2')
         assert response.status_code == 404
+
+    @pytest.mark.parametrize('name, length', [('Jack',1), ('Ja',0), ('jack',0), ('ck',0)])
+    def test_pet_filter_by_name_exact_success(self, staff_user, pets_list, api_client, name, length):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}?name={name}')
+        assert response.status_code == 200 
+        assert len(json.loads(response.content)) == length
+        
+    @pytest.mark.parametrize('name, length', [('Jack',1), ('Ja',1), ('jack',1), ('ck',1)])
+    def test_pet_filter_by_name_icontains_success(self, staff_user, pets_list, api_client, name, length):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}?name__icontains={name}')
+        assert response.status_code == 200 
+        assert len(json.loads(response.content)) == length
+        
+        
+    def test_pet_filter_by_breed_success(self, staff_user, pets_list, api_client):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}?breed__icontains=Cat')
+        assert response.status_code == 200 
+        assert len(json.loads(response.content)) == 3

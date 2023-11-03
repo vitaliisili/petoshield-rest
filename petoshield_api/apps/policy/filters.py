@@ -11,9 +11,9 @@ class ServiceProviderFilter(filters.FilterSet):
     class Meta:
         model = ServiceProvider
         fields = {
-            'company_name': ['iexact', 'icontains'], 
+            'company_name': ['exact', 'icontains'], 
             'registration_number': ['exact'], 
-            'address': ['iexact','icontains'], 
+            'address': ['exact','icontains'], 
             'iban': ['exact'],
             'created_at': ['exact', 'gt', 'lt']
             }
@@ -31,7 +31,7 @@ class PolicyFilter(filters.FilterSet):
             'policy_number': ['exact'],
             'start_date': ['exact','gt','lt'],
             'end_date': ['exact','gt','lt'],
-            'status': ['icontains'],
+            'status': ['exact', 'icontains'],
             'deductible': ['exact','gt','lt'],
             'created_at': ['exact', 'gt', 'lt']
             }
@@ -47,8 +47,8 @@ class InsuranceCaseFilter(filters.FilterSet):
     class Meta:
         model = InsuranceCase
         fields = {
-            'claim_date': ['exact','gt','lt'], 
-            'status': ['icontains'], 
+            'claim_date': ['exact', 'gt', 'lt'], 
+            'status': ['exact', 'icontains'], 
             'created_at': ['exact', 'gt', 'lt']
                   }
 
