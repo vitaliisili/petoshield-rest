@@ -15,6 +15,17 @@ class TestUserEndpoints:
         response = api_client.post(self.endpoint, data=data)
         assert response.status_code == 201
 
+    def test_user_save_not_unique_email(self, api_client, staff_user):
+        data = {
+            'name': 'Test name',
+            'email': staff_user.email,
+            'password': 'password1A@',
+            'role': 1
+        }
+        
+        response = api_client.post(self.endpoint, data=data)
+        assert response.status_code == 400
+
     @pytest.mark.parametrize('name, email, password', [
         ('', 'example@mail.com', 'password1A@'),
         (' ', 'example@mail.com', 'password1A@'),
@@ -228,3 +239,87 @@ class TestRoleEndpoints:
         response = api_client.post(self.endpoint, data=data, format='json')
         assert response.status_code == 201
         assert json.loads(response.content).get('name') == data.get('name')
+    
+    def test_role_save_with_simple_user_forbidden(self, simple_user, api_client):
+        api_client.force_authenticate(simple_user)
+        data = {
+            "name": "new role",
+            "description": "new role description"
+        }
+        response = api_client.post(self.endpoint, data=data, format='json')
+        assert response.status_code == 403
+    
+    def test_role_save_with_provider_user_forbidden(self, provider_user, api_client):
+        api_client.force_authenticate(provider_user)
+        data = {
+            "name": "new role",
+            "description": "new role description"
+        }
+        response = api_client.post(self.endpoint, data=data, format='json')
+        assert response.status_code == 403
+
+    def test_role_save_with_anonymous_user_unauthenticated(self, api_client):
+        data = {
+            "name": "new role",
+            "description": "new role description"
+        }
+        response = api_client.post(self.endpoint, data=data, format='json')
+        assert response.status_code == 401
+    
+    @pytest.mark.parametrize('name', ['', ' '])
+    def test_role_save_with_wrong_data_bad_request(self, staff_user, api_client, name):
+        api_client.force_authenticate(staff_user)
+        data = {
+            "name": name,
+            "description": "new role description"
+        }
+        response = api_client.post(self.endpoint, data=data, format='json')
+        assert response.status_code == 400
+    
+    def test_role_save_already_existing(self, staff_user, api_client, roles):
+        api_client.force_authenticate(staff_user)
+        data = {
+            "name": roles[0].name,
+            "description": "new role description"
+        }
+        response = api_client.post(self.endpoint, data=data, format='json')
+        assert response.status_code == 400
+    
+    def test_role_get_list_with_staff_user_success(self, staff_user, api_client):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(self.endpoint)
+        assert response.status_code == 200
+
+    def test_role_get_list_with_simple_user_forbidden(self, simple_user, api_client):
+        api_client.force_authenticate(simple_user)
+        response = api_client.get(self.endpoint)
+        assert response.status_code == 403
+    
+    def test_role_get_list_with_provider_user_forbidden(self, provider_user, api_client):
+        api_client.force_authenticate(provider_user)
+        response = api_client.get(self.endpoint)
+        assert response.status_code == 403
+
+    def test_role_get_list_with_non_authenticated_unauthorized(self, api_client):
+        response = api_client.get(self.endpoint)
+        assert response.status_code == 401
+    
+    def test_role_retrieve_one_with_staff_user_status_success(self, staff_user, api_client, roles):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}{roles[0].id}/')
+        assert response.status_code == 200
+
+    def test_role_retrieve_one_with_provider_user_status_forbidden(self, provider_user, api_client, roles):
+        api_client.force_authenticate(provider_user)
+        response = api_client.get(f'{self.endpoint}{roles[0].id}/')
+        assert response.status_code == 403
+    
+    def test_role_retrieve_one_with_simple_user_status_forbidden(self, simple_user, api_client, roles):
+        api_client.force_authenticate(simple_user)
+        response = api_client.get(f'{self.endpoint}{roles[0].id}/')
+        assert response.status_code == 403
+    
+    def test_role_retrieve_one_with_unauthorized_status_unauthorized(self, api_client, roles):
+        response = api_client.get(f'{self.endpoint}{roles[0].id}/')
+        assert response.status_code == 401
+
