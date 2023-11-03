@@ -22,8 +22,9 @@ module.exports = {
       'dark': '#282828',
       'dark-grey': '#313131',
       'nobel': '#b7b7b7',
+      'nobel-dark': '#989898',
     }
   },
-  plugins: [],
+  plugins: [require('@tailwindcss/forms')],
 }
 
