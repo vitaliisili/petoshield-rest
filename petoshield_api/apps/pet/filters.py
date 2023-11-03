@@ -9,7 +9,7 @@ class BreedFilter(filters.FilterSet):
             'age_min': ['exact', 'gt', 'lt'],
             'age_max': ['exact', 'gt', 'lt'],
             'risk_level': ['exact', 'gt', 'lt'],
-            'species': ['icontains']
+            'species': ['exact', 'icontains']
         }
         
 class PetFilter(filters.FilterSet):
@@ -25,6 +25,6 @@ class PetFilter(filters.FilterSet):
             'name': ['exact', 'icontains'],
             'age': ['exact', 'gt', 'lt'],
             'gender': ['icontains'],
-            'species': ['icontains'],
+            'species': ['exact', 'icontains'],
             'created_at': ['exact', 'gt', 'lt']
         }
