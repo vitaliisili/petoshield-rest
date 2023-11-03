@@ -322,4 +322,20 @@ class TestRoleEndpoints:
     def test_role_retrieve_one_with_unauthorized_status_unauthorized(self, api_client, roles):
         response = api_client.get(f'{self.endpoint}{roles[0].id}/')
         assert response.status_code == 401
+    
+    @pytest.mark.parametrize("id", ["", " ", -1, "acd", 999999])
+    def test_role_retrieve_with_wrong_id_not_found(self, staff_user, api_client, roles, id):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}{id}/')
+        assert response.status_code == 404
+    
+    def test_role_update_with_staff_user_success(self, staff_user, api_client, roles):
+        api_client.force_authenticate(staff_user)
+        data = {
+            "name": "new_name",
+            "description": "",
+        }
+        response = api_client.put(f'{self.endpoint}{roles[0].id}/', data=data, format="json")
+        assert response.status_code == 200
+        assert json.loads(response.content).get("name") == data.get("name")
 
