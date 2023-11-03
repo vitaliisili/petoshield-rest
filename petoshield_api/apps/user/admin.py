@@ -4,22 +4,24 @@ from apps.user.models import User, Role
 
 class CustomUser(admin.ModelAdmin):
     list_display = (
-        'email',
-        'name',
-        'is_active',
-        'get_role',
-        'is_staff',
-        'created_at',
+        'email', 
+        'name', 
+        'is_active', 
+        'get_role', 
+        'is_staff', 
+        'created_at', 
         'updated_at'
     )
+    
     @admin.display(description='Role')
     def get_role(self,obj):
         return obj.role.name
         
 class CustomRole(admin.ModelAdmin):
     list_display=(
-        'name',
+        'name', 
         'description'
     )
+    
 admin.site.register(Role, CustomRole)
 admin.site.register(User, CustomUser)
