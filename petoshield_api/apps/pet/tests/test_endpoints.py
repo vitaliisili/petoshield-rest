@@ -713,6 +713,9 @@ class TestPetsEndpoints:
 
     @pytest.mark.parametrize('name, length', [('Jack',1), ('Ja',0), ('jack',0), ('ck',0)])
     def test_pet_filter_by_name_exact_success(self, staff_user, pets_list, api_client, name, length):
+
+    @pytest.mark.parametrize('name, length', [('Jack',1), ('Ja',0), ('jack',0), ('ck',0)])
+    def test_pet_filter_by_name_exact_success(self, staff_user, pets_list, api_client, name, length):
         api_client.force_authenticate(staff_user)
         response = api_client.get(f'{self.endpoint}?name={name}')
         assert response.status_code == 200 
@@ -725,8 +728,16 @@ class TestPetsEndpoints:
         assert response.status_code == 200 
         assert len(json.loads(response.content)) == length
         
+    @pytest.mark.parametrize('name, length', [('Jack',1), ('Ja',1), ('jack',1), ('ck',1)])
+    def test_pet_filter_by_name_icontains_success(self, staff_user, pets_list, api_client, name, length):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}?name__icontains={name}')
+        assert response.status_code == 200 
+        assert len(json.loads(response.content)) == length
+        
     def test_pet_filter_by_breed_success(self, staff_user, pets_list, api_client):
         api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}?name=German Shepherd')
         response = api_client.get(f'{self.endpoint}?name=German Shepherd')
         assert response.status_code == 200 
         assert len(json.loads(response.content)) == 3
