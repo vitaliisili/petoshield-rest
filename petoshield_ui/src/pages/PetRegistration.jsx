@@ -3,13 +3,14 @@ import HelpModal from "../components/HelpModal";
 import NavBar from "../components/NavBar";
 import Footer from "../components/Footer";
 import {Link, useLocation, useNavigate} from "react-router-dom";
-import {API_BREEDS_URL, API_PETS_CRETE_WITH_USER_URL} from "../utils/apiUrls";
+import {API_BREEDS_URL, API_PETS_CREATE_WITH_USER_URL} from "../utils/apiUrls";
 import axios from "axios";
 import {getCookie} from "../utils/cookiesUtils";
+import {toast, ToastContainer} from "react-toastify";
 
 const PetRegistration = () => {
-    const navigate = useNavigate()
     const location = useLocation()
+    const navigate = useNavigate()
 
     const [petName, setPetName] = useState('')
     const [petAge, setPetAge] = useState('')
@@ -27,50 +28,69 @@ const PetRegistration = () => {
 
     useEffect(() => {
         if (location.state) {
-            setPetSpecies(location.state)
+            setPetSpecies(location.state.type)
+            console.log(petSpecies)
         } else {
             navigate('/price')
         }
 
-        axios.get(`${API_BREEDS_URL}?species=${petSpecies}`, {
-            headers: {
-                "Authorization": `bearer${getCookie('accessToken')}`
-            }
-        }).then(response => {
-            if (response.status === 200) {
-                setBreeds(response.data)
-            }
-        }).catch(error => {
-            console.log(error)
-        })
-    }, []);
+
+        if(petSpecies) {
+            axios.get(`${API_BREEDS_URL}?species=${petSpecies}`, {
+                headers: {
+                    "Authorization": `bearer${getCookie('accessToken')}`
+                }
+            }).then(response => {
+                if (response.status === 200) {
+                    setBreeds(response.data)
+                }
+            }).catch(error => {
+                console.log(error)
+            })
+        }
+    }, [petSpecies]);
 
     const onSubmitHandler = () => {
-        axios.post(API_PETS_CRETE_WITH_USER_URL, {
+        const id = toast.loading('Please Wait...')
+        if (userPassword !== userVerifyPassword){
+            toast.update(id, {render: 'Password and verify password not equals', type: "error", isLoading: false, autoClose: 10000})
+            return
+        }
+
+        axios.post(API_PETS_CREATE_WITH_USER_URL, {
+                pet: {
+                    "name": petName,
+                    "age": petAge,
+                    "gender": petGender,
+                    "species": petSpecies,
+                    "breed": petBreed
+                },
+                user: {
+                    "email": userEmail,
+                    "name": `${firstName} ${lastName}`,
+                    "password": userPassword
+                },
             headers: {
                 "Authorization": `bearer${getCookie('accessToken')}`,
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
-            },
-            data : {
-                "pet": {
-                    // TODO: add pet data
-                },
-                "user": {
-                    // TODO: add user data
-                }
             }
+
         }).then(response => {
             if (response.status === 201){
-                console.log('ok') // TODO: add modals
+                setTimeout(()=> {
+                    toast.update(id, {render: 'Success', type: "success", isLoading: false, autoClose: 500})
+                    console.log(response.data)  // TODO: login user then redirect user to pay for policy
+                }, 1000)
             }
         }).catch(error => {
-            console.log(error) // TODO: add modals
+            toast.update(id, {render: error.response.data.errors[0].detail, type: "error", isLoading: false, autoClose: 10000})
         })
     }
 
     return (
         <div className='text-black flex flex-col h-screen'>
+            <ToastContainer/>
             <HelpModal/>
             <NavBar/>
 
@@ -154,23 +174,19 @@ const PetRegistration = () => {
                                        type="password"
                                        className='outline-0 p-3 border border-gallery rounded-md focus:ring-1 focus:ring-rose shadow-sm focus:border-rose'
                                        placeholder='Password'/>
-                                <input onChange={(e) => setUserVerifyPassword(e.target.value)}
-                                       value={userVerifyPassword} type="password"
+                                <input onChange={(e) => setUserVerifyPassword(e.target.value)} value={userVerifyPassword} type="password"
                                        className='outline-0 p-3 border border-gallery rounded-md focus:ring-1 focus:ring-rose shadow-sm focus:border-rose'
                                        placeholder='Verify Password'/>
                             </div>
                         </div>
                     </div>
                     <div className='text-sm text-center text-nobel-dark'>
-                        To click button bellow you are agree with <Link className='text-rose'
-                                                                        to="#">Terms</Link> and <Link
+                        To click button bellow you are agree with <Link className='text-rose' to="#">Terms</Link> and <Link
                         className='text-rose' to="#">Privacy Policy</Link>
                     </div>
                     <button onClick={onSubmitHandler}
-                            className='w-96 mt-5 self-center rounded-md bg-rose hover:bg-rose-dark font-bold transition-all duration-300 shadow-[rgba(255,0,131,0.5)_0px_10px_40px_-10px] p-3.5 text-white'>GET
-                        YOUR QUOTE
+                            className='w-96 mt-5 self-center rounded-md bg-rose hover:bg-rose-dark font-bold transition-all duration-300 shadow-[rgba(255,0,131,0.5)_0px_10px_40px_-10px] p-3.5 text-white'>GET YOUR QUOTE
                     </button>
-
                 </div>
 
 
@@ -183,4 +199,4 @@ const PetRegistration = () => {
     )
 }
 
-export default PetRegistration;
+export default PetRegistration
