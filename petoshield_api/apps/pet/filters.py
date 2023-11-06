@@ -24,7 +24,7 @@ class PetFilter(filters.FilterSet):
         fields = {
             'name': ['exact', 'icontains'],
             'age': ['exact', 'gt', 'lt'],
-            'gender': ['icontains'],
+            'gender': ['exact'],
             'species': ['exact', 'icontains'],
             'created_at': ['exact', 'gt', 'lt']
         }

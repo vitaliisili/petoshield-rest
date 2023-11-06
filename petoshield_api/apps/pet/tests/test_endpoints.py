@@ -711,23 +711,134 @@ class TestPetsEndpoints:
         response = api_client.get(f'{self.endpoint}?page={page}&page_size=2')
         assert response.status_code == 404
 
+# test PetFilter
     @pytest.mark.parametrize('name, length', [('Jack',1), ('Ja',0), ('jack',0), ('ck',0)])
     def test_pet_filter_by_name_exact_success(self, staff_user, pets_list, api_client, name, length):
         api_client.force_authenticate(staff_user)
         response = api_client.get(f'{self.endpoint}?name={name}')
         assert response.status_code == 200 
         assert len(json.loads(response.content)) == length
-        
+    
+    # test  filter by pet's name
     @pytest.mark.parametrize('name, length', [('Jack',1), ('Ja',1), ('jack',1), ('ck',1)])
     def test_pet_filter_by_name_icontains_success(self, staff_user, pets_list, api_client, name, length):
         api_client.force_authenticate(staff_user)
         response = api_client.get(f'{self.endpoint}?name__icontains={name}')
         assert response.status_code == 200 
         assert len(json.loads(response.content)) == length
-        
-        
-    def test_pet_filter_by_breed_success(self, staff_user, pets_list, api_client):
+    
+    # test filter by breed   
+    def test_pet_filter_by_breed_icontains_success(self, staff_user, pets_list, api_client):
         api_client.force_authenticate(staff_user)
-        response = api_client.get(f'{self.endpoint}?breed__icontains=Cat')
+        response = api_client.get(f'{self.endpoint}?breed=lalal')
+        assert response.status_code == 200 
+        assert len(json.loads(response.content)) == 0
+        
+    @pytest.mark.parametrize('breed_name, length', [('German Shepherd',3), ('Ja',0), (' ',3), ('',3)])
+    def test_pet_filter_by_breed_exact_success(self, staff_user, pets_list, api_client, breed_name, length):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}?breed={breed_name}')
+        assert response.status_code == 200 
+        assert len(json.loads(response.content)) == length
+    
+    # test filter by user_name      
+    @pytest.mark.parametrize('user_name, length', [('Simple User',2), ('Simple',2), (' ',3), ('',3), ('123ffa', 0)])
+    def test_pet_filter_by_user_exact_success(self, staff_user, pets_list, api_client, user_name, length):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}?user={user_name}')
+        assert response.status_code == 200 
+        assert len(json.loads(response.content)) == length
+    
+    # test filter by created_at  
+    def test_pet_filter_created_at_year_exact_success(self, staff_user, pets_list, api_client):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}?created_at__year__exact=2023')
         assert response.status_code == 200 
         assert len(json.loads(response.content)) == 3
+        
+    def test_pet_filter_created_at_year_exact_bad_request(self, staff_user, pets_list, api_client):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}?created_at__year__exact=2023-10-20')
+        assert response.status_code == 400 
+        
+    @pytest.mark.parametrize('year, length', [(2022, 3), (2023, 0), ('2022', 3)])   
+    def test_pet_filter_created_at_year_gt_success(self, staff_user, pets_list, api_client, year, length):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}?created_at__year__gt={year}')
+        assert response.status_code == 200 
+        assert len(json.loads(response.content)) == length
+        
+    def test_pet_filter_created_at_year_gt_bad_request(self, staff_user, pets_list, api_client):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}?created_at__year__gt=2023-10-20')
+        assert response.status_code == 400 
+        
+    @pytest.mark.parametrize('year, length', [(2022, 0), (2024, 3), ('2022', 0)])   
+    def test_pet_filter_created_at_year_lt_success(self, staff_user, pets_list, api_client, year, length):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}?created_at__year__lt={year}')
+        assert response.status_code == 200 
+        assert len(json.loads(response.content)) == length
+        
+    def test_pet_filter_created_at_year_lt_bad_request(self, staff_user, pets_list, api_client):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}?created_at__year__lt=2023-10-20')
+        assert response.status_code == 400 
+        
+    def test_pet_filter_created_at_bad_request(self, staff_user, pets_list, api_client):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}?created_at=2023')
+        assert response.status_code == 400 
+        
+    def test_pet_filter_created_at_bad_success(self, staff_user, pets_list, api_client):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}?created_at=2023-10-10')
+        assert response.status_code == 200
+        
+    # test filter by species
+    @pytest.mark.parametrize('species, length', [('cat',1), ('CAT',0), ('dog',2), ('DOG',0)])
+    def test_pet_filter_by_species_exact_success(self, staff_user, pets_list, api_client,species,length):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}?species={species}')
+        assert response.status_code == 200 
+        assert len(json.loads(response.content)) == length
+        
+    @pytest.mark.parametrize('species, length', [('cat',1), ('CAT',1), ('dog',2), ('DOG',2)])
+    def test_pet_filter_by_species_exact_success(self, staff_user, pets_list, api_client,species,length):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}?species__icontains={species}')
+        assert response.status_code == 200 
+        assert len(json.loads(response.content)) == length
+        
+    def test_pet_filter_by_species_bad_request(self, staff_user, pets_list, api_client):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}?species=bird')
+        assert response.status_code == 400 
+        
+    
+    # test filter by gender
+    
+    @pytest.mark.parametrize('gender, length', [('F',1), ('M',2)])
+    def test_pet_filter_by_gender_exact_success(self, staff_user, pets_list, api_client,gender,length):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}?gender={gender}')
+        assert response.status_code == 200 
+        assert len(json.loads(response.content)) == length
+        
+    def test_pet_filter_by_gender_bad_request(self, staff_user, pets_list, api_client):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}?gender=female')
+        assert response.status_code == 400 
+    
+    # test filter by age
+    @pytest.mark.parametrize('age, length', [('3',1), ('4',1),('5',1), (999,0)])
+    def test_pet_filter_by_age_exact_success(self, staff_user, pets_list, api_client,age,length):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}?age={age}')
+        assert response.status_code == 200 
+        assert len(json.loads(response.content)) == length
+        
+    def test_pet_filter_by_age_bad_request(self, staff_user, pets_list, api_client):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}?age=nine')
+        assert response.status_code == 400 
