@@ -2,8 +2,24 @@
 
 from apps.pet.models import Pet
 
+# Mock data for testing
+
+# class Breed():
+#     def __init__(self) -> None:
+#         self.age_min = 12
+#         self.age_max = 18
+#         self.risk_level = 4
+# class Pet():
+#     def __init__(self) -> None:
+#         self.name = 'Snoopy'
+#         self.age = 5
+#         self.gender = 'M'
+#         self.species = 'dog'
+#         self.breed = Breed()
+
+
 def get_policy_price(pet: Pet):
-    BASE_PRICE = 10 # base monthly price of the policy
+    BASE_PRICE = 10 # base monthly price of the policy - 10€ per month
     
     # cat lifespan 12-18
     # dog lifespan 10-13
@@ -18,7 +34,7 @@ def get_policy_price(pet: Pet):
     
     # calcalate gender quotient
     if pet.gender == 'M':
-        q_gender = 1.1 
+        q_gender = 1.1
     else:
         q_gender = 1.0
     
@@ -39,7 +55,15 @@ def get_policy_price(pet: Pet):
         q_risk = 1
     elif pet.breed < 8:
         q_risk = 1.2
-    elif:
+    else:
         q_risk = 1.4
 
-    return BASE_PRICE * q_species * q_gender * q_age * q_risk
+    return f'{(BASE_PRICE * q_species * q_gender * q_age * q_risk):.2f}'
+
+
+# For testing purposes
+
+# if __name__ == "__main__":
+#     pet = Pet()
+    
+#     print(get_policy_price(pet))
