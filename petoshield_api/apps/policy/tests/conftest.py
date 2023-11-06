@@ -57,7 +57,7 @@ def service_provider(simple_user):
     provider = ServiceProvider.objects.create(
         company_name = 'Service Provider 1',
         phone = '+49856547725',
-        registration_number = '56899-5655-58',
+        registration_number = '56899-5655-581',
         address = 'Musterstrasse3, 34332 MusterLand',
         iban = 'DE5689562365002354',
         user = simple_user
@@ -71,7 +71,7 @@ def service_provider_list(service_provider, simple_user):
         ServiceProvider.objects.create(
             company_name = 'Service Provider 2',
             phone = '+492222222222',
-            registration_number = '56899-5655-58',
+            registration_number = '56899-5655-582',
             address = 'Musterstrasse2, 34332 MusterLand2',
             iban = 'DE5689562365002222',
             user = simple_user
@@ -79,7 +79,7 @@ def service_provider_list(service_provider, simple_user):
         ServiceProvider.objects.create(
             company_name = 'Service Provider 3',
             phone = '+493333333333',
-            registration_number = '56899-5655-58',
+            registration_number = '56899-5655-583',
             address = 'Musterstrasse3, 34332 MusterLand3',
             iban = 'DE5689562365003333',
             user = simple_user
@@ -87,7 +87,7 @@ def service_provider_list(service_provider, simple_user):
         ServiceProvider.objects.create(
             company_name = 'Service Provider 4',
             phone = '+49444444444',
-            registration_number = '56899-5655-58',
+            registration_number = '56899-5655-584',
             address = 'Musterstrasse4, 34332 MusterLand4',
             iban = 'DE5689562365004444',
             user = simple_user

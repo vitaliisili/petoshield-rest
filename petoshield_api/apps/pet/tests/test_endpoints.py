@@ -817,7 +817,6 @@ class TestPetsEndpoints:
         
     
     # test filter by gender
-    
     @pytest.mark.parametrize('gender, length', [('F',1), ('M',2)])
     def test_pet_filter_by_gender_exact_success(self, staff_user, pets_list, api_client,gender,length):
         api_client.force_authenticate(staff_user)
