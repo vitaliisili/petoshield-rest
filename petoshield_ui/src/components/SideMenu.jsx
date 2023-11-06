@@ -5,7 +5,7 @@ import {FaFacebookF, FaInstagram, FaTwitter} from "react-icons/fa";
 
 const SideMenu = (props) => {
     return (
-        <div className={`fixed flex flex-col h-full bg-dark-grey w-72 flex z-50`}>
+        <div className={`fixed flex flex-col h-full bg-dark-grey w-72 z-50`}>
             <div id='side-menu' className='h-screen flex flex-col justify-between p-8'>
                 <div onClick={() => props.closeMenuHandler()} className='absolute top-3 right-3 text-gallery cursor-pointer flex justify-center items-center w-8 h-8'>
                     <IoCloseSharp className='text-xl'/>
