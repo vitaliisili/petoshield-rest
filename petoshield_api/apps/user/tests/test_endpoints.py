@@ -230,6 +230,7 @@ class TestUserEndpoints:
 class TestRoleEndpoints:
     endpoint = '/api/roles/'
 
+    # testing creation of the user role
     def test_role_save_with_staff_user_success(self, staff_user, api_client):
         api_client.force_authenticate(staff_user)
         data = {
@@ -285,6 +286,7 @@ class TestRoleEndpoints:
         response = api_client.post(self.endpoint, data=data, format='json')
         assert response.status_code == 400
     
+    # testing geting of the list of user roles
     def test_role_get_list_with_staff_user_success(self, staff_user, api_client):
         api_client.force_authenticate(staff_user)
         response = api_client.get(self.endpoint)
@@ -304,6 +306,7 @@ class TestRoleEndpoints:
         response = api_client.get(self.endpoint)
         assert response.status_code == 401
     
+    # testing retieve of the user's role
     def test_role_retrieve_one_with_staff_user_status_success(self, staff_user, api_client, roles):
         api_client.force_authenticate(staff_user)
         response = api_client.get(f'{self.endpoint}{roles[0].id}/')
@@ -319,7 +322,7 @@ class TestRoleEndpoints:
         response = api_client.get(f'{self.endpoint}{roles[0].id}/')
         assert response.status_code == 403
     
-    def test_role_retrieve_one_with_unauthorized_status_unauthorized(self, api_client, roles):
+    def test_role_retrieve_one_with_unauthenticated_status_unauthorized(self, api_client, roles):
         response = api_client.get(f'{self.endpoint}{roles[0].id}/')
         assert response.status_code == 401
     
@@ -329,13 +332,103 @@ class TestRoleEndpoints:
         response = api_client.get(f'{self.endpoint}{id}/')
         assert response.status_code == 404
     
+    # testing update of the user's role
     def test_role_update_with_staff_user_success(self, staff_user, api_client, roles):
         api_client.force_authenticate(staff_user)
+        data = {
+            "name": "new_name",
+            "description": "test_description",
+        }
+        response = api_client.put(f'{self.endpoint}{roles[0].id}/', data=data, format="json")
+        assert response.status_code == 200
+        assert json.loads(response.content).get("name") == data.get("name")
+    
+    def test_role_update_with_provider_user_forbidden(self, provider_user, api_client, roles):
+        api_client.force_authenticate(provider_user)
         data = {
             "name": "new_name",
             "description": "",
         }
         response = api_client.put(f'{self.endpoint}{roles[0].id}/', data=data, format="json")
-        assert response.status_code == 200
-        assert json.loads(response.content).get("name") == data.get("name")
+        assert response.status_code == 403
+    
+    def test_role_update_with_simple_user_forbidden(self, simple_user, api_client, roles):
+        api_client.force_authenticate(simple_user)
+        data = {
+            "name": "new_name",
+            "description": "",
+        }
+        response = api_client.put(f'{self.endpoint}{roles[0].id}/', data=data, format="json")
+        assert response.status_code == 403
 
+    def test_role_update_with_unauthenticated_user_not_authorized(self, api_client, roles):
+        data = {
+            "name": "new_name",
+            "description": "",
+        }
+        response = api_client.put(f'{self.endpoint}{roles[0].id}/', data=data, format="json")
+        assert response.status_code == 401
+
+# testing patching of the particular user's role 
+    def test_role_patch_with_staff_user_success(self, staff_user, api_client, roles):
+        api_client.force_authenticate(staff_user)
+        data = {
+            "description": "test_description",
+        }
+        response = api_client.patch(f'{self.endpoint}{roles[0].id}/', data=data, format="json")
+        assert response.status_code == 200
+        assert json.loads(response.content).get("name") == roles[0].name
+        assert json.loads(response.content).get("description") == data.get("description")
+    
+    def test_role_patch_with_provider_user_forbidden(self, provider_user, api_client, roles):
+        api_client.force_authenticate(provider_user)
+        data = {
+            "description": "test_description",
+        }
+        response = api_client.patch(f'{self.endpoint}{roles[0].id}/', data=data, format="json")
+        assert response.status_code == 403
+    
+    def test_role_patch_with_simple_user_forbidden(self, simple_user, api_client, roles):
+        api_client.force_authenticate(simple_user)
+        data = {
+            "description": "test_description",
+        }
+        response = api_client.patch(f'{self.endpoint}{roles[0].id}/', data=data, format="json")
+        assert response.status_code == 403
+
+    def test_role_patch_with_unauthenticated_user_not_authorized(self, api_client, roles):
+        data = {
+            "description": "test_description",
+        }
+        response = api_client.patch(f'{self.endpoint}{roles[0].id}/', data=data, format="json")
+        assert response.status_code == 401
+
+    # testing deletion of the user's role
+    def test_role_delete_with_staff_user_success(self, staff_user, api_client, roles):
+        api_client.force_authenticate(staff_user)
+        response = api_client.delete(f'{self.endpoint}{roles[0].id}/')
+        
+        assert response.status_code == 204 # no content = success
+    
+    def test_role_delete_with_provider_user_forbidden(self, provider_user, api_client, roles):
+        api_client.force_authenticate(provider_user)
+        data = {
+            "description": "test_description",
+        }
+        response = api_client.delete(f'{self.endpoint}{roles[0].id}/', data=data, format="json")
+        assert response.status_code == 403
+    
+    def test_role_delete_with_simple_user_forbidden(self, simple_user, api_client, roles):
+        api_client.force_authenticate(simple_user)
+        data = {
+            "description": "test_description",
+        }
+        response = api_client.delete(f'{self.endpoint}{roles[0].id}/', data=data, format="json")
+        assert response.status_code == 403
+
+    def test_role_delete_with_unauthenticated_user_not_authorized(self, api_client, roles):
+        data = {
+            "description": "test_description",
+        }
+        response = api_client.delete(f'{self.endpoint}{roles[0].id}/', data=data, format="json")
+        assert response.status_code == 401
