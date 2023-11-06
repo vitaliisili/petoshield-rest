@@ -53,7 +53,7 @@ class Pet(BaseModel):
     )
 
     name = models.CharField(max_length=200)
-    age = models.IntegerField(validators=(MinValueValidator(1), MaxValueValidator(10)))
+    age = models.IntegerField(validators=(MinValueValidator(1), MaxValueValidator(20)))
     gender = models.CharField(max_length=1, choices=PET_GENDER)
     species = models.CharField(max_length=3, choices=PET_SPECIES)
     breed = models.ForeignKey(Breed, on_delete=models.SET(get_default_breed), related_name='pets')
