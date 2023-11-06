@@ -55,19 +55,23 @@ const Register = () => {
                     </div>
                     <div className='flex flex-col space-y-8'>
                         <div className='flex flex-col relative'>
-                            <input onChange={(e) => setEmail(e.target.value)} value={email} type="email" id='email' className='input-focus p-3.5 outline-0 border border-gallery rounded-md' placeholder='Email'/>
+                            <input onChange={(e) => setEmail(e.target.value)} value={email} type="email" id='email' className='input-focus p-3.5 outline-0 border border-gallery rounded-md focus:border-gallery focus:ring-0' placeholder='Email'/>
                         </div>
 
                         <div className='flex flex-col relative'>
-                            <input onChange={(e) => setFullName(e.target.value)} value={fullName} type="text" id='name' className='input-focus p-3.5 outline-0 border border-gallery rounded-md' placeholder='Full Name'/>
+                            <input onChange={(e) => setFullName(e.target.value)} value={fullName} type="text" id='name' className='input-focus p-3.5 outline-0 border border-gallery rounded-md focus:border-gallery focus:ring-0' placeholder='Full Name'/>
                         </div>
 
                         <div className='flex flex-col relative'>
-                            <input onChange={(e) => setPassword(e.target.value)} value={password} type="password" id='password' className='input-focus p-3.5 outline-0 border border-gallery rounded-md' placeholder='Password'/>
+                            <input onChange={(e) => setPassword(e.target.value)} value={password} type="password" id='password' className='input-focus p-3.5 outline-0 border border-gallery rounded-md focus:border-gallery focus:ring-0' placeholder='Password'/>
                         </div>
 
                         <div className='flex flex-col relative'>
-                            <input onChange={(e) => setCheckPassword(e.target.value)} value={checkPassword} type="password" id='cpassword' className='input-focus p-3.5 outline-0 border border-gallery rounded-md' placeholder='Confirm Password'/>
+                            <input onChange={(e) => setCheckPassword(e.target.value)} value={checkPassword} type="password" id='cpassword' className='input-focus p-3.5 outline-0 border border-gallery rounded-md focus:border-gallery focus:ring-0' placeholder='Confirm Password'/>
+                        </div>
+
+                        <div className='text-sm text-center text-nobel-dark'>
+                            To click button bellow you are agree with <Link className='text-rose' to="#">Terms</Link> and <Link className='text-rose' to="#">Privacy Policy</Link>
                         </div>
 
                         <div>
