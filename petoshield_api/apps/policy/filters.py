@@ -3,7 +3,6 @@ from .models import ServiceProvider, Policy, InsuranceCase, IncomingInvoice
 
 
 class ServiceProviderFilter(filters.FilterSet):
-    user = filters.CharFilter(field_name='user__name', lookup_expr='icontains')
     created_at__year__exact = filters.NumberFilter(field_name='created_at__year', lookup_expr='exact')
     created_at__year__gt = filters.NumberFilter(field_name='created_at__year', lookup_expr='gt')
     created_at__year__lt = filters.NumberFilter(field_name='created_at__year', lookup_expr='lt')
