@@ -109,35 +109,35 @@ class TestPolicyEndpoints:
     # test filter by start_date
     def test_policy_filter_by_start_date_exact_success(self, staff_user, policies_list, api_client):
         api_client.force_authenticate(staff_user)
-        response = api_client.get(f'{self.endpoint}?end_date=2023-11-01')
+        response = api_client.get(f'{self.endpoint}?start_date=2023-11-01')
         assert response.status_code == 200
         assert len(json.loads(response.content)) == 1
 
     def test_policy_filter_by_start_date_exact_bad_request(self, staff_user, policies_list, api_client):
         api_client.force_authenticate(staff_user)
-        response = api_client.get(f'{self.endpoint}?end_date=01-11-2023')
+        response = api_client.get(f'{self.endpoint}?start_date=01-11-2023')
         assert response.status_code == 400
         
     def test_policy_filter_by_start_date_gt_success(self, staff_user, policies_list, api_client):
         api_client.force_authenticate(staff_user)
-        response = api_client.get(f'{self.endpoint}?end_date__gt=2023-11-01')
+        response = api_client.get(f'{self.endpoint}?start_date__gt=2023-11-01')
         assert response.status_code == 200
         assert len(json.loads(response.content)) == 1
         
     def test_policy_filter_by_start_date_gt_bad_request(self, staff_user, policies_list, api_client):
         api_client.force_authenticate(staff_user)
-        response = api_client.get(f'{self.endpoint}?end_date__gt=01-11-2023')
+        response = api_client.get(f'{self.endpoint}?start_date__gt=01-11-2023')
         assert response.status_code == 400
         
     def test_policy_filter_by_start_date_lt_success(self, staff_user, policies_list, api_client):
         api_client.force_authenticate(staff_user)
-        response = api_client.get(f'{self.endpoint}?end_date__lt=2023-11-01')
+        response = api_client.get(f'{self.endpoint}?start_date__lt=2023-11-01')
         assert response.status_code == 200
         assert len(json.loads(response.content)) == 2
         
     def test_policy_filter_by_start_date_lt_bad_request(self, staff_user, policies_list, api_client):
         api_client.force_authenticate(staff_user)
-        response = api_client.get(f'{self.endpoint}?end_date__lt=01-11-2023')
+        response = api_client.get(f'{self.endpoint}?start_date__lt=01-11-2023')
         assert response.status_code == 400
         
     # test filter by end_date
