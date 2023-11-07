@@ -271,3 +271,89 @@ class TestPolicyEndpoints:
         response = api_client.get(f'{self.endpoint}?created_at=2023-10-10')
         assert response.status_code == 200
     
+    
+class TestInsuranceCaseEndpoints:
+    endpoint = '/api/insurance/insurance-cases/'
+    
+    # test filter by policy number
+    @pytest.mark.parametrize('policy_nr, length', [('84-121-4860', 1), ('84', 1), ('', 4), (' ', 4), ('33', 1), (84, 1)])
+    def test_insurance_cases_filter_by_policy_success(self, staff_user, insurance_cases_list, api_client, policy_nr, length):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}?policy={policy_nr}')
+        assert response.status_code == 200
+        assert len(json.loads(response.content)) == length
+        
+    # test filter by service provider
+    @pytest.mark.parametrize('service_provider_, length', [('Service Provider 2', 1), ('Service Provider 1', 1), ('Service', 4)])
+    def test_insurance_cases_filter_by_service_provider_success(self, staff_user, insurance_cases_list, api_client, service_provider_, length):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}?service_provider={service_provider_}')
+        assert response.status_code == 200
+        assert len(json.loads(response.content)) == length
+      
+    # test filter by created_at
+    def test_insurance_cases_filter_by_created_at_year_exact_success(self, staff_user, insurance_cases_list, api_client):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}?created_at__year__exact=2023')
+        assert response.status_code == 200 
+        assert len(json.loads(response.content)) == 4
+        
+    def test_insurance_cases_filter_by_created_at_year_exact_bad_request(self, staff_user, insurance_cases_list, api_client):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}?created_at__year__exact=2023-10-20')
+        assert response.status_code == 400 
+        
+    @pytest.mark.parametrize('year, length', [(2022, 4), (2023, 0), ('2022', 4)])   
+    def test_insurance_cases_filter_by_created_at_year_gt_success(self, staff_user, insurance_cases_list, api_client, year, length):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}?created_at__year__gt={year}')
+        assert response.status_code == 200 
+        assert len(json.loads(response.content)) == length
+        
+    def test_insurance_cases_filter_by_created_at_year_gt_bad_request(self, staff_user, insurance_cases_list, api_client):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}?created_at__year__gt=2023-10-20')
+        assert response.status_code == 400 
+        
+    @pytest.mark.parametrize('year, length', [(2022, 0), (2024, 4), ('2022', 0)])   
+    def test_insurance_cases_filter_by_created_at_year_lt_success(self, staff_user, insurance_cases_list, api_client, year, length):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}?created_at__year__lt={year}')
+        assert response.status_code == 200 
+        assert len(json.loads(response.content)) == length
+        
+    def test_insurance_cases_filter_by_created_at_year_lt_bad_request(self, staff_user, insurance_cases_list, api_client):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}?created_at__year__lt=2023-10-20')
+        assert response.status_code == 400 
+        
+    def test_insurance_cases_filter_by_created_at_bad_request(self, staff_user, insurance_cases_list, api_client):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}?created_at=2023')
+        assert response.status_code == 400 
+        
+    def test_insurance_cases_filter_by_created_at_bad_success(self, staff_user, insurance_cases_list, api_client):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}?created_at=2023-10-10')
+        assert response.status_code == 200
+    
+    # test filter by status
+    @pytest.mark.parametrize('status, length', [('accept', 1), ('reject', 1), ('process', 2)])
+    def test_insurance_cases_filter_by_status_exact_success(self, staff_user, insurance_cases_list, api_client, status, length):
+       api_client.force_authenticate(staff_user)
+       response = api_client.get(f'{self.endpoint}?status={status}') 
+       assert response.status_code == 200
+       assert len(json.loads(response.content)) == length
+      
+    def test_insurance_cases_filter_by_status_exact_bad_request(self, staff_user, insurance_cases_list, api_client):
+       api_client.force_authenticate(staff_user)
+       response = api_client.get(f'{self.endpoint}?status=asd') 
+       assert response.status_code == 400 
+       
+    @pytest.mark.parametrize('status, length', [('acc', 1), ('rej', 1), ('proc', 2), ('asd', 0)])
+    def test_insurance_cases_filter_by_status_icontains_success(self, staff_user, insurance_cases_list, api_client, status, length):
+       api_client.force_authenticate(staff_user)
+       response = api_client.get(f'{self.endpoint}?status__icontains={status}') 
+       assert response.status_code == 200
+       assert len(json.loads(response.content)) == length
+      
