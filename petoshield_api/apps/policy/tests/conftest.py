@@ -206,3 +206,44 @@ def policies_list(policy, pets_list):
         )
     ]
     return list
+
+
+@pytest.fixture
+def insurance_case(policy, service_provider):
+    insurance_case_ex = InsuranceCase.objects.create(
+        claim_date = '2023-11-03',
+        description = 'Accident happened',
+        status = 'process',
+        policy = policy,
+        service_provider = service_provider
+    )
+    return insurance_case_ex
+
+
+@pytest.fixture
+def insurance_cases_list(insurance_case, policies_list, service_provider_list):
+    insurance_cases_list_ex = [
+        insurance_case,
+        InsuranceCase.objects.create(
+            claim_date = '2023-11-03',
+            description = 'Accident happened',
+            status = 'process',
+            policy = policies_list[1],
+            service_provider = service_provider_list[1]
+            ),
+        InsuranceCase.objects.create(
+            claim_date = '2023-10-29',
+            description = 'Accident happened',
+            status = 'reject',
+            policy = policies_list[2],
+            service_provider = service_provider_list[2]
+            ),
+        InsuranceCase.objects.create(
+            claim_date = '2023-11-05',
+            description = 'Accident happened',
+            status = 'accept',
+            policy = policies_list[3],
+            service_provider = service_provider_list[3]
+            )
+    ]
+    return insurance_cases_list_ex
