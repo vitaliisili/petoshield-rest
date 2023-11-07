@@ -64,6 +64,64 @@ def service_provider(simple_user):
     )
     return provider
 
+
+@pytest.fixture
+def breed(db):
+    breed = Breed.objects.create(
+        name='German Shepherd',
+        age_min=8,
+        age_max=12,
+        risk_level=3,
+        species='dog'
+    )
+    assert breed.name == 'German Shepherd'
+    return breed
+
+
+@pytest.fixture
+def pet(breed, simple_user):
+    custom_pet = Pet.objects.create(name='Lenore',
+                                    age=5,
+                                    gender='M',
+                                    species='dog',
+                                    breed=breed,
+                                    user=simple_user)
+    assert custom_pet.name == 'Lenore'
+    return custom_pet
+
+
+@pytest.fixture
+def pets_list(breed, simple_user, staff_user):
+    pets_list = [
+        Pet.objects.create(
+            name='Simple User dog',
+            age=5,
+            gender='M',
+            species='dog',
+            breed=breed,
+            user=simple_user
+        ),
+
+        Pet.objects.create(
+            name='Jack',
+            age=3,
+            gender='M',
+            species='dog',
+            breed=breed,
+            user=simple_user
+        ),
+        Pet.objects.create(
+            name='Samy',
+            age=4,
+            gender='F',
+            species='cat',
+            breed=breed,
+            user=staff_user
+        ),
+    ]
+    return pets_list
+
+
 @pytest.fixture
 def service_provider_list(service_provider, simple_user):
     provider_list = [
@@ -94,5 +152,57 @@ def service_provider_list(service_provider, simple_user):
                  ),       
         
     ]
-
     return provider_list
+
+
+@pytest.fixture
+def policy(pet):
+    policy_ex = Policy.objects.create(
+        policy_number = '84-121-4860',
+        start_date = '2023-11-01',
+        end_date = '2024-11-01',
+        status = 'valid',
+        initial_limit = 100000,
+        current_limit = 100000,
+        deductible = 1000,
+        pet = pet
+    )
+    return policy_ex
+
+
+@pytest.fixture
+def policies_list(policy, pets_list):
+    list = [
+        policy,
+        Policy.objects.create(
+            policy_number = '22-222-4860',
+            start_date = '2023-11-02',
+            end_date = '2024-11-02',
+            status = 'valid',
+            initial_limit = 100000,
+            current_limit = 100000,
+            deductible = 500,
+            pet = pets_list[0]
+        ),
+        Policy.objects.create(
+            policy_number = '33-333-4860',
+            start_date = '2022-11-01',
+            end_date = '2023-11-01',
+            status = 'expired',
+            initial_limit = 100000,
+            current_limit = 100000,
+            deductible = 2000,
+            pet = pets_list[1]
+        ),
+        Policy.objects.create(
+            policy_number = '44-444-4860',
+            start_date = '2023-09-03',
+            end_date = '2024-09-03',
+            status = 'valid',
+            initial_limit = 100000,
+            current_limit = 100000,
+            deductible = 300,
+            pet = pets_list[2]
+        )
+    ]
+    return list
