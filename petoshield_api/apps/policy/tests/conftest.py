@@ -213,7 +213,7 @@ def insurance_case(policy, service_provider):
     insurance_case_ex = InsuranceCase.objects.create(
         claim_date = '2023-11-03',
         description = 'Accident happened',
-        status = 'process',
+        status = 'accept',
         policy = policy,
         service_provider = service_provider
     )
@@ -247,3 +247,24 @@ def insurance_cases_list(insurance_case, policies_list, service_provider_list):
             )
     ]
     return insurance_cases_list_ex
+
+@pytest.fixture
+def incoming_invoice(insurance_case):
+    incoming_invoice_ex = IncomingInvoice.objects.create(
+        invoice_date = '2023-11-03',
+        amount = 125.39,
+        insurance_case = insurance_case
+    ) 
+    return incoming_invoice_ex
+
+@pytest.fixture
+def incoming_invoices_list(incoming_invoice, insurance_cases_list):
+    incoming_invoices_list_ex = [
+        incoming_invoice,
+        IncomingInvoice.objects.create(
+            invoice_date = '2023-11-06',
+            amount = 750.50,
+            insurance_case = insurance_cases_list[3]
+        ),
+    ]
+    return incoming_invoices_list_ex

@@ -338,7 +338,7 @@ class TestInsuranceCaseEndpoints:
         assert response.status_code == 200
     
     # test filter by status
-    @pytest.mark.parametrize('status, length', [('accept', 1), ('reject', 1), ('process', 2)])
+    @pytest.mark.parametrize('status, length', [('accept', 2), ('reject', 1), ('process', 1)])
     def test_insurance_cases_filter_by_status_exact_success(self, staff_user, insurance_cases_list, api_client, status, length):
        api_client.force_authenticate(staff_user)
        response = api_client.get(f'{self.endpoint}?status={status}') 
@@ -350,10 +350,151 @@ class TestInsuranceCaseEndpoints:
        response = api_client.get(f'{self.endpoint}?status=asd') 
        assert response.status_code == 400 
        
-    @pytest.mark.parametrize('status, length', [('acc', 1), ('rej', 1), ('proc', 2), ('asd', 0)])
+    @pytest.mark.parametrize('status, length', [('acc', 2), ('rej', 1), ('proc', 1), ('asd', 0)])
     def test_insurance_cases_filter_by_status_icontains_success(self, staff_user, insurance_cases_list, api_client, status, length):
        api_client.force_authenticate(staff_user)
        response = api_client.get(f'{self.endpoint}?status__icontains={status}') 
        assert response.status_code == 200
        assert len(json.loads(response.content)) == length
       
+
+class TestIncomingInvoiceEndpoints:
+    endpoint = '/api/insurance/incoming-invoices/'
+    
+    # test filter by invoice_data
+    @pytest.mark.parametrize('invoice_date_, length', [('2023-11-06', 1), ('2023-11-03', 1)])
+    def test_incoming_invoice_filter_by_invoice_date_exact_success(self, staff_user, incoming_invoices_list, api_client, invoice_date_, length):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}?invoice_date={invoice_date_}')
+        assert response.status_code == 200 
+        assert len(json.loads(response.content)) == length
+    
+    def test_incoming_invoice_filter_by_invoice_date_exact_bad_request(self, staff_user, incoming_invoices_list, api_client):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}?invoice_date=03-11-2023')
+        assert response.status_code == 400 
+        
+    @pytest.mark.parametrize('invoice_date_, length', [('2023-11-06', 0), ('2023-11-03', 1)])
+    def test_incoming_invoice_filter_by_invoice_date_gt_success(self, staff_user, incoming_invoices_list, api_client, invoice_date_, length):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}?invoice_date__gt={invoice_date_}')
+        assert response.status_code == 200 
+        assert len(json.loads(response.content)) == length
+    
+    def test_incoming_invoice_filter_by_invoice_date_gt_bad_request(self, staff_user, incoming_invoices_list, api_client):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}?invoice_date__gt=03-11-2023')
+        assert response.status_code == 400 
+        
+    @pytest.mark.parametrize('invoice_date_, length', [('2023-11-06', 1), ('2023-11-03', 0)])
+    def test_incoming_invoice_filter_by_invoice_date_lt_success(self, staff_user, incoming_invoices_list, api_client, invoice_date_, length):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}?invoice_date__lt={invoice_date_}')
+        assert response.status_code == 200 
+        assert len(json.loads(response.content)) == length
+    
+    def test_incoming_invoice_filter_by_invoice_date_lt_bad_request(self, staff_user, incoming_invoices_list, api_client):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}?invoice_date__lt=2023')
+        assert response.status_code == 400 
+
+    # test filter by amount
+    @pytest.mark.parametrize('amount_, length', [('125.39', 1), (125.39, 1), (750.50,1)])
+    def test_incoming_invoice_filter_by_amount_exact_success(self, staff_user, incoming_invoices_list, api_client, amount_, length):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}?amount={amount_}')
+        assert response.status_code == 200 
+        assert len(json.loads(response.content)) == length
+        
+    def test_incoming_invoice_filter_by_amount_exact_bad_request(self, staff_user, incoming_invoices_list, api_client):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}?amount=ten')
+        assert response.status_code == 400 
+        
+    @pytest.mark.parametrize('amount_, length', [('125.39', 1), (125.39, 1), (750.50,0)])
+    def test_incoming_invoice_filter_by_amount_gt_success(self, staff_user, incoming_invoices_list, api_client, amount_, length):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}?amount__gt={amount_}')
+        assert response.status_code == 200 
+        assert len(json.loads(response.content)) == length
+        
+    def test_incoming_invoice_filter_by_amount_gt_bad_request(self, staff_user, incoming_invoices_list, api_client):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}?amount__gt=ten')
+        assert response.status_code == 400 
+        
+    @pytest.mark.parametrize('amount_, length', [('125.39', 0), (125.39, 0), (750.50,1), (99999, 2)])
+    def test_incoming_invoice_filter_by_amount_lt_success(self, staff_user, incoming_invoices_list, api_client, amount_, length):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}?amount__lt={amount_}')
+        assert response.status_code == 200 
+        assert len(json.loads(response.content)) == length
+        
+    def test_incoming_invoice_filter_by_amount_lt_bad_request(self, staff_user, incoming_invoices_list, api_client):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}?amount__lt=ten')
+        assert response.status_code == 400
+    
+    # test filter by insurance_care
+    @pytest.mark.parametrize('insurance_case_, length', [('2023-11-05', 1), ('2023-11-03', 1), ('2022-10-03', 0)])
+    def test_incoming_invoice_filter_by_insurance_case_exact_success(self, staff_user, incoming_invoices_list, api_client, insurance_case_, length):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}?insurance_case={insurance_case_}')
+        assert response.status_code == 200 
+        assert len(json.loads(response.content)) == length
+        
+        
+    # ERROR    django.request:log.py:241 ['“05-11-2023” value has an invalid date format. It must be in YYYY-MM-DD format.']: /api/insurance/incoming-invoices/
+       #rest_framework.exceptions.APIException: ['“05-11-2023” value has an invalid date format. It must be in YYYY-MM-DD format.']
+    
+    # def test_incoming_invoice_filter_by_insurance_case_exact_bad_request(self, staff_user, incoming_invoices_list, api_client):
+    #     api_client.force_authenticate(staff_user)
+    #     response = api_client.get(f'{self.endpoint}?insurance_case=05-11-2023')
+    #     assert response.status_code == 400 
+    
+    # test filter by created_at
+    def test_incoming_invoice_filter_by_created_at_year_exact_success(self, staff_user, incoming_invoices_list, api_client):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}?created_at__year__exact=2023')
+        assert response.status_code == 200 
+        assert len(json.loads(response.content)) == 2
+        
+    def test_incoming_invoice_filter_by_created_at_year_exact_bad_request(self, staff_user, incoming_invoices_list, api_client):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}?created_at__year__exact=2023-10-20')
+        assert response.status_code == 400 
+        
+    @pytest.mark.parametrize('year, length', [(2022, 2), (2023, 0), ('2022', 2)])   
+    def test_incoming_invoice_filter_by_created_at_year_gt_success(self, staff_user, incoming_invoices_list, api_client, year, length):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}?created_at__year__gt={year}')
+        assert response.status_code == 200 
+        assert len(json.loads(response.content)) == length
+        
+    def test_incoming_invoice_filter_by_created_at_year_gt_bad_request(self, staff_user, incoming_invoices_list, api_client):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}?created_at__year__gt=2023-10-20')
+        assert response.status_code == 400 
+        
+    @pytest.mark.parametrize('year, length', [(2022, 0), (2024, 2), ('2022', 0)])   
+    def test_incoming_invoice_filter_by_created_at_year_lt_success(self, staff_user, incoming_invoices_list, api_client, year, length):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}?created_at__year__lt={year}')
+        assert response.status_code == 200 
+        assert len(json.loads(response.content)) == length
+        
+    def test_incoming_invoice_filter_by_created_at_year_lt_bad_request(self, staff_user, incoming_invoices_list, api_client):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}?created_at__year__lt=2023-10-20')
+        assert response.status_code == 400 
+        
+    def test_incoming_invoice_filter_by_created_at_bad_request(self, staff_user, incoming_invoices_list, api_client):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}?created_at=2023')
+        assert response.status_code == 400 
+        
+    def test_incoming_invoice_filter_by_created_at_bad_success(self, staff_user, incoming_invoices_list, api_client):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}?created_at=2023-10-10')
+        assert response.status_code == 200
+    

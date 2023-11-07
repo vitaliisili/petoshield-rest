@@ -52,7 +52,7 @@ class InsuranceCaseFilter(filters.FilterSet):
                   }
 
 class IncomingInvoiceFilter(filters.FilterSet):
-    insurance_case = filters.CharFilter(field_name='insurance_case__claim_date', lookup_expr='iexact')
+    insurance_case = filters.CharFilter(field_name='insurance_case__claim_date', lookup_expr='exact')
     created_at__year__exact = filters.NumberFilter(field_name='created_at__year', lookup_expr='exact')
     created_at__year__gt = filters.NumberFilter(field_name='created_at__year', lookup_expr='gt')
     created_at__year__lt = filters.NumberFilter(field_name='created_at__year', lookup_expr='lt')
