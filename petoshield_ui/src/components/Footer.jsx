@@ -18,6 +18,7 @@ const Footer = () => {
                     <ul className='text-white flex flex-col mt-5 space-y-4'>
                         <Link to='/team'><li className='hover:text-rose transition-all duration-500'>Join the Team</li></Link>
                         <Link to='#'><li className='hover:text-rose transition-all duration-500'>Accessibility</li></Link>
+                        <Link to='/partners'><li className='transition-all duration-500 hover:text-rose'>Partners Program</li></Link>
                     </ul>
                 </div>
 

@@ -15,6 +15,7 @@ import PasswordRecovery from "./pages/PasswordRecovery";
 import PetRegistration from "./pages/PetRegistration";
 import PetOnlyRegistration from "./pages/PetOnlyRegistration";
 import PetProfile from "./pages/PetProfile";
+import PrivateRoute from "./utils/PrivateRoute";
 
 const App = () => {
     return (
@@ -22,7 +23,7 @@ const App = () => {
             <Routes>
                 <Route exact path='/' element={<Home/>}/>
                 <Route exact path='/price' element={<Price/>}/>
-                <Route exact path='/account' element={<Account/>}/>
+                <Route exact path='/account' element={<PrivateRoute><Account/></PrivateRoute>}/>
                 <Route exact path='/partners' element={<Partners/>}/>
                 <Route exact path='/blog' element={<Blog/>}/>
                 <Route exact path='/team' element={<Team/>}/>
@@ -30,10 +31,10 @@ const App = () => {
                 <Route exact path='/giveback' element={<Giveback/>}/>
                 <Route exact path='/login' element={<Login/>}/>
                 <Route exact path='/register' element={<Register/>}/>
-                <Route exact path='/pass-recovery' element={<PasswordRecovery/>}/>
+                <Route exact path='/pass-recovery' element={<PrivateRoute><PasswordRecovery/></PrivateRoute>}/>
                 <Route exact path='/pet-registration' element={<PetRegistration/>}/>
-                <Route exact path='/new-pet' element={<PetOnlyRegistration/>}/>
-                <Route exact path='/pet-profile/:id' element={<PetProfile/>}/>
+                <Route exact path='/new-pet' element={<PrivateRoute><PetOnlyRegistration/></PrivateRoute>}/>
+                <Route exact path='/pet-profile/:id' element={<PrivateRoute><PetProfile/></PrivateRoute>}/>
                 <Route exact path='*' element={<NotFound/>}/>
             </Routes>
         </BrowserRouter>

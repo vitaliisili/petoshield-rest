@@ -75,13 +75,13 @@ const PetOnlyRegistration = () => {
     const catToggle = () => {
         setIsDog(false)
         setPetSpecies('cat')
-        toast.success('Cat Selected')
+        toast.success('Cat Selected', {autoClose: 1000})
     }
 
     const dogToggle = () => {
         setIsDog(true)
         setPetSpecies('dog')
-        toast.success('Dog Selected')
+        toast.success('Dog Selected', {autoClose: 1000})
     }
 
     return (
