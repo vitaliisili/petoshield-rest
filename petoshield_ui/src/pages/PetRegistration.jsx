@@ -29,7 +29,6 @@ const PetRegistration = () => {
     useEffect(() => {
         if (location.state) {
             setPetSpecies(location.state.type)
-            console.log(petSpecies)
         } else {
             navigate('/price')
         }
@@ -69,18 +68,11 @@ const PetRegistration = () => {
                     "email": userEmail,
                     "name": `${firstName} ${lastName}`,
                     "password": userPassword
-                },
-            headers: {
-                "Authorization": `bearer${getCookie('accessToken')}`,
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            }
-
+                }
         }).then(response => {
             if (response.status === 201){
                 setTimeout(()=> {
                     toast.update(id, {render: 'Success', type: "success", isLoading: false, autoClose: 500})
-                    console.log(response.data)  // TODO: login user then redirect user to pay for policy
                 }, 1000)
             }
         }).catch(error => {
@@ -94,10 +86,10 @@ const PetRegistration = () => {
             <HelpModal/>
             <NavBar/>
 
-            <main className='flex-grow pt-44 flex justify-center items-center pb-28 font-lato text-black bg-black-haze'>
-                <div className='flex flex-col p-4 rounded-md'>
-                    <div className='flex'>
-                        <div className='pet w-80 p-4'>
+            <main className='flex-grow pt-44 flex justify-center items-center pb-28 px-4 font-lato text-black bg-black-haze'>
+                <div className='flex flex-col'>
+                    <div className='flex flex-col lg:flex-row'>
+                        <div className='pet w-80 p-4 self-center lg:self-start'>
                             <div className='font-bold text-2xl text-center'>Pet Information</div>
 
                             <div className='flex flex-col space-y-8 mt-8'>
@@ -156,15 +148,15 @@ const PetRegistration = () => {
                             </div>
                         </div>
 
-                        <div className='user rounded-md p-4 ml-8'>
+                        <div className='user rounded-md p-4 ml-0 lg:ml-8'>
                             <div className='text-2xl font-bold text-center'>Owner Information</div>
-                            <div className='form flex flex-col space-y-8 mt-8'>
-                                <div className='flex'>
+                            <div className='form flex flex-col space-y-8 mt-8 w-80 lg:w-full'>
+                                <div className='flex flex-col lg:flex-row justify-start lg:justify-between space-y-8 lg:space-y-0'>
                                     <input onChange={(e) => setFirstName(e.target.value)} value={firstName} type="text"
                                            className='outline-0 p-3 border border-gallery rounded-md focus:ring-1 focus:ring-rose shadow-sm focus:border-rose'
                                            placeholder='First Name'/>
                                     <input onChange={(e) => setLastName(e.target.value)} value={lastName} type="text"
-                                           className='outline-0 p-3 border border-gallery rounded-md ml-8 focus:ring-1 focus:ring-rose shadow-sm focus:border-rose'
+                                           className='outline-0 p-3 border border-gallery rounded-md ml-0 lg:ml-8 focus:ring-1 focus:ring-rose shadow-sm focus:border-rose'
                                            placeholder='Last Name'/>
                                 </div>
                                 <input onChange={(e) => setUserEmail(e.target.value)} value={userEmail} type="email"
@@ -180,12 +172,9 @@ const PetRegistration = () => {
                             </div>
                         </div>
                     </div>
-                    <div className='text-sm text-center text-nobel-dark'>
-                        To click button bellow you are agree with <Link className='text-rose' to="#">Terms</Link> and <Link
-                        className='text-rose' to="#">Privacy Policy</Link>
-                    </div>
+                    <div className='text-sm text-center self-center text-nobel-dark w-80 lg:w-full'>To click button bellow you are agree with <Link className='text-rose' to="#">Terms</Link> and <Link className='text-rose' to="#">Privacy Policy</Link></div>
                     <button onClick={onSubmitHandler}
-                            className='w-96 mt-5 self-center rounded-md bg-rose hover:bg-rose-dark font-bold transition-all duration-300 shadow-[rgba(255,0,131,0.5)_0px_10px_40px_-10px] p-3.5 text-white'>GET YOUR QUOTE
+                            className='w-80 lg:w-96 mt-5 self-center rounded-md bg-rose hover:bg-rose-dark font-bold transition-all duration-300 shadow-[rgba(255,0,131,0.5)_0px_10px_40px_-10px] p-3.5 text-white'>GET YOUR QUOTE
                     </button>
                 </div>
 
