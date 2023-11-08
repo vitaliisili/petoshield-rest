@@ -18,7 +18,6 @@ class BaseUserSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         validated_data['role'] = Role.objects.get(name='client')
-        print(validated_data)
         return get_user_model().objects.create_user(**validated_data)
 
 
