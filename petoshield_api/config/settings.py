@@ -66,6 +66,7 @@ REST_FRAMEWORK = {
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=env.int('TOKEN_EXPIRE')),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=env.int('REFRESH_TOKEN_EXPIRE')),
+    'UPDATE_LAST_LOGIN': True,
 }
 
 MIDDLEWARE = [
