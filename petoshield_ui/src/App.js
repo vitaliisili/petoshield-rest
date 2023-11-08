@@ -13,6 +13,8 @@ import NotFound from "./pages/NotFound";
 import Register from "./pages/Register";
 import PasswordRecovery from "./pages/PasswordRecovery";
 import PetRegistration from "./pages/PetRegistration";
+import PetOnlyRegistration from "./pages/PetOnlyRegistration";
+import PetProfile from "./pages/PetProfile";
 
 const App = () => {
     return (
@@ -30,6 +32,8 @@ const App = () => {
                 <Route exact path='/register' element={<Register/>}/>
                 <Route exact path='/pass-recovery' element={<PasswordRecovery/>}/>
                 <Route exact path='/pet-registration' element={<PetRegistration/>}/>
+                <Route exact path='/new-pet' element={<PetOnlyRegistration/>}/>
+                <Route exact path='/pet-profile/:id' element={<PetProfile/>}/>
                 <Route exact path='*' element={<NotFound/>}/>
             </Routes>
         </BrowserRouter>
