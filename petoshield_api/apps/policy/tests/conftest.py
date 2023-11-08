@@ -60,7 +60,7 @@ def service_provider(simple_user):
         registration_number = '56899-5655-581',
         address = 'Musterstrasse3, 34332 MusterLand',
         iban = 'DE5689562365002354',
-        user = simple_user
+        user = provider_user
     )
     return provider
 
@@ -121,9 +121,28 @@ def pets_list(breed, simple_user, staff_user):
     ]
     return pets_list
 
+@pytest.fixture
+def users_list(roles):
+    users_list = [
+        get_user_model().objects.create_user(email='example1@mail.com',
+                                             password='password1A@',
+                                             name='Example Name1',
+                                             role=roles[2]),
+
+        get_user_model().objects.create_user(email='example2@mail.com',
+                                             password='password1A@',
+                                             name='Example Name2',
+                                             role=roles[2]),
+
+        get_user_model().objects.create_user(email='example3@mail.com',
+                                             password='password1A@',
+                                             name='Example Name3',
+                                             role=roles[2]),
+    ]
+    return users_list
 
 @pytest.fixture
-def service_provider_list(service_provider, simple_user):
+def service_provider_list(service_provider, users_list):
     provider_list = [
         service_provider,
         ServiceProvider.objects.create(
@@ -132,7 +151,7 @@ def service_provider_list(service_provider, simple_user):
             registration_number = '56899-5655-582',
             address = 'Musterstrasse2, 34332 MusterLand2',
             iban = 'DE5689562365002222',
-            user = simple_user
+            user = users_list[0]
                  ),
         ServiceProvider.objects.create(
             company_name = 'Service Provider 3',
@@ -140,7 +159,7 @@ def service_provider_list(service_provider, simple_user):
             registration_number = '56899-5655-583',
             address = 'Musterstrasse3, 34332 MusterLand3',
             iban = 'DE5689562365003333',
-            user = simple_user
+            user = users_list[1]
                  ),
         ServiceProvider.objects.create(
             company_name = 'Service Provider 4',
@@ -148,7 +167,7 @@ def service_provider_list(service_provider, simple_user):
             registration_number = '56899-5655-584',
             address = 'Musterstrasse4, 34332 MusterLand4',
             iban = 'DE5689562365004444',
-            user = simple_user
+            user = users_list[2]
                  ),       
         
     ]

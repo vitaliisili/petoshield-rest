@@ -313,10 +313,10 @@ class TestUserEndpoints:
         assert len(json.loads(response.content)) == length
         
     # test filter by is_active
-    @pytest.mark.parametrize('is_active_, length', [('true', 5), ('TRUE', 5), (' ', 5), ('false', 0), ('FALSE', 0), ('T', 5)])
+    @pytest.mark.parametrize('is_active_, length', [('true', 4), (1, 4), (' ', 5), (0, 1), ('false', 1)])
     def test_user_filter_by_is_active_success(self, staff_user, users_list, is_active_, api_client, length):
         api_client.force_authenticate(staff_user)
-        response = api_client.get(f'{self.endpoint}?is_active__icontains={is_active_}')
+        response = api_client.get(f'{self.endpoint}?is_active={is_active_}')
         assert response.status_code == 200
         assert len(json.loads(response.content)) == length
 class TestRoleEndpoints:

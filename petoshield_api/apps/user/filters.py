@@ -20,5 +20,5 @@ class UserFilter(filters.FilterSet):
             'name': ['exact', 'icontains'],
             'email': ['exact'],
             'created_at': ['exact', 'gt', 'lt'],
-            'is_active': ['icontains']
+            'is_active': ['exact']
         }

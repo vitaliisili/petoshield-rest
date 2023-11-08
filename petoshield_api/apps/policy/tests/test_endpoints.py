@@ -5,30 +5,102 @@ class TestServiceProviderEndpoints:
     endpoint = '/api/insurance/service-providers/'
     
     # test ServiceProviderFilter by company name
-    @pytest.mark.parametrize('company_name, length', [('Service Provider 2', 1), ('Service Provider 3', 1), ('Service Provider 4',1)])
-    def test_service_provider_filter_by_company_name_exact_success(self,staff_user, service_provider_list, api_client, company_name, length):
+    @pytest.mark.parametrize('company_name, length', 
+                             [('Service Provider 2', 1), 
+                              ('Service Provider 3', 1), 
+                              ('Service Provider 4',1)
+                              ])
+    def test_service_provider_filter_by_company_name_exact_success(
+                                                        self,
+                                                        staff_user, 
+                                                        service_provider_list, 
+                                                        api_client, 
+                                                        company_name, 
+                                                        length
+                                                        ):
         api_client.force_authenticate(staff_user)
         response = api_client.get(f'{self.endpoint}?company_name={company_name}')
         assert response.status_code == 200
         assert len(json.loads(response.content)) == length
         
-    @pytest.mark.parametrize('company_name, length', [('Service', 4), ('Provider 3', 1), ('4', 1), ('', 4)])
-    def test_service_provider_filter_by_company_name_icontains_success(self,staff_user, service_provider_list, api_client, company_name, length):
+    @pytest.mark.parametrize('company_name, length', 
+                             [
+                                 ('Service', 4), 
+                                ('Provider 3', 1), 
+                                ('4', 1), 
+                                ('', 4)
+                              ]
+                             )
+    def test_service_provider_filter_by_company_name_icontains_success(
+                                                                        self, 
+                                                                        staff_user, 
+                                                                        service_provider_list, 
+                                                                        api_client, 
+                                                                        company_name, 
+                                                                        length
+                                                                       ):
         api_client.force_authenticate(staff_user)
         response = api_client.get(f'{self.endpoint}?company_name__icontains={company_name}')
         assert response.status_code == 200
         assert len(json.loads(response.content)) == length
         
-    @pytest.mark.parametrize('company_name, length', [('Service', 4), ('Provider 3', 1), ('4', 1), ('', 4)])
-    def test_service_provider_filter_by_company_name_icontains_success(self,staff_user, service_provider_list, api_client, company_name, length):
+    @pytest.mark.parametrize('company_name, length', 
+                             [
+                                 ('Service', 4), 
+                                 ('Provider 3', 1), 
+                                 ('4', 1), 
+                                 ('', 4)
+                                 ]
+                             )
+    def test_service_provider_filter_by_company_name_icontains_success(self,
+                                                                        staff_user, 
+                                                                        service_provider_list, 
+                                                                        api_client, 
+                                                                        company_name, 
+                                                                        length
+                                                                        ):
         api_client.force_authenticate(staff_user)
         response = api_client.get(f'{self.endpoint}?company_name__icontains={company_name}')
         assert response.status_code == 200
         assert len(json.loads(response.content)) == length
-        
+
+    # test ServiceProviderFilter by user_name
+    @pytest.mark.parametrize('user_name, length', 
+                            [
+                                 ('Example', 3), 
+                                 ('example name1', 1), 
+                                 ('name2',1), 
+                                 (' ', 4)
+                            ]
+                             )
+    def test_service_provider_filter_by_user_name_icontains_success(self,
+                                                                    staff_user, 
+                                                                    service_provider_list, 
+                                                                    api_client, 
+                                                                    user_name, 
+                                                                    length
+                                                                    ):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}?user={user_name}')
+        assert response.status_code == 200
+        assert len(json.loads(response.content)) == length
+    
     # test ServiceProviderFilter by registration_number 
-    @pytest.mark.parametrize('registration_number, length', [('56899-5655-582', 1), ('Provider 3', 0), ('4', 0), ('', 4)])
-    def test_service_provider_filter_by_registration_number_exact_success(self,staff_user, service_provider_list, api_client, registration_number, length):
+    @pytest.mark.parametrize('registration_number, length', 
+                             [
+                                 ('56899-5655-582', 1), 
+                                 ('Provider 3', 0), 
+                                 ('4', 0), 
+                                 ('', 4)
+                                 ]
+                             )
+    def test_service_provider_filter_by_registration_number_exact_success(self, 
+                                                                          staff_user, 
+                                                                          service_provider_list, 
+                                                                          api_client, 
+                                                                          registration_number, 
+                                                                          length
+                                                                          ):
         api_client.force_authenticate(staff_user)
         response = api_client.get(f'{self.endpoint}?registration_number={registration_number}')
         assert response.status_code == 200
@@ -443,14 +515,10 @@ class TestIncomingInvoiceEndpoints:
         assert response.status_code == 200 
         assert len(json.loads(response.content)) == length
         
-        
-    # ERROR    django.request:log.py:241 ['“05-11-2023” value has an invalid date format. It must be in YYYY-MM-DD format.']: /api/insurance/incoming-invoices/
-       #rest_framework.exceptions.APIException: ['“05-11-2023” value has an invalid date format. It must be in YYYY-MM-DD format.']
-    
-    # def test_incoming_invoice_filter_by_insurance_case_exact_bad_request(self, staff_user, incoming_invoices_list, api_client):
-    #     api_client.force_authenticate(staff_user)
-    #     response = api_client.get(f'{self.endpoint}?insurance_case=05-11-2023')
-    #     assert response.status_code == 400 
+    def test_incoming_invoice_filter_by_insurance_case_exact_bad_request(self, staff_user, incoming_invoices_list, api_client):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}?insurance_case=05-11-2023')
+        assert response.status_code == 400 
     
     # test filter by created_at
     def test_incoming_invoice_filter_by_created_at_year_exact_success(self, staff_user, incoming_invoices_list, api_client):

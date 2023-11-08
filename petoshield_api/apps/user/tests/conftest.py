@@ -58,6 +58,7 @@ def users_list(roles, staff_user, simple_user):
         get_user_model().objects.create_user(email='example1@mail.com',
                                              password='password1A@',
                                              name='Example Name1',
+                                             is_active=False,
                                              role=roles[0]),
 
         get_user_model().objects.create_user(email='example2@mail.com',
