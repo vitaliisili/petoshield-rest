@@ -18,7 +18,15 @@ class BaseUserSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         validated_data['role'] = Role.objects.get(name='client')
+        print(validated_data)
         return get_user_model().objects.create_user(**validated_data)
+
+
+class RegisterUserSerializer(BaseUserSerializer):
+    class Meta:
+        model = get_user_model()
+        fields = ['email', 'name', 'password']
+        extra_kwargs = {'password': {'write_only': True}}
 
 
 class ExtendUserSerializer(BaseUserSerializer):
