@@ -14,6 +14,18 @@ class TestUserEndpoints:
         }
         response = api_client.post(self.endpoint, data=data)
         assert response.status_code == 201
+        
+    def test_user_save_success_valid_data(self, api_client, roles):
+        data = {
+            'name': 'Test name',
+            'email': 'example@mail.com',
+            'password': 'password1A@',
+            'role': 1
+        }
+        response = api_client.post(self.endpoint, data=data)
+        assert len(json.loads(response.content).get('access_token')) > 0
+        assert len(json.loads(response.content).get('refresh_token')) > 0
+        
 
     def test_user_save_not_unique_email(self, api_client, staff_user):
         data = {
