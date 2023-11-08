@@ -45,3 +45,8 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.name
+
+class MailVerificationTokens(BaseModel):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    email_confirmed = models.BooleanField(default=False)
+    confirmation_token = models.CharField(max_length=255)    
