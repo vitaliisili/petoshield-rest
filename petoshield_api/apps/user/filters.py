@@ -5,7 +5,7 @@ class RoleFilter(filters.FilterSet):
     class Meta:
         model = Role
         fields = {
-            'name': ['iexact', 'icontains']
+            'name': ['exact', 'icontains']
         }
         
 class UserFilter(filters.FilterSet):
@@ -17,9 +17,8 @@ class UserFilter(filters.FilterSet):
     class Meta:
         model = User
         fields = {
-            'name': ['iexact', 'icontains'],
+            'name': ['exact', 'icontains'],
             'email': ['exact'],
             'created_at': ['exact', 'gt', 'lt'],
-            'is_active': ['icontains'],
-            'created_at': ['exact', 'gt', 'lt']
+            'is_active': ['exact']
         }
