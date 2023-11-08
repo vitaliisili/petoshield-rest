@@ -7,6 +7,7 @@ import {Link, useNavigate} from "react-router-dom";
 import axios from "axios";
 import {API_AUTH_TOKEN, API_USER_URL} from "../utils/apiUrls";
 import {toast, ToastContainer} from "react-toastify";
+import {setCookie} from "../utils/cookiesUtils";
 
 const Register = () => {
     const navigate = useNavigate()
@@ -19,9 +20,7 @@ const Register = () => {
     const registerHandler = () => {
         const id = toast.loading('Please Wait...')
         if (password !== checkPassword) {
-            setTimeout(()=> {
-                toast.update(id, {render: 'Password and check password not equals', type: "error", isLoading: false, autoClose: 10000})
-            }, 1000)
+            toast.update(id, {render: 'Password and check password not equals', type: "error", isLoading: false, autoClose: 7000})
             return
         }
         axios.post(API_USER_URL, {
@@ -32,7 +31,9 @@ const Register = () => {
             if (response.status === 201) {
                 setTimeout(()=> {
                     toast.update(id, {render: 'Success', type: "success", isLoading: false, autoClose: 500})
-                    navigate('/login')
+                    setCookie('accessToken', response.data.access)
+                    setCookie('refreshToken', response.data.refresh)
+                    navigate('/account')
                 }, 1000)
             }
         }).catch((error) => {
