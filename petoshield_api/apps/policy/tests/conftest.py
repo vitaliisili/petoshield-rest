@@ -53,7 +53,7 @@ def provider_user(roles):
 
 
 @pytest.fixture
-def service_provider(simple_user):
+def service_provider(provider_user):
     provider = ServiceProvider.objects.create(
         company_name = 'Service Provider 1',
         phone = '+49856547725',
