@@ -10,6 +10,8 @@ class UserPermission(permissions.BasePermission):
             return True
         elif view.action in ['retrieve', 'update', 'partial_update', 'destroy', 'me']:
             return request.user.is_authenticated
+        elif view.action == 'verify_email':
+            return True
         else:
             return False
 
@@ -25,5 +27,7 @@ class UserPermission(permissions.BasePermission):
             return request.user.is_staff
         elif view.action == 'me':
             return obj == request.user
+        elif view.action == 'verify_email':
+            return True
         else:
             return False

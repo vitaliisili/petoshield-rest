@@ -1,6 +1,6 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
-from apps.user.models import Role
+from apps.user.models import Role, MailVerificationTokens
 
 
 class RoleSerializer(serializers.ModelSerializer):
@@ -49,3 +49,10 @@ class ExtendUserSerializer(BaseUserSerializer):
         representation = super().to_representation(instance)
         representation['role'] = instance.role.name
         return representation
+
+
+class EmailVerificationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MailVerificationTokens
+        fields = ['id', 'user', 'confirmation_token']
+        read_only_fields = ['id']

@@ -2,6 +2,8 @@ from django.contrib.auth import get_user_model
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
+
+from apps.core.utils import EmailSender
 from apps.pet.models import Pet, Breed
 from apps.pet.permissions import BreedPermissions, PetPermission
 from apps.pet.serializers import PetSerializer, BaseBreedSerializer, ExtendBreedSerializer, PetUserCombinedSerializer
@@ -40,6 +42,8 @@ class PetViewSet(viewsets.ModelViewSet):
         pet = serializer.validated_data['pet']
         pet['user'] = user_instance
         Pet.objects.create(**pet)
+
+        EmailSender.send_confirmation_email(user, request.META.get('HTTP_REFERER'))
 
         return Response(data=serializer.data, status=status.HTTP_201_CREATED)
 
