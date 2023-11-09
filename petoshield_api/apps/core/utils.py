@@ -1,33 +1,27 @@
 from django.core.mail import send_mail
-from django.contrib.sites.models import Site
-from django.utils.http import urlsafe_base64_encode
-from django.utils.encoding import force_bytes
-from django.contrib.auth.tokens import default_token_generator
+from apps.user.models import User, MailVerificationTokens
+import uuid
+from config import settings
 
 
-from apps.user.models import User, MailVerificationTokens # Just for testing purposes
+class EmailSender:
 
-def generate_token(user: User):
-    """Token generator"""
-    token = default_token_generator.make_token(user)
-    uid = urlsafe_base64_encode(force_bytes(user.pk))
-    
-    return token, uid
+    @staticmethod
+    def send_confirmation_email(user: User, remote):
+        """Email confirmation function"""
 
+        token = uuid.uuid4()
+        confirmation_link = f"{remote}confirm-email/?token={token}"
 
-def send_confirmation_email(user_profile: User):
-    """Email confirmation function"""
-    
-    site = Site.objects.get_current()
-    token = MailVerificationTokens.objects.get(user=user_profile.pk)
-    confirmation_link = f"http://{site.domain}/confirm-email/{token.confirmation_token}/"
+        MailVerificationTokens.objects.create(user=user, confirmation_token=token)
 
-    subject = "Please, confirm your email"
-    message = f"Please click the following link to confirm your email address: {confirmation_link}"
+        subject = "Please, confirm your email"
+        message = f"Please click the following link to confirm your email address: {confirmation_link}"
 
-    send_mail(
-        subject, 
-        message, 
-        "timoschulz306@gmail.com", 
-        [user_profile.user.email]
-    )
+        send_mail(
+            subject,
+            message,
+            settings.EMAIL_HOST_USER,
+            [user.email]
+        )
+
