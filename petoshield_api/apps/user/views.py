@@ -6,6 +6,7 @@ from rest_framework.exceptions import ValidationError as RestValidationError
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 from rest_framework.decorators import action
+from rest_framework_simplejwt.tokens import RefreshToken
 from apps.user.models import Role
 from apps.user.permissions import UserPermission
 from apps.user.serializers import BaseUserSerializer, ExtendUserSerializer, RoleSerializer, RegisterUserSerializer
@@ -33,11 +34,12 @@ class UserViewSet(viewsets.ModelViewSet):
 
         serializer = RegisterUserSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        self.perform_create(serializer)
-        
-        #TODO: generate token and save it in the database
-        headers = self.get_success_headers(serializer.data)
-        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+        user = serializer.save()
+        refresh = RefreshToken.for_user(user)
+        return Response({
+            'access': str(refresh.access_token),
+            'refresh': str(refresh),
+        }, status=status.HTTP_201_CREATED)
 
     @action(detail=False, methods=['get'])
     def me(self, request):
