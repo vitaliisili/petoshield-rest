@@ -11,6 +11,7 @@ from apps.core.utils import EmailSender
 from apps.user.filters import RoleFilter, UserFilter
 from apps.user.models import Role, MailVerificationTokens
 from apps.user.permissions import UserPermission
+from django.utils.translation import gettext_lazy as _
 from apps.user.serializers import BaseUserSerializer, ExtendUserSerializer, RoleSerializer, RegisterUserSerializer
 
 
@@ -51,15 +52,15 @@ class UserViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['post'])
     def verify_email(self, request):
+        token = request.data.get('token')
+        mail_verification_token_instance = MailVerificationTokens.objects.filter(confirmation_token=token).first()
 
-        mail_verification_token_instance = MailVerificationTokens.objects.filter(
-            confirmation_token=request.data.get('token'))
+        if not mail_verification_token_instance:
+            raise RestValidationError(_('Email verification fail'))
 
-        if not mail_verification_token_instance.exists():
-            raise RestValidationError('Incorrect token')
+        get_user_model().objects.filter(pk=mail_verification_token_instance.user.id).update(is_verified=True)
 
-        get_user_model().objects.filter(pk=mail_verification_token_instance[0].user.id).update(is_verified=True)
-        return Response({'message': 'Thanks for verification'}, status=status.HTTP_200_OK)
+        return Response({'message': _('Email was verified')}, status=status.HTTP_200_OK)
 
 
 class RoleViewSet(viewsets.ModelViewSet):
