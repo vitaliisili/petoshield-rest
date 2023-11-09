@@ -16,6 +16,7 @@ class CustomPolicy(admin.ModelAdmin):
         'start_date',
         'end_date',
         'status',
+        'price',
         'initial_limit',
         'current_limit',
         'deductible',

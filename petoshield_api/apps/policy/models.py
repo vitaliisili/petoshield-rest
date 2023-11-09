@@ -28,6 +28,7 @@ class Policy(BaseModel):
     start_date = models.DateField()
     end_date = models.DateField()
     status = models.CharField(max_length=20, choices=POLICY_STATUS)
+    price = models.DecimalField(max_digits=8, decimal_places=2, default=10)
     initial_limit = models.DecimalField(max_digits=8, decimal_places=2)
     current_limit = models.DecimalField(max_digits=8, decimal_places=2)
     deductible = models.DecimalField(max_digits=6, decimal_places=2)

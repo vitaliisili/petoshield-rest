@@ -259,8 +259,46 @@ class TestPolicyEndpoints:
        api_client.force_authenticate(staff_user)
        response = api_client.get(f'{self.endpoint}?status=asd') 
        assert response.status_code == 400 
+    
+    #test filter by price
+    @pytest.mark.parametrize('price_, length', [(17.25, 1), (12.58, 1), ('', 4), ('99999', 0)])
+    def test_policy_filter_by_price_exact_success(self, staff_user, policies_list, api_client, price_, length):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}?price={price_}')
+        assert response.status_code == 200
+        assert len(json.loads(response.content)) == length
+        
+    def test_policy_filter_by_price_exact_bad_request(self, staff_user, policies_list, api_client):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}?price=one')
+        assert response.status_code == 400
+                
+    @pytest.mark.parametrize('price_, length', [(11, 4), (17.25, 0), ('', 4), ('99999', 0)])
+    def test_policy_filter_by_price_gt_success(self, staff_user, policies_list, api_client, price_, length):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}?price__gt={price_}')
+        assert response.status_code == 200
+        assert len(json.loads(response.content)) == length
+        
+    def test_policy_filter_by_price_gt_bad_request(self, staff_user, policies_list, api_client):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}?price__gt=one')
+        assert response.status_code == 400
+        
+    @pytest.mark.parametrize('price_, length', [(16, 3), (12.58, 1), ('', 4), ('99999', 4)])
+    def test_policy_filter_by_price_gt_success(self, staff_user, policies_list, api_client, price_, length):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}?price__lt={price_}')
+        assert response.status_code == 200
+        assert len(json.loads(response.content)) == length
+        
+    def test_policy_filter_by_price_lt_bad_request(self, staff_user, policies_list, api_client):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}?price__lt=one')
+        assert response.status_code == 400
+    
        
-    # test filter by initial_limit
+    # test filter by deductible
     @pytest.mark.parametrize('deductible, length', [(300, 1), (1000, 1), (2000, 1), ('', 4), ('99999', 0)])
     def test_policy_filter_by_deductible_exact_success(self, staff_user, policies_list, api_client, deductible, length):
         api_client.force_authenticate(staff_user)
