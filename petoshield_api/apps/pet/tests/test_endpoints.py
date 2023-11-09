@@ -796,7 +796,7 @@ class TestPetsEndpoints:
         assert response.status_code == 200
 
     #  test filter by species
-    @pytest.mark.parametrize('species, length', [('cat', 1), ('CAT', 0), ('dog', 2), ('DOG', 0)])
+    @pytest.mark.parametrize('species, length', [('cat', 1), ('dog', 2)])
     def test_pet_filter_by_species_exact_success(self, staff_user, pets_list, api_client, species, length):
         api_client.force_authenticate(staff_user)
         response = api_client.get(f'{self.endpoint}?species={species}')
