@@ -166,6 +166,26 @@ class TestServiceProviderEndpoints:
         api_client.force_authenticate(staff_user)
         response = api_client.get(f'{self.endpoint}?created_at=2023-10-10')
         assert response.status_code == 200
+ 
+    def test_service_provider_list_success(self, staff_user, api_client, service_provider_list):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(self.endpoint)
+        assert response.status_code == 200
+        assert len(json.loads(response.content)) == len(service_provider_list)
+        
+    def test_service_provider_list_with_provider_unauthorized(self, provider_user, api_client):
+        api_client.force_authenticate(provider_user)
+        response = api_client.get(self.endpoint)
+        assert response.status_code == 403
+        
+    def test_service_provider_list_with_simple_user_unauthorized(self, simple_user, api_client):
+        api_client.force_authenticate(simple_user)
+        response = api_client.get(self.endpoint)
+        assert response.status_code == 403
+        
+    def test_service_provider_list_with_anonymous_user_unauthorized(self, api_client):
+        response = api_client.get(self.endpoint)
+        assert response.status_code == 401
         
 class TestPolicyEndpoints:
     endpoint = '/api/insurance/policies/'
