@@ -32,6 +32,7 @@ class PolicyFilter(filters.FilterSet):
             'start_date': ['exact','gt','lt'],
             'end_date': ['exact','gt','lt'],
             'status': ['exact', 'icontains'],
+            'price': ['exact', 'gt', 'lt'],
             'deductible': ['exact','gt','lt'],
             'created_at': ['exact', 'gt', 'lt']
             }
