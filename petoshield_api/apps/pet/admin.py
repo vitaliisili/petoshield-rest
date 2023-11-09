@@ -3,7 +3,7 @@ from apps.pet import models
 
 
 class CustomBreed(admin.ModelAdmin):
-    list_display=(
+    list_display = (
         'name',
         'species',
         'age_min',
@@ -11,16 +11,17 @@ class CustomBreed(admin.ModelAdmin):
         'risk_level',
         'get_description'
     )
-    
-    @admin.display(description = "description")
-    def get_description(self,obj):
-        if len(obj.description)>50:
+
+    @admin.display(description="description")
+    def get_description(self, obj):
+        if len(obj.description) > 50:
             return f"{obj.description[:50]}..."
-    
+
         return f"{obj.description[:50]}"
-    
+
+
 class CustomPet(admin.ModelAdmin):
-    list_display= (
+    list_display = (
         'name',
         'age',
         'gender',
@@ -28,9 +29,9 @@ class CustomPet(admin.ModelAdmin):
         'get_breed',
         'user'
     )
-    
+
     @admin.display(description='breed')
-    def get_breed(self,obj):
+    def get_breed(self, obj):
         return obj.breed.name
 
 

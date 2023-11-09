@@ -55,12 +55,12 @@ def provider_user(roles):
 @pytest.fixture
 def service_provider(provider_user):
     provider = ServiceProvider.objects.create(
-        company_name = 'Service Provider 1',
-        phone = '+49856547725',
-        registration_number = '56899-5655-581',
-        address = 'Musterstrasse3, 34332 MusterLand',
-        iban = 'DE5689562365002354',
-        user = provider_user
+        company_name='Service Provider 1',
+        phone='+49856547725',
+        registration_number='56899-5655-581',
+        address='Musterstrasse3, 34332 MusterLand',
+        iban='DE5689562365002354',
+        user=provider_user
     )
     return provider
 
@@ -121,6 +121,7 @@ def pets_list(breed, simple_user, staff_user):
     ]
     return pets_list
 
+
 @pytest.fixture
 def users_list(roles):
     users_list = [
@@ -141,35 +142,36 @@ def users_list(roles):
     ]
     return users_list
 
+
 @pytest.fixture
 def service_provider_list(service_provider, users_list):
     provider_list = [
         service_provider,
         ServiceProvider.objects.create(
-            company_name = 'Service Provider 2',
-            phone = '+492222222222',
-            registration_number = '56899-5655-582',
-            address = 'Musterstrasse2, 34332 MusterLand2',
-            iban = 'DE5689562365002222',
-            user = users_list[0]
-                 ),
+            company_name='Service Provider 2',
+            phone='+492222222222',
+            registration_number='56899-5655-582',
+            address='Musterstrasse2, 34332 MusterLand2',
+            iban='DE5689562365002222',
+            user=users_list[0]
+        ),
         ServiceProvider.objects.create(
-            company_name = 'Service Provider 3',
-            phone = '+493333333333',
-            registration_number = '56899-5655-583',
-            address = 'Musterstrasse3, 34332 MusterLand3',
-            iban = 'DE5689562365003333',
-            user = users_list[1]
-                 ),
+            company_name='Service Provider 3',
+            phone='+493333333333',
+            registration_number='56899-5655-583',
+            address='Musterstrasse3, 34332 MusterLand3',
+            iban='DE5689562365003333',
+            user=users_list[1]
+        ),
         ServiceProvider.objects.create(
-            company_name = 'Service Provider 4',
-            phone = '+49444444444',
-            registration_number = '56899-5655-584',
-            address = 'Musterstrasse4, 34332 MusterLand4',
-            iban = 'DE5689562365004444',
-            user = users_list[2]
-                 ),       
-        
+            company_name='Service Provider 4',
+            phone='+49444444444',
+            registration_number='56899-5655-584',
+            address='Musterstrasse4, 34332 MusterLand4',
+            iban='DE5689562365004444',
+            user=users_list[2]
+        ),
+
     ]
     return provider_list
 
@@ -177,15 +179,15 @@ def service_provider_list(service_provider, users_list):
 @pytest.fixture
 def policy(pet):
     policy_ex = Policy.objects.create(
-        policy_number = '84-121-4860',
-        start_date = '2023-11-01',
-        end_date = '2024-11-01',
-        status = 'valid',
-        price = 12.58,
-        initial_limit = 100000,
-        current_limit = 100000,
-        deductible = 1000,
-        pet = pet
+        policy_number='84-121-4860',
+        start_date='2023-11-01',
+        end_date='2024-11-01',
+        status='valid',
+        price=12.58,
+        initial_limit=100000,
+        current_limit=100000,
+        deductible=1000,
+        pet=pet
     )
     return policy_ex
 
@@ -195,37 +197,37 @@ def policies_list(policy, pets_list):
     list = [
         policy,
         Policy.objects.create(
-            policy_number = '22-222-4860',
-            start_date = '2023-11-02',
-            end_date = '2024-11-02',
-            status = 'valid',
-            price = 17.25,
-            initial_limit = 100000,
-            current_limit = 100000,
-            deductible = 500,
-            pet = pets_list[0]
+            policy_number='22-222-4860',
+            start_date='2023-11-02',
+            end_date='2024-11-02',
+            status='valid',
+            price=17.25,
+            initial_limit=100000,
+            current_limit=100000,
+            deductible=500,
+            pet=pets_list[0]
         ),
         Policy.objects.create(
-            policy_number = '33-333-4860',
-            start_date = '2022-11-01',
-            end_date = '2023-11-01',
-            status = 'expired',
-            price = 11.99,
-            initial_limit = 100000,
-            current_limit = 100000,
-            deductible = 2000,
-            pet = pets_list[1]
+            policy_number='33-333-4860',
+            start_date='2022-11-01',
+            end_date='2023-11-01',
+            status='expired',
+            price=11.99,
+            initial_limit=100000,
+            current_limit=100000,
+            deductible=2000,
+            pet=pets_list[1]
         ),
         Policy.objects.create(
-            policy_number = '44-444-4860',
-            start_date = '2023-09-03',
-            end_date = '2024-09-03',
-            status = 'valid',
-            price = 15.89,
-            initial_limit = 100000,
-            current_limit = 100000,
-            deductible = 300,
-            pet = pets_list[2]
+            policy_number='44-444-4860',
+            start_date='2023-09-03',
+            end_date='2024-09-03',
+            status='valid',
+            price=15.89,
+            initial_limit=100000,
+            current_limit=100000,
+            deductible=300,
+            pet=pets_list[2]
         )
     ]
     return list
@@ -234,11 +236,11 @@ def policies_list(policy, pets_list):
 @pytest.fixture
 def insurance_case(policy, service_provider):
     insurance_case_ex = InsuranceCase.objects.create(
-        claim_date = '2023-11-03',
-        description = 'Accident happened',
-        status = 'accept',
-        policy = policy,
-        service_provider = service_provider
+        claim_date='2023-11-03',
+        description='Accident happened',
+        status='accept',
+        policy=policy,
+        service_provider=service_provider
     )
     return insurance_case_ex
 
@@ -248,46 +250,48 @@ def insurance_cases_list(insurance_case, policies_list, service_provider_list):
     insurance_cases_list_ex = [
         insurance_case,
         InsuranceCase.objects.create(
-            claim_date = '2023-11-03',
-            description = 'Accident happened',
-            status = 'process',
-            policy = policies_list[1],
-            service_provider = service_provider_list[1]
-            ),
+            claim_date='2023-11-03',
+            description='Accident happened',
+            status='process',
+            policy=policies_list[1],
+            service_provider=service_provider_list[1]
+        ),
         InsuranceCase.objects.create(
-            claim_date = '2023-10-29',
-            description = 'Accident happened',
-            status = 'reject',
-            policy = policies_list[2],
-            service_provider = service_provider_list[2]
-            ),
+            claim_date='2023-10-29',
+            description='Accident happened',
+            status='reject',
+            policy=policies_list[2],
+            service_provider=service_provider_list[2]
+        ),
         InsuranceCase.objects.create(
-            claim_date = '2023-11-05',
-            description = 'Accident happened',
-            status = 'accept',
-            policy = policies_list[3],
-            service_provider = service_provider_list[3]
-            )
+            claim_date='2023-11-05',
+            description='Accident happened',
+            status='accept',
+            policy=policies_list[3],
+            service_provider=service_provider_list[3]
+        )
     ]
     return insurance_cases_list_ex
+
 
 @pytest.fixture
 def incoming_invoice(insurance_case):
     incoming_invoice_ex = IncomingInvoice.objects.create(
-        invoice_date = '2023-11-03',
-        amount = 125.39,
-        insurance_case = insurance_case
-    ) 
+        invoice_date='2023-11-03',
+        amount=125.39,
+        insurance_case=insurance_case
+    )
     return incoming_invoice_ex
+
 
 @pytest.fixture
 def incoming_invoices_list(incoming_invoice, insurance_cases_list):
     incoming_invoices_list_ex = [
         incoming_invoice,
         IncomingInvoice.objects.create(
-            invoice_date = '2023-11-06',
-            amount = 750.50,
-            insurance_case = insurance_cases_list[3]
+            invoice_date='2023-11-06',
+            amount=750.50,
+            insurance_case=insurance_cases_list[3]
         ),
     ]
     return incoming_invoices_list_ex

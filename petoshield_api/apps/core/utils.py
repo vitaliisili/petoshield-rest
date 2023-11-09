@@ -24,4 +24,3 @@ class EmailSender:
             settings.EMAIL_HOST_USER,
             [user.email]
         )
-
