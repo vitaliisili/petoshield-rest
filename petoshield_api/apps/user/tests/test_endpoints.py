@@ -14,7 +14,7 @@ class TestUserEndpoints:
         }
         response = api_client.post(self.endpoint, data=data)
         assert response.status_code == 201
-        
+
     def test_user_save_success_valid_data(self, api_client, roles):
         data = {
             'name': 'Test name',
@@ -23,9 +23,8 @@ class TestUserEndpoints:
             'role': 1
         }
         response = api_client.post(self.endpoint, data=data)
-        assert len(json.loads(response.content).get('access_token')) > 0
-        assert len(json.loads(response.content).get('refresh_token')) > 0
-        
+        assert len(json.loads(response.content).get('access')) > 0
+        assert len(json.loads(response.content).get('refresh')) > 0
 
     def test_user_save_not_unique_email(self, api_client, staff_user):
         data = {
@@ -34,7 +33,7 @@ class TestUserEndpoints:
             'password': 'password1A@',
             'role': 1
         }
-        
+
         response = api_client.post(self.endpoint, data=data)
         assert response.status_code == 400
 
@@ -239,76 +238,77 @@ class TestUserEndpoints:
         assert response.status_code == 404
 
     # test user filter by role
-    @pytest.mark.parametrize('role_, length', [('client', 4), ('cl', 4), ('ADMIN', 1), ('provider', 0), (' ', 5), ('nothing', 0)])
-    def test_user_filter_by_role_success(self, staff_user,users_list , api_client, role_, length):
+    @pytest.mark.parametrize('role_, length',
+                             [('client', 4), ('cl', 4), ('ADMIN', 1), ('provider', 0), (' ', 5), ('nothing', 0)])
+    def test_user_filter_by_role_success(self, staff_user, users_list, api_client, role_, length):
         api_client.force_authenticate(staff_user)
         response = api_client.get(f'{self.endpoint}?role={role_}')
         assert response.status_code == 200
         assert len(json.loads(response.content)) == length
-        
+
     # test filter by created_at
     def test_user_filter_by_created_at_year_exact_success(self, staff_user, users_list, api_client):
         api_client.force_authenticate(staff_user)
         response = api_client.get(f'{self.endpoint}?created_at__year__exact=2023')
-        assert response.status_code == 200 
+        assert response.status_code == 200
         assert len(json.loads(response.content)) == 5
-        
+
     def test_user_filter_by_created_at_year_exact_bad_request(self, staff_user, users_list, api_client):
         api_client.force_authenticate(staff_user)
         response = api_client.get(f'{self.endpoint}?created_at__year__exact=2023-10-20')
-        assert response.status_code == 400 
-        
-    @pytest.mark.parametrize('year, length', [(2022, 5), (2023, 0), ('2022', 5)])   
+        assert response.status_code == 400
+
+    @pytest.mark.parametrize('year, length', [(2022, 5), (2023, 0), ('2022', 5)])
     def test_user_filter_by_created_at_year_gt_success(self, staff_user, users_list, api_client, year, length):
         api_client.force_authenticate(staff_user)
         response = api_client.get(f'{self.endpoint}?created_at__year__gt={year}')
-        assert response.status_code == 200 
+        assert response.status_code == 200
         assert len(json.loads(response.content)) == length
-        
+
     def test_user_filter_by_created_at_year_gt_bad_request(self, staff_user, users_list, api_client):
         api_client.force_authenticate(staff_user)
         response = api_client.get(f'{self.endpoint}?created_at__year__gt=2023-10-20')
-        assert response.status_code == 400 
-        
-    @pytest.mark.parametrize('year, length', [(2022, 0), (2024, 5), ('2022', 0)])   
+        assert response.status_code == 400
+
+    @pytest.mark.parametrize('year, length', [(2022, 0), (2024, 5), ('2022', 0)])
     def test_user_filter_by_created_at_year_lt_success(self, staff_user, users_list, api_client, year, length):
         api_client.force_authenticate(staff_user)
         response = api_client.get(f'{self.endpoint}?created_at__year__lt={year}')
-        assert response.status_code == 200 
+        assert response.status_code == 200
         assert len(json.loads(response.content)) == length
-        
+
     def test_user_filter_by_created_at_year_lt_bad_request(self, staff_user, users_list, api_client):
         api_client.force_authenticate(staff_user)
         response = api_client.get(f'{self.endpoint}?created_at__year__lt=2023-10-20')
-        assert response.status_code == 400 
-        
+        assert response.status_code == 400
+
     def test_user_filter_by_created_at_bad_request(self, staff_user, users_list, api_client):
         api_client.force_authenticate(staff_user)
         response = api_client.get(f'{self.endpoint}?created_at=2023')
-        assert response.status_code == 400 
-        
+        assert response.status_code == 400
+
     def test_user_filter_by_created_at_bad_success(self, staff_user, users_list, api_client):
         api_client.force_authenticate(staff_user)
         response = api_client.get(f'{self.endpoint}?created_at=2023-10-10')
         assert response.status_code == 200
-        
+
     # test filter by email
     @pytest.mark.parametrize(
-        'email_, length', 
-            [
-        ('admin@mail.com',1), 
-        ('ADMIN@mail.com', 0), 
-        ('simple_user@mail.com',1),
-        ('simpLE_user@mail.com', 0),
-        ('not_valid_mail', 0)
+        'email_, length',
+        [
+            ('admin@mail.com', 1),
+            ('ADMIN@mail.com', 0),
+            ('simple_user@mail.com', 1),
+            ('simpLE_user@mail.com', 0),
+            ('not_valid_mail', 0)
         ]
-            )
+    )
     def test_user_filter_by_email_success(self, staff_user, users_list, api_client, email_, length):
         api_client.force_authenticate(staff_user)
         response = api_client.get(f'{self.endpoint}?email={email_}')
         assert response.status_code == 200
         assert len(json.loads(response.content)) == length
-        
+
     # test filter by _name
     @pytest.mark.parametrize('user_name, length', [('Example Name1', 1), ('Example', 3), (' ', 5)])
     def test_user_filter_by_name_icontains_success(self, staff_user, users_list, user_name, api_client, length):
@@ -316,14 +316,14 @@ class TestUserEndpoints:
         response = api_client.get(f'{self.endpoint}?name__icontains={user_name}')
         assert response.status_code == 200
         assert len(json.loads(response.content)) == length
-        
+
     @pytest.mark.parametrize('user_name, length', [('Example Name1', 1), ('Example', 0), (' ', 5)])
     def test_user_filter_by_name_exact_success(self, staff_user, users_list, user_name, api_client, length):
         api_client.force_authenticate(staff_user)
         response = api_client.get(f'{self.endpoint}?name={user_name}')
         assert response.status_code == 200
         assert len(json.loads(response.content)) == length
-        
+
     # test filter by is_active
     @pytest.mark.parametrize('is_active_, length', [('true', 4), (1, 4), (' ', 5), (0, 1), ('false', 1)])
     def test_user_filter_by_is_active_success(self, staff_user, users_list, is_active_, api_client, length):
@@ -331,6 +331,8 @@ class TestUserEndpoints:
         response = api_client.get(f'{self.endpoint}?is_active={is_active_}')
         assert response.status_code == 200
         assert len(json.loads(response.content)) == length
+
+
 class TestRoleEndpoints:
     endpoint = '/api/roles/'
 
@@ -344,7 +346,7 @@ class TestRoleEndpoints:
         response = api_client.post(self.endpoint, data=data, format='json')
         assert response.status_code == 201
         assert json.loads(response.content).get('name') == data.get('name')
-    
+
     def test_role_save_with_simple_user_forbidden(self, simple_user, api_client):
         api_client.force_authenticate(simple_user)
         data = {
@@ -353,7 +355,7 @@ class TestRoleEndpoints:
         }
         response = api_client.post(self.endpoint, data=data, format='json')
         assert response.status_code == 403
-    
+
     def test_role_save_with_provider_user_forbidden(self, provider_user, api_client):
         api_client.force_authenticate(provider_user)
         data = {
@@ -370,7 +372,7 @@ class TestRoleEndpoints:
         }
         response = api_client.post(self.endpoint, data=data, format='json')
         assert response.status_code == 401
-    
+
     @pytest.mark.parametrize('name', ['', ' '])
     def test_role_save_with_wrong_data_bad_request(self, staff_user, api_client, name):
         api_client.force_authenticate(staff_user)
@@ -380,7 +382,7 @@ class TestRoleEndpoints:
         }
         response = api_client.post(self.endpoint, data=data, format='json')
         assert response.status_code == 400
-    
+
     def test_role_save_already_existing(self, staff_user, api_client, roles):
         api_client.force_authenticate(staff_user)
         data = {
@@ -389,7 +391,7 @@ class TestRoleEndpoints:
         }
         response = api_client.post(self.endpoint, data=data, format='json')
         assert response.status_code == 400
-    
+
     # testing geting of the list of user roles
     def test_role_get_list_with_staff_user_success(self, staff_user, api_client):
         api_client.force_authenticate(staff_user)
@@ -400,7 +402,7 @@ class TestRoleEndpoints:
         api_client.force_authenticate(simple_user)
         response = api_client.get(self.endpoint)
         assert response.status_code == 403
-    
+
     def test_role_get_list_with_provider_user_forbidden(self, provider_user, api_client):
         api_client.force_authenticate(provider_user)
         response = api_client.get(self.endpoint)
@@ -409,7 +411,7 @@ class TestRoleEndpoints:
     def test_role_get_list_with_non_authenticated_unauthorized(self, api_client):
         response = api_client.get(self.endpoint)
         assert response.status_code == 401
-    
+
     # testing retieve of the user's role
     def test_role_retrieve_one_with_staff_user_status_success(self, staff_user, api_client, roles):
         api_client.force_authenticate(staff_user)
@@ -420,22 +422,22 @@ class TestRoleEndpoints:
         api_client.force_authenticate(provider_user)
         response = api_client.get(f'{self.endpoint}{roles[0].id}/')
         assert response.status_code == 403
-    
+
     def test_role_retrieve_one_with_simple_user_status_forbidden(self, simple_user, api_client, roles):
         api_client.force_authenticate(simple_user)
         response = api_client.get(f'{self.endpoint}{roles[0].id}/')
         assert response.status_code == 403
-    
+
     def test_role_retrieve_one_with_unauthenticated_status_unauthorized(self, api_client, roles):
         response = api_client.get(f'{self.endpoint}{roles[0].id}/')
         assert response.status_code == 401
-    
+
     @pytest.mark.parametrize("id", ["", " ", -1, "acd", 999999])
     def test_role_retrieve_with_wrong_id_not_found(self, staff_user, api_client, roles, id):
         api_client.force_authenticate(staff_user)
         response = api_client.get(f'{self.endpoint}{id}/')
         assert response.status_code == 404
-    
+
     # testing update of the user's role
     def test_role_update_with_staff_user_success(self, staff_user, api_client, roles):
         api_client.force_authenticate(staff_user)
@@ -446,7 +448,7 @@ class TestRoleEndpoints:
         response = api_client.put(f'{self.endpoint}{roles[0].id}/', data=data, format="json")
         assert response.status_code == 200
         assert json.loads(response.content).get("name") == data.get("name")
-    
+
     def test_role_update_with_provider_user_forbidden(self, provider_user, api_client, roles):
         api_client.force_authenticate(provider_user)
         data = {
@@ -455,7 +457,7 @@ class TestRoleEndpoints:
         }
         response = api_client.put(f'{self.endpoint}{roles[0].id}/', data=data, format="json")
         assert response.status_code == 403
-    
+
     def test_role_update_with_simple_user_forbidden(self, simple_user, api_client, roles):
         api_client.force_authenticate(simple_user)
         data = {
@@ -473,7 +475,7 @@ class TestRoleEndpoints:
         response = api_client.put(f'{self.endpoint}{roles[0].id}/', data=data, format="json")
         assert response.status_code == 401
 
-# testing patching of the particular user's role 
+    # testing patching of the particular user's role
     def test_role_patch_with_staff_user_success(self, staff_user, api_client, roles):
         api_client.force_authenticate(staff_user)
         data = {
@@ -483,7 +485,7 @@ class TestRoleEndpoints:
         assert response.status_code == 200
         assert json.loads(response.content).get("name") == roles[0].name
         assert json.loads(response.content).get("description") == data.get("description")
-    
+
     def test_role_patch_with_provider_user_forbidden(self, provider_user, api_client, roles):
         api_client.force_authenticate(provider_user)
         data = {
@@ -491,7 +493,7 @@ class TestRoleEndpoints:
         }
         response = api_client.patch(f'{self.endpoint}{roles[0].id}/', data=data, format="json")
         assert response.status_code == 403
-    
+
     def test_role_patch_with_simple_user_forbidden(self, simple_user, api_client, roles):
         api_client.force_authenticate(simple_user)
         data = {
@@ -511,9 +513,9 @@ class TestRoleEndpoints:
     def test_role_delete_with_staff_user_success(self, staff_user, api_client, roles):
         api_client.force_authenticate(staff_user)
         response = api_client.delete(f'{self.endpoint}{roles[0].id}/')
-        
-        assert response.status_code == 204 # no content = success
-    
+
+        assert response.status_code == 204  # no content = success
+
     def test_role_delete_with_provider_user_forbidden(self, provider_user, api_client, roles):
         api_client.force_authenticate(provider_user)
         data = {
@@ -521,7 +523,7 @@ class TestRoleEndpoints:
         }
         response = api_client.delete(f'{self.endpoint}{roles[0].id}/', data=data, format="json")
         assert response.status_code == 403
-    
+
     def test_role_delete_with_simple_user_forbidden(self, simple_user, api_client, roles):
         api_client.force_authenticate(simple_user)
         data = {
@@ -536,19 +538,18 @@ class TestRoleEndpoints:
         }
         response = api_client.delete(f'{self.endpoint}{roles[0].id}/', data=data, format="json")
         assert response.status_code == 401
-        
-    #test filter by _name
+
+    # test filter by _name
     @pytest.mark.parametrize('role_name, length', [('admin', 1), ('client', 1), (' ', 3), ('provider', 1)])
     def test_role_filter_by_name_exact_success(self, staff_user, roles, users_list, role_name, api_client, length):
         api_client.force_authenticate(staff_user)
         response = api_client.get(f'{self.endpoint}?name={role_name}')
         assert response.status_code == 200
         assert len(json.loads(response.content)) == length
-        
+
     @pytest.mark.parametrize('role_name, length', [('ad', 1), ('clie', 1), (' ', 3), ('vider', 1)])
     def test_role_filter_by_name_icontains_success(self, staff_user, roles, role_name, api_client, length):
         api_client.force_authenticate(staff_user)
         response = api_client.get(f'{self.endpoint}?name__icontains={role_name}')
         assert response.status_code == 200
         assert len(json.loads(response.content)) == length
-        
