@@ -3,6 +3,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from apps.core.models import BaseModel
 from apps.pet.models import Pet
+from config import settings
 
 
 class ServiceProvider(BaseModel):
@@ -28,7 +29,7 @@ class Policy(BaseModel):
     start_date = models.DateField()
     end_date = models.DateField()
     status = models.CharField(max_length=20, choices=POLICY_STATUS)
-    price = models.DecimalField(max_digits=8, decimal_places=2, default=10)
+    price = models.DecimalField(max_digits=8, decimal_places=2, default=settings.POLICY_BASE_PRICE)
     initial_limit = models.DecimalField(max_digits=8, decimal_places=2)
     current_limit = models.DecimalField(max_digits=8, decimal_places=2)
     deductible = models.DecimalField(max_digits=6, decimal_places=2)
