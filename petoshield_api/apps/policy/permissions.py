@@ -31,8 +31,6 @@ class PolicyPermissions(permissions.BasePermission):
     def has_permission(self, request, view):
         if view.action in ['retrieve', 'list']:
             return request.user.role.name in self.ROLES
-        elif view.action == 'create':
-            return False
         elif view.action in ['update', 'partial_update', 'destroy']:
             return request.user.is_staff
         else:
