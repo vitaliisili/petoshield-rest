@@ -13,7 +13,7 @@ class RoleSerializer(serializers.ModelSerializer):
 class BaseUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = get_user_model()
-        fields = ['id', 'email', 'name']
+        fields = ['id', 'email', 'name', 'image']
         read_only_fields = ['id']
 
     def create(self, validated_data):

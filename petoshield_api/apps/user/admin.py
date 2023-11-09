@@ -9,8 +9,9 @@ class CustomUser(admin.ModelAdmin):
         'is_active', 
         'get_role', 
         'is_staff', 
+        'is_verified', 
         'created_at', 
-        'updated_at'
+        'updated_at' 
     )
     
     @admin.display(description='Role')
