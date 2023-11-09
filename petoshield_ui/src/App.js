@@ -16,6 +16,7 @@ import PetRegistration from "./pages/PetRegistration";
 import PetOnlyRegistration from "./pages/PetOnlyRegistration";
 import PetProfile from "./pages/PetProfile";
 import PrivateRoute from "./utils/PrivateRoute";
+import EmailVerification from "./pages/EmailVerification";
 
 const App = () => {
     return (
@@ -33,6 +34,7 @@ const App = () => {
                 <Route exact path='/register' element={<Register/>}/>
                 <Route exact path='/pass-recovery' element={<PrivateRoute><PasswordRecovery/></PrivateRoute>}/>
                 <Route exact path='/pet-registration' element={<PetRegistration/>}/>
+                <Route exact path='/confirm-email' element={<EmailVerification/>}/>
                 <Route exact path='/new-pet' element={<PrivateRoute><PetOnlyRegistration/></PrivateRoute>}/>
                 <Route exact path='/pet-profile/:id' element={<PrivateRoute><PetProfile/></PrivateRoute>}/>
                 <Route exact path='*' element={<NotFound/>}/>
