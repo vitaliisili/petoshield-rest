@@ -2,7 +2,7 @@ runserver:
 	python petoshield_api/manage.py runserver
 
 install:
-	pip install -r requirements.txt
+	cd petoshield_api && pip install -r requirements.txt
 
 makemigrations:
 	python petoshield_api/manage.py makemigrations
