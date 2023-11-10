@@ -5,7 +5,7 @@ import Footer from "../components/Footer";
 import {Link, useLocation, useNavigate} from "react-router-dom";
 import {API_BREEDS_URL, API_PETS_CREATE_WITH_USER_URL} from "../utils/apiUrls";
 import axios from "axios";
-import {getCookie} from "../utils/cookiesUtils";
+import {getCookie, setCookie} from "../utils/cookiesUtils";
 import {toast, ToastContainer} from "react-toastify";
 
 const PetRegistration = () => {
@@ -71,8 +71,11 @@ const PetRegistration = () => {
                 }
         }).then(response => {
             if (response.status === 201){
+                setCookie('accessToken', response.data.access)
+                setCookie('refreshToken', response.data.refresh)
+                toast.update(id, {render: 'Success', type: "success", isLoading: false, autoClose: 1000})
                 setTimeout(()=> {
-                    toast.update(id, {render: 'Success', type: "success", isLoading: false, autoClose: 500})
+                    navigate(`/pet-quote/${response.data.pet}`)
                 }, 1000)
             }
         }).catch(error => {

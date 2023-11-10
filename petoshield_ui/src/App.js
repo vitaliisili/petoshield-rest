@@ -17,6 +17,7 @@ import PetOnlyRegistration from "./pages/PetOnlyRegistration";
 import PetProfile from "./pages/PetProfile";
 import PrivateRoute from "./utils/PrivateRoute";
 import EmailVerification from "./pages/EmailVerification";
+import Quote from "./pages/Quote";
 
 const App = () => {
     return (
@@ -37,6 +38,7 @@ const App = () => {
                 <Route exact path='/confirm-email' element={<EmailVerification/>}/>
                 <Route exact path='/new-pet' element={<PrivateRoute><PetOnlyRegistration/></PrivateRoute>}/>
                 <Route exact path='/pet-profile/:id' element={<PrivateRoute><PetProfile/></PrivateRoute>}/>
+                <Route exact path='/pet-quote/:id' element={<PrivateRoute><Quote/></PrivateRoute>}/>
                 <Route exact path='*' element={<NotFound/>}/>
             </Routes>
         </BrowserRouter>
