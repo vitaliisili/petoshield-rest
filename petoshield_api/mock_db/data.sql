@@ -150,30 +150,6 @@ INSERT INTO public.policy_serviceprovider (user_id, created_at, updated_at, comp
 
 
 
--- POLICY__PROVIDER_RELATION_TABLE
--- INSERT INTO public.policy_policy_providers (policy_id, serviceprovider_id) VALUES (1, 1);
--- INSERT INTO public.policy_policy_providers (policy_id, serviceprovider_id) VALUES (2, 1);
--- INSERT INTO public.policy_policy_providers (policy_id, serviceprovider_id) VALUES (3, 1);
--- INSERT INTO public.policy_policy_providers (policy_id, serviceprovider_id) VALUES (4, 1);
--- INSERT INTO public.policy_policy_providers (policy_id, serviceprovider_id) VALUES (5, 1);
--- INSERT INTO public.policy_policy_providers (policy_id, serviceprovider_id) VALUES (6, 2);
--- INSERT INTO public.policy_policy_providers (policy_id, serviceprovider_id) VALUES (7, 2);
--- INSERT INTO public.policy_policy_providers (policy_id, serviceprovider_id) VALUES (8, 2);
--- INSERT INTO public.policy_policy_providers (policy_id, serviceprovider_id) VALUES (9, 2);
--- INSERT INTO public.policy_policy_providers (policy_id, serviceprovider_id) VALUES (10, 3);
--- INSERT INTO public.policy_policy_providers (policy_id, serviceprovider_id) VALUES (11, 3);
--- INSERT INTO public.policy_policy_providers (policy_id, serviceprovider_id) VALUES (12, 3);
--- INSERT INTO public.policy_policy_providers (policy_id, serviceprovider_id) VALUES (13, 4);
--- INSERT INTO public.policy_policy_providers (policy_id, serviceprovider_id) VALUES (14, 4);
--- INSERT INTO public.policy_policy_providers (policy_id, serviceprovider_id) VALUES (15, 5);
--- -- policy relation for simple user policies
--- INSERT INTO public.policy_policy_providers (policy_id, serviceprovider_id) VALUES (21, 1);
--- INSERT INTO public.policy_policy_providers (policy_id, serviceprovider_id) VALUES (22, 1);
--- INSERT INTO public.policy_policy_providers (policy_id, serviceprovider_id) VALUES (23, 2);
-
-
-
-
 -- INSURANCE_CASES_TABLE
 -- service provider with id 1
 INSERT INTO policy_insurancecase(created_at, updated_at, claim_date, policy_id, service_provider_id, status, description) VALUES ('2022-12-20 00:00:00.000000 +00:00', '2023-10-19 00:00:00.000000', '2022-12-20 00:00:00.000000 +00:00', 1, 1, 'accept',  'case 1 description');

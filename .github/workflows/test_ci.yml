@@ -29,6 +29,7 @@ jobs:
       CORS_ALLOWED_ORIGINS: ${{ secrets.CORS_ALLOWED_ORIGINS }}
       EMAIL_HOST_USER: ${{ secrets.EMAIL_HOST_USER }}
       EMAIL_HOST_PASSWORD: ${{ secrets.EMAIL_HOST_PASSWORD }}
+      POLICY_BASE_PRICE: ${{ secrets.POLICY_BASE_PRICE }}
 
     services:
       database:

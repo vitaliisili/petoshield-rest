@@ -1,9 +1,12 @@
 from rest_framework import serializers
 from apps.pet.models import Pet, Breed
+from apps.policy.serializers import PolicySerializer
 from apps.user.serializers import BaseUserSerializer
 
 
 class PetSerializer(serializers.ModelSerializer):
+    policy = PolicySerializer(read_only=True, many=True)
+
     class Meta:
         model = Pet
         fields = '__all__'
@@ -12,6 +15,10 @@ class PetSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         representation = super().to_representation(instance)
         representation['breed'] = instance.breed.name
+
+        policy = instance.policy.first()
+        representation['policy'] = PolicySerializer(policy).data if policy else None
+
         return representation
 
 
