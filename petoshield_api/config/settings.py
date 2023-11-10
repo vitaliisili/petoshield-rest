@@ -20,7 +20,8 @@ CUSTOM_APPS = [
     'apps.core',
     'apps.user',
     'apps.policy',
-    'apps.pet'
+    'apps.pet',
+    'apps.tickets',
 ]
 
 THIRD_PARTY_APPS = [
