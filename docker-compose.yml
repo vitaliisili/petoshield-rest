@@ -10,6 +10,8 @@ services:
       POSTGRES_USER: $DB_USER
       POSTGRES_PASSWORD: $DB_PASSWORD
       POSTGRES_DB: $DB_NAME
+    env_file:
+      - petoshield_api/.env
     restart: always
     volumes:
       - petoshield_data:/var/lib/postgresql/data/
