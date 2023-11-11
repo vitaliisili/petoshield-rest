@@ -62,8 +62,8 @@ pipeline {
 
         stage('Build FrontEnd') {
             steps {
-                sh 'make install-web'
-                sh 'make build-web'
+                sh 'cd petoshield_ui && npm install'
+                sh 'cd petoshield_ui && npm run build'
             }
         }
 
