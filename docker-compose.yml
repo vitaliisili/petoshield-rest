@@ -3,7 +3,7 @@ version: "3"
 services:
   petoshield_db:
     image: postgres:latest
-    container_name: postgres_db
+    container_name: petoshield_db
     ports:
       - "5435:5432"
     environment:
