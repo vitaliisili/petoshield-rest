@@ -57,7 +57,6 @@ pipeline {
                 sh 'echo EMAIL_HOST_PASSWORD=EMAIL_HOST_PASSWORD >> petoshield_api/.env'
                 sh 'echo POLICY_BASE_PRICE=POLICY_BASE_PRICE >> petoshield_api/.env'
                 sh 'echo REACT_APP_BACKEND_URL=REACT_APP_BACKEND_URL > petoshield_ui/.env'
-                sh 'echo CI=false >> petoshield_ui/.env'
             }
         }
 
