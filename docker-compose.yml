@@ -1,0 +1,36 @@
+version: "3"
+
+services:
+  petoshield_db:
+    image: postgres:latest
+    container_name: postgres_db
+    ports:
+      - "5435:5432"
+    environment:
+      POSTGRES_USER: $DB_USER
+      POSTGRES_PASSWORD: $DB_PASSWORD
+      POSTGRES_DB: $DB_NAME
+    restart: always
+    volumes:
+      - petoshield_data:/var/lib/postgresql/data/
+
+  petoshield_api:
+    build:
+      context: ./petoshield_api
+      dockerfile: Dockerfile
+    command: >
+      sh -c "python -m manage migrate &&
+             gunicorn config.wsgi:application --bind 0.0.0.0:8000"
+    image: petoshield:latest
+    container_name: petoshield-api
+    depends_on:
+      - petoshield_db
+    env_file:
+      - .env
+    restart: on-failure
+    ports:
+      - "9044:8000"
+
+volumes:
+  petoshield_data:
+
