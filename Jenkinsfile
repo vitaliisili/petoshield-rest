@@ -67,19 +67,20 @@ pipeline {
             }
         }
 
-//         stage('Checks after env') {
-//             steps {
-//                 sh 'ls -a'
-//                 sh 'ls -a petoshield_api'
-//                 sh 'ls -a petoshield_ui'
-//             }
-//         }
-        stage('Build FrontEnd') {
+        stage('Checks after env') {
             steps {
-                sh 'cd petoshield_ui && npm install'
-                sh 'cd petoshield_ui && npm run build'
+                sh 'ls -a'
+                sh 'cat .env'
+                sh 'ls -a petoshield_api'
+                sh 'ls -a petoshield_ui'
             }
         }
+//         stage('Build FrontEnd') {
+//             steps {
+//                 sh 'cd petoshield_ui && npm install'
+//                 sh 'cd petoshield_ui && npm run build'
+//             }
+//         }
 
         stage("Clear Front End Folder") {
             steps {
