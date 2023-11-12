@@ -45,6 +45,8 @@ services:
     restart: on-failure
     ports:
       - "9044:8000"
+    volumes:
+      - /var/www/petoshield-data/media:/media
 
 volumes:
   petoshield_data:
