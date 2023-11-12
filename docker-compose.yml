@@ -48,7 +48,7 @@ services:
     ports:
       - "9044:8000"
     volumes:
-      - /var/www/petoshield-data/media:/media
+      - /var/www/petoshield-data/media:/api/media
 
 volumes:
   petoshield_data:
