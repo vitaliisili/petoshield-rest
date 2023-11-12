@@ -82,18 +82,18 @@ pipeline {
 //             }
 //         }
 
-        stage("Clear Front End Folder") {
-            steps {
-                sh 'rm -R /var/www/petoshield.com'
-            }
-        }
+//         stage("Clear Front End Folder") {
+//             steps {
+//                 sh 'rm -R /var/www/petoshield.com'
+//             }
+//         }
 
-        stage('Deploy Front End Application') {
-            steps {
-                sh 'mkdir /var/www/petoshield.com'
-                sh 'cp -r petoshield_ui/build/. /var/www/petoshield.com'
-            }
-        }
+//         stage('Deploy Front End Application') {
+//             steps {
+//                 sh 'mkdir /var/www/petoshield.com'
+//                 sh 'cp -r petoshield_ui/build/. /var/www/petoshield.com'
+//             }
+//         }
 
         stage('Deploy Back End Application') {
             steps {
