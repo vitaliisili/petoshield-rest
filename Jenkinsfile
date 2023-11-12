@@ -19,12 +19,6 @@ pipeline {
             }
         }
 
-//         stage('Checks before env') {
-//             steps {
-//                 sh 'ls -a'
-//             }
-//         }
-
         stage('Create environment') {
             environment {
                 DB_NAME=credentials('PET_DB_NAME')
@@ -79,25 +73,25 @@ pipeline {
 //                 sh 'ls -a petoshield_ui'
 //             }
 //         }
-//         stage('Build FrontEnd') {
-//             steps {
-//                 sh 'cd petoshield_ui && npm install'
-//                 sh 'cd petoshield_ui && npm run build'
-//             }
-//         }
+        stage('Build FrontEnd') {
+            steps {
+                sh 'cd petoshield_ui && npm install'
+                sh 'cd petoshield_ui && npm run build'
+            }
+        }
 
-//         stage("Clear Front End Folder") {
-//             steps {
-//                 sh 'rm -R /var/www/petoshield.com'
-//             }
-//         }
+        stage("Clear Front End Folder") {
+            steps {
+                sh 'rm -R /var/www/petoshield.com'
+            }
+        }
 
-//         stage('Deploy Front End Application') {
-//             steps {
-//                 sh 'mkdir /var/www/petoshield.com'
-//                 sh 'cp -r petoshield_ui/build/. /var/www/petoshield.com'
-//             }
-//         }
+        stage('Deploy Front End Application') {
+            steps {
+                sh 'mkdir /var/www/petoshield.com'
+                sh 'cp -r petoshield_ui/build/. /var/www/petoshield.com'
+            }
+        }
 
         stage('Deploy Back End Application') {
             steps {
