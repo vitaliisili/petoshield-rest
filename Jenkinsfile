@@ -68,14 +68,14 @@ pipeline {
             }
         }
 
-        stage('Checks after env') {
-            steps {
-                sh 'ls -a'
-                sh 'cat .env'
-                sh 'ls -a petoshield_api'
-                sh 'ls -a petoshield_ui'
-            }
-        }
+//         stage('Checks after env') {
+//             steps {
+//                 sh 'ls -a'
+//                 sh 'cat .env'
+//                 sh 'ls -a petoshield_api'
+//                 sh 'ls -a petoshield_ui'
+//             }
+//         }
 //         stage('Build FrontEnd') {
 //             steps {
 //                 sh 'cd petoshield_ui && npm install'
