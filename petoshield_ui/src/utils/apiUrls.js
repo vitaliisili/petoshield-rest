@@ -1,6 +1,10 @@
+import dotenv from 'dotenv';
+
+dotenv.config();
+
 const API_VERSION = 'api'
-// const REACT_APP_BACKEND_URL = process.env.REACT_APP_BACKEND_URL
-const REACT_APP_BACKEND_URL = 'https://api.petoshield.com'
+const REACT_APP_BACKEND_URL = process.env.REACT_APP_BACKEND_URL
+// const REACT_APP_BACKEND_URL = 'https://api.petoshield.com'
 const HOST = `${REACT_APP_BACKEND_URL}/${API_VERSION}`
 
 export const API_AUTH_TOKEN = `${HOST}/auth/token`
