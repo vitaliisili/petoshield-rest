@@ -47,32 +47,33 @@ pipeline {
                 REACT_APP_BACKEND_URL="https://api.petoshield.com"
             }
             steps {
-                sh 'echo DB_NAME=$DB_NAME > petoshield_api/.env'
-                sh 'echo DB_USER=$DB_USER >> petoshield_api/.env'
-                sh 'echo DB_PASSWORD=$DB_PASSWORD >> petoshield_api/.env'
-                sh 'echo DB_HOST=$DB_HOST >> petoshield_api/.env'
-                sh 'echo DB_PORT=$DB_PORT >> petoshield_api/.env'
-                sh 'echo DJANGO_SECRET_KEY=$DJANGO_SECRET_KEY >> petoshield_api/.env'
-                sh 'echo DJANGO_DEBUG=$DJANGO_DEBUG >> petoshield_api/.env'
-                sh 'echo DATABASE_ENGINE=$DATABASE_ENGINE >> petoshield_api/.env'
-                sh 'echo DJANGO_ALLOWED_HOSTS=$DJANGO_ALLOWED_HOSTS >> petoshield_api/.env'
-                sh 'echo CSRF_TRUSTED_ORIGINS=$CSRF_TRUSTED_ORIGINS >> petoshield_api/.env'
-                sh 'echo TOKEN_EXPIRE=$TOKEN_EXPIRE >> petoshield_api/.env'
-                sh 'echo REFRESH_TOKEN_EXPIRE=$REFRESH_TOKEN_EXPIRE >> petoshield_api/.env'
-                sh 'echo CORS_ALLOWED_ORIGINS=$CORS_ALLOWED_ORIGINS >> petoshield_api/.env'
-                sh 'echo EMAIL_HOST_USER=$EMAIL_HOST_USER >> petoshield_api/.env'
-                sh 'echo EMAIL_HOST_PASSWORD=$EMAIL_HOST_PASSWORD >> petoshield_api/.env'
-                sh 'echo POLICY_BASE_PRICE=$POLICY_BASE_PRICE >> petoshield_api/.env'
+                sh 'echo DB_NAME=$DB_NAME > .env'
+                sh 'echo DB_USER=$DB_USER >> .env'
+                sh 'echo DB_PASSWORD=$DB_PASSWORD >> .env'
+                sh 'echo DB_HOST=$DB_HOST >> .env'
+                sh 'echo DB_PORT=$DB_PORT >> .env'
+                sh 'echo DJANGO_SECRET_KEY=$DJANGO_SECRET_KEY >> .env'
+                sh 'echo DJANGO_DEBUG=$DJANGO_DEBUG >> .env'
+                sh 'echo DATABASE_ENGINE=$DATABASE_ENGINE >> .env'
+                sh 'echo DJANGO_ALLOWED_HOSTS=$DJANGO_ALLOWED_HOSTS >> .env'
+                sh 'echo CSRF_TRUSTED_ORIGINS=$CSRF_TRUSTED_ORIGINS >> .env'
+                sh 'echo TOKEN_EXPIRE=$TOKEN_EXPIRE >> .env'
+                sh 'echo REFRESH_TOKEN_EXPIRE=$REFRESH_TOKEN_EXPIRE >> .env'
+                sh 'echo CORS_ALLOWED_ORIGINS=$CORS_ALLOWED_ORIGINS >> .env'
+                sh 'echo EMAIL_HOST_USER=$EMAIL_HOST_USER >> .env'
+                sh 'echo EMAIL_HOST_PASSWORD=$EMAIL_HOST_PASSWORD >> .env'
+                sh 'echo POLICY_BASE_PRICE=$POLICY_BASE_PRICE >> .env'
+                sh 'echo REACT_APP_BACKEND_URL=$REACT_APP_BACKEND_URL > petoshield_ui/.env'
+                sh 'cp .env /petoshield_api/.env'
             }
         }
 
         stage('Checks after env') {
             steps {
-//                 sh 'ls -a'
-//                 sh 'cat .env'
+                sh 'ls -a'
+                sh 'cat .env'
                 sh 'ls -a petoshield_api'
-                sh 'cat petoshield_api/.env'
-//                 sh 'ls -a petoshield_ui'
+                sh 'ls -a petoshield_ui'
             }
         }
 //         stage('Build FrontEnd') {
