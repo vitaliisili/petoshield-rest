@@ -56,20 +56,22 @@ pipeline {
                 sh 'echo DJANGO_DEBUG=$DJANGO_DEBUG >> petoshield_api/.env'
                 sh 'echo DATABASE_ENGINE=$DATABASE_ENGINE >> petoshield_api/.env'
                 sh 'echo DJANGO_ALLOWED_HOSTS=$DJANGO_ALLOWED_HOSTS >> petoshield_api/.env'
-                sh 'echo CSRF_TRUSTED_ORIGINS=CSRF_TRUSTED_ORIGINS >> petoshield_api/.env'
-                sh 'echo TOKEN_EXPIRE=TOKEN_EXPIRE >> petoshield_api/.env'
-                sh 'echo REFRESH_TOKEN_EXPIRE=REFRESH_TOKEN_EXPIRE >> petoshield_api/.env'
-                sh 'echo CORS_ALLOWED_ORIGINS=CORS_ALLOWED_ORIGINS >> petoshield_api/.env'
-                sh 'echo EMAIL_HOST_USER=EMAIL_HOST_USER >> petoshield_api/.env'
-                sh 'echo EMAIL_HOST_PASSWORD=EMAIL_HOST_PASSWORD >> petoshield_api/.env'
-                sh 'echo POLICY_BASE_PRICE=POLICY_BASE_PRICE >> petoshield_api/.env'
-                sh 'echo REACT_APP_BACKEND_URL=REACT_APP_BACKEND_URL > petoshield_ui/.env'
+                sh 'echo CSRF_TRUSTED_ORIGINS=$CSRF_TRUSTED_ORIGINS >> petoshield_api/.env'
+                sh 'echo TOKEN_EXPIRE=$TOKEN_EXPIRE >> petoshield_api/.env'
+                sh 'echo REFRESH_TOKEN_EXPIRE=$REFRESH_TOKEN_EXPIRE >> petoshield_api/.env'
+                sh 'echo CORS_ALLOWED_ORIGINS=$CORS_ALLOWED_ORIGINS >> petoshield_api/.env'
+                sh 'echo EMAIL_HOST_USER=$EMAIL_HOST_USER >> petoshield_api/.env'
+                sh 'echo EMAIL_HOST_PASSWORD=$EMAIL_HOST_PASSWORD >> petoshield_api/.env'
+                sh 'echo POLICY_BASE_PRICE=$POLICY_BASE_PRICE >> petoshield_api/.env'
+                sh 'echo REACT_APP_BACKEND_URL=$REACT_APP_BACKEND_URL > petoshield_ui/.env'
             }
         }
 
         stage('Checks after env') {
             steps {
                 sh 'ls -a'
+                sh 'ls -a petoshield_api'
+                sh 'ls -a petoshield_ui'
             }
         }
 //         stage('Build FrontEnd') {
