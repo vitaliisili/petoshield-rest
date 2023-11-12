@@ -37,7 +37,8 @@ pipeline {
                 EMAIL_HOST_USER=credentials('PET_EMAIL_HOST_USER')
                 EMAIL_HOST_PASSWORD=credentials('PET_EMAIL_HOST_PASSWORD')
                 POLICY_BASE_PRICE=credentials('PET_POLICY_BASE_PRICE')
-                REACT_APP_BACKEND_URL=credentials('PET_REACT_APP_BACKEND_URL')
+//                 REACT_APP_BACKEND_URL=credentials('PET_REACT_APP_BACKEND_URL')
+                REACT_APP_BACKEND_URL="https://api.petoshield.com"
             }
             steps {
                 sh 'echo DB_NAME=$DB_NAME > petoshield_api/.env'
