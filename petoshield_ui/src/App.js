@@ -24,22 +24,22 @@ const App = () => {
         <BrowserRouter>
             <Routes>
                 <Route exact path='/' element={<Home/>}/>
-                <Route exact path='/price' element={<Price/>}/>
-                <Route exact path='/account' element={<PrivateRoute><Account/></PrivateRoute>}/>
-                <Route exact path='/partners' element={<Partners/>}/>
-                <Route exact path='/blog' element={<Blog/>}/>
-                <Route exact path='/team' element={<Team/>}/>
-                <Route exact path='/question' element={<FAQ/>}/>
-                <Route exact path='/giveback' element={<Giveback/>}/>
-                <Route exact path='/login' element={<Login/>}/>
-                <Route exact path='/register' element={<Register/>}/>
-                <Route exact path='/pass-recovery' element={<PrivateRoute><PasswordRecovery/></PrivateRoute>}/>
-                <Route exact path='/pet-registration' element={<PetRegistration/>}/>
-                <Route exact path='/confirm-email' element={<EmailVerification/>}/>
-                <Route exact path='/new-pet' element={<PrivateRoute><PetOnlyRegistration/></PrivateRoute>}/>
-                <Route exact path='/pet-profile/:id' element={<PrivateRoute><PetProfile/></PrivateRoute>}/>
-                <Route exact path='/pet-quote/:id' element={<PrivateRoute><Quote/></PrivateRoute>}/>
-                <Route exact path='*' element={<NotFound/>}/>
+                <Route path='/price' element={<Price/>}/>
+                <Route path='/account' element={<PrivateRoute><Account/></PrivateRoute>}/>
+                <Route path='/partners' element={<Partners/>}/>
+                <Route path='/blog' element={<Blog/>}/>
+                <Route path='/team' element={<Team/>}/>
+                <Route path='/question' element={<FAQ/>}/>
+                <Route path='/giveback' element={<Giveback/>}/>
+                <Route path='/login' element={<Login/>}/>
+                <Route path='/register' element={<Register/>}/>
+                <Route path='/pass-recovery' element={<PrivateRoute><PasswordRecovery/></PrivateRoute>}/>
+                <Route path='/pet-registration' element={<PetRegistration/>}/>
+                <Route path='/confirm-email' element={<EmailVerification/>}/>
+                <Route path='/new-pet' element={<PrivateRoute><PetOnlyRegistration/></PrivateRoute>}/>
+                <Route path='/pet-profile/:id' element={<PrivateRoute><PetProfile/></PrivateRoute>}/>
+                <Route path='/pet-quote/:id' element={<PrivateRoute><Quote/></PrivateRoute>}/>
+                <Route path='*' element={<NotFound/>}/>
             </Routes>
         </BrowserRouter>
     )
