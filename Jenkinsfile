@@ -74,43 +74,43 @@ pipeline {
                 sh 'ls -a petoshield_ui'
             }
         }
-//         stage('Build FrontEnd') {
-//             steps {
-//                 sh 'cd petoshield_ui && npm install'
-//                 sh 'cd petoshield_ui && npm run build'
-//             }
-//         }
-//
-//         stage("Clear Front End Folder") {
-//             steps {
-//                 sh 'rm -R /var/www/petoshield.com'
-//             }
-//         }
-//
-//         stage('Deploy Front End Application') {
-//             steps {
-//                 sh 'mkdir /var/www/petoshield.com'
-//                 sh 'cp -r petoshield_ui/build/. /var/www/petoshield.com'
-//             }
-//         }
-//
-//         stage('Deploy Back End Application') {
-//             steps {
-//                 sh 'sudo docker compose -f docker-compose.yml up -d --build'
-//                 sh 'sudo docker cp petoshield-api:/media /var/www/petoshield-media'
-//             }
-//         }
-//
-//         stage('Clear Stopped Containers') {
-//             steps {
-//                 sh 'sudo docker container prune -f'
-//             }
-//         }
-//
-//         stage('Clear Unused Images') {
-//             steps {
-//                 sh 'sudo docker rmi $(sudo docker images -f "dangling=true" -q) &>/dev/null'
-//             }
-//         }
+        stage('Build FrontEnd') {
+            steps {
+                sh 'cd petoshield_ui && npm install'
+                sh 'cd petoshield_ui && npm run build'
+            }
+        }
+
+        stage("Clear Front End Folder") {
+            steps {
+                sh 'rm -R /var/www/petoshield.com'
+            }
+        }
+
+        stage('Deploy Front End Application') {
+            steps {
+                sh 'mkdir /var/www/petoshield.com'
+                sh 'cp -r petoshield_ui/build/. /var/www/petoshield.com'
+            }
+        }
+
+        stage('Deploy Back End Application') {
+            steps {
+                sh 'sudo docker compose -f docker-compose.yml up -d --build'
+                sh 'sudo docker cp petoshield-api:/media /var/www/petoshield-media'
+            }
+        }
+
+        stage('Clear Stopped Containers') {
+            steps {
+                sh 'sudo docker container prune -f'
+            }
+        }
+
+        stage('Clear Unused Images') {
+            steps {
+                sh 'sudo docker rmi $(sudo docker images -f "dangling=true" -q) &>/dev/null'
+            }
+        }
     }
 }
