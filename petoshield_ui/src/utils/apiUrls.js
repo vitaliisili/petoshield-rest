@@ -1,6 +1,6 @@
-import dotenv from 'dotenv';
-
-dotenv.config();
+// import dotenv from 'dotenv';
+//
+// require('dotenv').config();
 
 const API_VERSION = 'api'
 const REACT_APP_BACKEND_URL = process.env.REACT_APP_BACKEND_URL
