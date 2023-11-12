@@ -10,8 +10,8 @@ services:
       POSTGRES_USER: $DB_USER
       POSTGRES_PASSWORD: $DB_PASSWORD
       POSTGRES_DB: $DB_NAME
-    env_file:
-      - petoshield_api/.env
+#    env_file:
+#      - petoshield_api/.env
     restart: always
     volumes:
       - petoshield_data:/var/lib/postgresql/data/
@@ -44,8 +44,8 @@ services:
       EMAIL_HOST_USER: $EMAIL_HOST_USER
       EMAIL_HOST_PASSWORD: $EMAIL_HOST_PASSWORD
       POLICY_BASE_PRICE: $POLICY_BASE_PRICE
-    env_file:
-      - petoshield_api/.env
+#    env_file:
+#      - petoshield_api/.env
     restart: on-failure
     ports:
       - "9044:8000"
