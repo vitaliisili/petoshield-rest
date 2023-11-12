@@ -68,10 +68,11 @@ pipeline {
 
         stage('Checks after env') {
             steps {
-                sh 'ls -a'
-                sh 'cat .env'
+//                 sh 'ls -a'
+//                 sh 'cat .env'
                 sh 'ls -a petoshield_api'
-                sh 'ls -a petoshield_ui'
+                sh 'cat petoshield_api/.env'
+//                 sh 'ls -a petoshield_ui'
             }
         }
 //         stage('Build FrontEnd') {
