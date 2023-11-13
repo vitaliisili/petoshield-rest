@@ -11,3 +11,4 @@ drf-standardized-errors[openapi]==0.12.5
 pytest-cov==4.1.0
 django-cors-headers==4.3.0
 gunicorn==21.2.0
+whitenoise==6.6.0
