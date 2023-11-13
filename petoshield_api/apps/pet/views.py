@@ -3,7 +3,7 @@ from django.contrib.auth import get_user_model
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from apps.core.utils import EmailSender
+from apps.core.utils import EmailSender, JwtToken
 from apps.pet.models import Pet, Breed
 from apps.pet.permissions import BreedPermissions, PetPermission
 from apps.pet.serializers import PetSerializer, BaseBreedSerializer, ExtendBreedSerializer, PetUserCombinedSerializer
@@ -44,7 +44,10 @@ class PetViewSet(viewsets.ModelViewSet):
             price=utils.get_policy_price(pet_instance)
         )
 
-        return Response(data=serializer.data, status=status.HTTP_201_CREATED)
+        response = JwtToken.get_jwt_token(request.user)
+        response['pet'] = pet_instance.id
+
+        return Response(response, status=status.HTTP_201_CREATED)
 
     def update(self, request, *args, **kwargs):
         if not request.user.is_staff:
@@ -77,7 +80,11 @@ class PetViewSet(viewsets.ModelViewSet):
         )
 
         EmailSender.send_confirmation_email(user_instance, request.META.get('HTTP_REFERER'))
-        return Response(data=serializer.data, status=status.HTTP_201_CREATED)
+
+        response = JwtToken.get_jwt_token(user_instance)
+        response['pet'] = pet_instance.id
+
+        return Response(response, status=status.HTTP_201_CREATED)
 
     def get_queryset(self):
         if not self.request.user.is_staff:

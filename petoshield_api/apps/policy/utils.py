@@ -20,7 +20,7 @@ def get_policy_price(pet: Pet):
         quote_risk = 0.1
     elif pet.breed.risk_level < 6:
         quote_risk = 1.0
-    elif pet.breed < 8:
+    elif pet.breed.risk_level < 8:
         quote_risk = 1.2
     else:
         quote_risk = 1.4
