@@ -12,8 +12,8 @@ env.read_env(env_file)
 SECRET_KEY = env.str('DJANGO_SECRET_KEY')
 DEBUG = bool(env.int('DJANGO_DEBUG', 0))
 
-# CORS_ALLOWED_ORIGINS = env.str('CORS_ALLOWED_ORIGINS').split(',')
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOWED_ORIGINS = env.str('CORS_ALLOWED_ORIGINS').split(',')
+# CORS_ALLOW_ALL_ORIGINS = True
 ALLOWED_HOSTS = env.str('DJANGO_ALLOWED_HOSTS', '').split(',')
 CSRF_TRUSTED_ORIGINS = env.str('CSRF_TRUSTED_ORIGINS').split(',')
 
