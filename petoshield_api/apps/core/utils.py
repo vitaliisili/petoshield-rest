@@ -1,4 +1,5 @@
 from django.core.mail import send_mail
+from rest_framework_simplejwt.tokens import RefreshToken
 from apps.user.models import User, MailVerificationTokens
 import uuid
 from config import settings
@@ -24,3 +25,15 @@ class EmailSender:
             settings.EMAIL_HOST_USER,
             [user.email]
         )
+
+
+class JwtToken:
+
+    @staticmethod
+    def get_jwt_token(user: User) -> dict:
+        jtw_token = RefreshToken.for_user(user)
+        response = {
+            'access': str(jtw_token.access_token),
+            'refresh': str(jtw_token)
+        }
+        return response

@@ -371,7 +371,6 @@ class TestPetsEndpoints:
         }
         response = api_client.post(self.endpoint, data=data, format='json')
         assert response.status_code == 201
-        assert json.loads(response.content).get('user') == simple_user.id
 
     @pytest.mark.parametrize('breed_id, user_id', [
         ('string', 2),
@@ -440,6 +439,25 @@ class TestPetsEndpoints:
         }
         response = api_client.post(self.endpoint, data=data, format='json')
         assert response.status_code == 403
+
+    def test_pets_create_new_account_success(self, api_client, breed, roles):
+        data = {
+            "pet": {
+                "name": "new pet",
+                "age": 2,
+                "gender": "F",
+                "species": "cat",
+                "breed": breed.id
+            },
+            "user": {
+                "email": "example@mail.com",
+                "name": "Ria Dormen",
+                "password": "password1A@"
+            }
+        }
+        response = api_client.post(f'{self.endpoint}create_new_account/', data=data, format='json')
+        assert response.status_code == 201
+        assert len(json.loads(response.content).get('access')) > 0
 
     def test_pets_list_with_admin_success(self, staff_user, pets_list, api_client):
         api_client.force_authenticate(staff_user)

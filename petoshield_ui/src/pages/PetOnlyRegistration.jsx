@@ -59,7 +59,7 @@ const PetOnlyRegistration = () => {
                 if (response.status === 201) {
                     toast.update(id, {render: 'Success', type: "success", isLoading: false, autoClose: 500})
                     setTimeout(() => {
-                        navigate('/account')
+                        navigate(`/pet-quote/${response.data.pet}`)
                     }, 1000)
                 }
             }).catch(error => {

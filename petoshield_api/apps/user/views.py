@@ -6,8 +6,7 @@ from rest_framework.decorators import action
 from rest_framework.exceptions import ValidationError as RestValidationError
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
-from rest_framework_simplejwt.tokens import RefreshToken
-from apps.core.utils import EmailSender
+from apps.core.utils import EmailSender, JwtToken
 from apps.user.filters import RoleFilter, UserFilter
 from apps.user.models import Role, MailVerificationTokens
 from apps.user.permissions import UserPermission
@@ -37,13 +36,10 @@ class UserViewSet(viewsets.ModelViewSet):
         serializer = RegisterUserSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
-        refresh = RefreshToken.for_user(user)
+
         EmailSender.send_confirmation_email(user, request.META.get('HTTP_REFERER'))
 
-        return Response({
-            'access': str(refresh.access_token),
-            'refresh': str(refresh),
-        }, status=status.HTTP_201_CREATED)
+        return Response(JwtToken.get_jwt_token(user), status=status.HTTP_201_CREATED)
 
     @action(detail=False, methods=['get'])
     def me(self, request):

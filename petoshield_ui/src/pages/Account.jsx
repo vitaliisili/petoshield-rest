@@ -11,6 +11,8 @@ import {API_PETS_URL, API_USER_SELF, API_USER_URL} from "../utils/apiUrls";
 import {toast, ToastContainer} from "react-toastify";
 import {IoLogOutOutline} from "react-icons/io5";
 import {PiCatDuotone, PiDogDuotone} from "react-icons/pi";
+import catIcon from "../static/images/account/cat-icon.svg";
+import dogIcon from "../static/images/account/dog-icon.svg";
 
 const Account = () => {
 
@@ -79,10 +81,10 @@ const Account = () => {
                             <div>
                                 <div className='flex justify-between items-center'>
                                     <div className='text-sm font-bold text-nobel-dark'>Email Address</div>
-                                    <div className='text-xs text-green font-bold'>verified</div>
+                                    <div className='text-xs text-gallery-dark font-bold'>verified</div>
                                     {/*<div className='text-xs text-rose-dark font-bold'>not verified</div>*/}
                                 </div>
-                                <div className='text-rose'>{profile.email}</div>
+                                <div className=''>{profile.email}</div>
                             </div>
 
                             <div className='flex flex-col'>
@@ -104,13 +106,16 @@ const Account = () => {
 
                             {pets && pets.map((pet) => (
                                     <div onClick={() => navigate(`/pet-profile/${pet.id}`)} key={pet.id} className='pet-card flex justify-center items-center border-2 border-gallery rounded-md p-4 shadow-md transition-all duration-500 hover:scale-105 cursor-pointer'>
-                                        <div className='border-2 border-gallery rounded-full p-2'>
-                                            {pet.species === 'cat'? <PiCatDuotone className='text-4xl'/> : <PiDogDuotone className='text-4xl'/>}
+                                        <div className=''>
+                                            {pet.species === 'cat'? <img src={catIcon} alt="cat"/> : <img src={dogIcon} alt="dog"/>}
                                         </div>
                                         <div className='flex flex-col ml-4 w-full'>
                                             <div className='flex justify-between'>
                                                 <div className='font-bold text-lg'>{pet.name}</div>
-                                                <div className='text-sm'>Insurance is active</div>
+                                                {pet.policy.status === 'invalid' && <div className='text-sm text-rose'>insurance is not active</div>}
+                                                {pet.policy.status === 'valid' && <div className='text-sm text-rose'>insurance is active</div>}
+                                                {pet.policy.status === 'expired' && <div className='text-sm text-rose'>insurance expired</div>}
+
                                             </div>
                                             <div className='flex justify-between w-full'>
                                                 {pet.gender === 'F' ? 'Female' : 'Male'}
