@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from rest_framework import viewsets
 
+from apps.core.utils import EmailSender
 from .models import Ticket
 from .serializers import TicketSerializer
 from .permissions import AnyCreateOnlyStaffUpdate
@@ -12,5 +13,5 @@ class TicketViewSet(viewsets.ModelViewSet):
     serializer_class = TicketSerializer
     
     def update(self, request, *args, **kwargs):
-        #TODO: send email with a company reply
+        EmailSender.send_reply_to_ticket(self.pk, self.company_reply, request.META.get('HTTP_REFERER'))
         return super().update(request, *args, **kwargs)

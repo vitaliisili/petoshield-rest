@@ -17,6 +17,7 @@ class Ticket(BaseModel):
     visitor_message = models.TextField(max_length=1000)
     
     is_client = models.BooleanField(default=False)
+    staff_user = models.ForeignKey(User, on_delete=models.SET_DEFAULT, default="manager_X", related_name="managers")
     company_reply = models.TextField(max_length=1000, blank=True, null=True)
     ticket_status = models.CharField(choices=STATUS_CHOICES, default='new')
     
@@ -27,3 +28,6 @@ class Ticket(BaseModel):
     
     def __str__(self) -> str:
         return f'Ticket|{self.pk}|{self.user_message[:50]}'
+    
+    class Meta:
+        verbose_name_plural = 'tickets'
