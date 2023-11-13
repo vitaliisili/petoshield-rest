@@ -26,6 +26,18 @@ class EmailSender:
             [user.email]
         )
 
+    @staticmethod
+    def send_reply_to_ticket(user_email, ticket_number, reply_text, remote):
+        subject = f"Reply to your question on the {remote} site"
+        message = reply_text
+        
+        send_mail(
+            subject,
+            message,
+            settings.EMAIL_HOST_USER,
+            [user_email]
+        )
+
 
 class JwtToken:
 
