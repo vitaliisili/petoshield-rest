@@ -26,8 +26,6 @@ services:
     depends_on:
       - petoshield_db
     restart: on-failure
-    env_file:
-      - .env
     ports:
       - "9044:8000"
     volumes:
