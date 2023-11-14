@@ -1,7 +1,7 @@
 flake8==6.1.0
 Django==4.2.6
 djangorestframework==3.14.0
-psycopg2>=2.9.3,<2.10
+psycopg2-binary>=2.9.9
 Pillow==10.0.0
 pytest-django==4.5.2
 django-environ==0.11.2
@@ -10,3 +10,5 @@ django-filter==23.3
 drf-standardized-errors[openapi]==0.12.5
 pytest-cov==4.1.0
 django-cors-headers==4.3.0
+gunicorn==21.2.0
+whitenoise==6.6.0

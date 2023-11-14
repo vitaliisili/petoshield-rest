@@ -1,0 +1,6 @@
+.idea
+.pytest_cache
+.coverage
+.vscode
+venv
+.venv
