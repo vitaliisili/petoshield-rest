@@ -38,7 +38,9 @@ class UserViewSet(viewsets.ModelViewSet):
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
 
-        EmailSender.send_confirmation_email(user, request.META.get('HTTP_REFERER'))  # TODO: Send welcome message
+        EmailSender.send_welcome_email(user)
+        EmailSender.send_confirmation_email(user, request.META.get('HTTP_REFERER'))  
+        
 
         return Response(JwtToken.get_jwt_token(user), status=status.HTTP_201_CREATED)
 
@@ -68,8 +70,10 @@ class UserViewSet(viewsets.ModelViewSet):
 
         if not user_instance:
             raise RestValidationError(_(f'User not found with email: {serializer.data.get("email")}'))
-
+        
+        
         EmailSender.send_password_reset_email(user_instance, serializer.data.get('redirect_link'))
+        
         return Response({'message': "Email was send"}, status=status.HTTP_200_OK)
 
     @action(detail=False, methods=['post'])
