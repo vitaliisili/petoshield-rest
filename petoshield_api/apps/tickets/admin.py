@@ -9,6 +9,7 @@ class CustomTicket(admin.ModelAdmin):
         "created_at",
         "get_description",
         "ticket_status",
+        "staff_user",
     )
     
     @admin.display(description="visitor_message")

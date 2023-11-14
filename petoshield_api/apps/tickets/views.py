@@ -13,5 +13,5 @@ class TicketViewSet(viewsets.ModelViewSet):
     serializer_class = TicketSerializer
     
     def update(self, request, *args, **kwargs):
-        EmailSender.send_reply_to_ticket(self.pk, self.company_reply, request.META.get('HTTP_REFERER'))
+        EmailSender.send_reply_to_ticket(self.pk, self.visitor_email, self.company_reply, request.META.get('HTTP_REFERER'))
         return super().update(request, *args, **kwargs)
