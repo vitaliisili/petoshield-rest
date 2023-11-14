@@ -482,7 +482,6 @@ class TestRoleEndpoints:
         response = api_client.get(self.endpoint)
         assert response.status_code == 401
 
-    # testing retieve of the user's role
     def test_role_retrieve_one_with_staff_user_status_success(self, staff_user, api_client, roles):
         api_client.force_authenticate(staff_user)
         response = api_client.get(f'{self.endpoint}{roles[0].id}/')
@@ -508,7 +507,6 @@ class TestRoleEndpoints:
         response = api_client.get(f'{self.endpoint}{id}/')
         assert response.status_code == 404
 
-    # testing update of the user's role
     def test_role_update_with_staff_user_success(self, staff_user, api_client, roles):
         api_client.force_authenticate(staff_user)
         data = {
@@ -545,7 +543,6 @@ class TestRoleEndpoints:
         response = api_client.put(f'{self.endpoint}{roles[0].id}/', data=data, format="json")
         assert response.status_code == 401
 
-    # testing patching of the particular user's role
     def test_role_patch_with_staff_user_success(self, staff_user, api_client, roles):
         api_client.force_authenticate(staff_user)
         data = {
@@ -579,7 +576,6 @@ class TestRoleEndpoints:
         response = api_client.patch(f'{self.endpoint}{roles[0].id}/', data=data, format="json")
         assert response.status_code == 401
 
-    # testing deletion of the user's role
     def test_role_delete_with_staff_user_success(self, staff_user, api_client, roles):
         api_client.force_authenticate(staff_user)
         response = api_client.delete(f'{self.endpoint}{roles[0].id}/')
@@ -609,7 +605,6 @@ class TestRoleEndpoints:
         response = api_client.delete(f'{self.endpoint}{roles[0].id}/', data=data, format="json")
         assert response.status_code == 401
 
-    # test filter by _name
     @pytest.mark.parametrize('role_name, length', [('admin', 1), ('client', 1), (' ', 3), ('provider', 1)])
     def test_role_filter_by_name_exact_success(self, staff_user, roles, users_list, role_name, api_client, length):
         api_client.force_authenticate(staff_user)

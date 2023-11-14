@@ -11,8 +11,13 @@ from apps.user.filters import RoleFilter, UserFilter
 from apps.user.models import Role, MailVerificationTokens
 from apps.user.permissions import UserPermission
 from django.utils.translation import gettext_lazy as _
-from apps.user.serializers import BaseUserSerializer, ExtendUserSerializer, RoleSerializer, RegisterUserSerializer, \
-    ResetPasswordSerializer, ChangePasswordSerializer
+from apps.user.serializers import (
+    BaseUserSerializer,
+    ExtendUserSerializer,
+    RoleSerializer,
+    RegisterUserSerializer,
+    ResetPasswordSerializer,
+    ChangePasswordSerializer)
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -39,8 +44,7 @@ class UserViewSet(viewsets.ModelViewSet):
         user = serializer.save()
 
         EmailSender.send_welcome_email(user)
-        EmailSender.send_confirmation_email(user, request.META.get('HTTP_REFERER'))  
-        
+        EmailSender.send_confirmation_email(user, request.META.get('HTTP_REFERER'))
 
         return Response(JwtToken.get_jwt_token(user), status=status.HTTP_201_CREATED)
 
@@ -58,7 +62,6 @@ class UserViewSet(viewsets.ModelViewSet):
             raise RestValidationError(_('Email verification fail'))
 
         get_user_model().objects.filter(pk=mail_verification_token_instance.user.id).update(is_verified=True)
-
         return Response({'message': _('Email was verified')}, status=status.HTTP_200_OK)
 
     @action(detail=False, methods=['post'])
@@ -70,10 +73,8 @@ class UserViewSet(viewsets.ModelViewSet):
 
         if not user_instance:
             raise RestValidationError(_(f'User not found with email: {serializer.data.get("email")}'))
-        
-        
+
         EmailSender.send_password_reset_email(user_instance, serializer.data.get('redirect_link'))
-        
         return Response({'message': "Email was send"}, status=status.HTTP_200_OK)
 
     @action(detail=False, methods=['post'])
