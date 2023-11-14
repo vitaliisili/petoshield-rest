@@ -5,7 +5,7 @@ from config import settings
 def get_policy_price(pet: Pet):
     average_life_expectancy = (pet.breed.age_min + pet.breed.age_max) / 2
     quote_species = 1.0 if pet.species == 'cat' else 1.1
-    quote_gender = 1.0 if pet.species == 'F' else 1.1
+    quote_gender = 1.0 if pet.gender == 'F' else 1.1
 
     if pet.age < average_life_expectancy * 0.5:
         quote_age = 1
@@ -17,11 +17,11 @@ def get_policy_price(pet: Pet):
         quote_age = 1.5
 
     if pet.breed.risk_level < 3:
-        quote_risk = 0.1
+        quote_risk = 1.1
     elif pet.breed.risk_level < 6:
-        quote_risk = 1.0
-    elif pet.breed.risk_level < 8:
         quote_risk = 1.2
+    elif pet.breed.risk_level < 8:
+        quote_risk = 1.3
     else:
         quote_risk = 1.4
 

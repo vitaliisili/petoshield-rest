@@ -26,6 +26,7 @@ CUSTOM_APPS = [
 
 THIRD_PARTY_APPS = [
     'rest_framework',
+    'corsheaders',
     'rest_framework_simplejwt',
     'drf_standardized_errors',
     'django_filters',
@@ -63,6 +64,7 @@ SIMPLE_JWT = {
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -128,6 +130,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATIC_ROOT = Path(BASE_DIR, 'static/')
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 MEDIA_URL = "media/"
 MEDIA_ROOT = Path(BASE_DIR, 'media/')
@@ -147,3 +150,6 @@ EMAIL_HOST_PASSWORD = env.str('EMAIL_HOST_PASSWORD')
 POLICY_BASE_PRICE = env.int('POLICY_BASE_PRICE')
 POLICY_INITIAL_LIMIT = 10000.00
 POLICY_DEDUCTIBLE = 250.00
+
+USE_X_FORWARDED_HOST = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')

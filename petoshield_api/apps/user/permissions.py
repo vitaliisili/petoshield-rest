@@ -6,7 +6,7 @@ class UserPermission(permissions.BasePermission):
     def has_permission(self, request, view):
         if view.action == 'list':
             return request.user.is_authenticated and request.user.is_staff
-        elif view.action == 'create':
+        elif view.action in ['create', 'reset_password', 'reset_password_confirm']:
             return True
         elif view.action in ['retrieve', 'update', 'partial_update', 'destroy', 'me']:
             return request.user.is_authenticated
@@ -27,7 +27,7 @@ class UserPermission(permissions.BasePermission):
             return request.user.is_staff
         elif view.action == 'me':
             return obj == request.user
-        elif view.action == 'verify_email':
+        elif view.action in ['verify_email', 'reset_password', 'reset_password_confirm']:
             return True
         else:
             return False
