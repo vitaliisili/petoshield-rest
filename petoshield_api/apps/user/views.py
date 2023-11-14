@@ -11,7 +11,8 @@ from apps.user.filters import RoleFilter, UserFilter
 from apps.user.models import Role, MailVerificationTokens
 from apps.user.permissions import UserPermission
 from django.utils.translation import gettext_lazy as _
-from apps.user.serializers import BaseUserSerializer, ExtendUserSerializer, RoleSerializer, RegisterUserSerializer
+from apps.user.serializers import BaseUserSerializer, ExtendUserSerializer, RoleSerializer, RegisterUserSerializer, \
+    ResetPasswordSerializer
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -37,7 +38,7 @@ class UserViewSet(viewsets.ModelViewSet):
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
 
-        EmailSender.send_confirmation_email(user, request.META.get('HTTP_REFERER'))
+        EmailSender.send_confirmation_email(user, request.META.get('HTTP_REFERER'))  # TODO: Send welcome message
 
         return Response(JwtToken.get_jwt_token(user), status=status.HTTP_201_CREATED)
 
@@ -57,6 +58,42 @@ class UserViewSet(viewsets.ModelViewSet):
         get_user_model().objects.filter(pk=mail_verification_token_instance.user.id).update(is_verified=True)
 
         return Response({'message': _('Email was verified')}, status=status.HTTP_200_OK)
+
+    @action(detail=False, methods=['post'])
+    def reset_password(self, request):
+        serializer = ResetPasswordSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        user_instance = get_user_model().objects.filter(email=serializer.data.get('email')).first()
+
+        if not user_instance:
+            raise RestValidationError(_(f'User not found with email: {serializer.data.get("email")}'))
+
+        EmailSender.send_password_reset_email(user_instance, serializer.data.get('redirect_link'))
+        return Response({'message': "Email was send"}, status=status.HTTP_200_OK)
+
+    @action(detail=False, methods=['post'])
+    def reset_password_confirm(self, request):
+        token = request.data.get('token')
+        mail_verification_token_instance = MailVerificationTokens.objects.filter(confirmation_token=token).first()
+
+        if not mail_verification_token_instance:
+            raise RestValidationError(_('Invalid token'))
+
+        user_instance = get_user_model().objects.filter(pk=mail_verification_token_instance.user.id).first()
+
+        if not user_instance:
+            raise RestValidationError(_('User not found'))
+
+        try:
+            validate_password(request.data.get('password'))
+        except ValidationError as error:
+            raise RestValidationError(error)
+
+        user_instance.set_password(request.data.get('password'))
+        user_instance.save()
+
+        return Response({'message': _('Password has been reset successfully')}, status=status.HTTP_200_OK)
 
 
 class RoleViewSet(viewsets.ModelViewSet):
