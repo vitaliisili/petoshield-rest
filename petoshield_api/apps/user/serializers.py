@@ -56,3 +56,8 @@ class EmailVerificationSerializer(serializers.ModelSerializer):
         model = MailVerificationTokens
         fields = ['id', 'user', 'confirmation_token']
         read_only_fields = ['id']
+
+
+class ResetPasswordSerializer(serializers.Serializer):
+    email = serializers.EmailField(required=True)
+    redirect_link = serializers.URLField(required=True)

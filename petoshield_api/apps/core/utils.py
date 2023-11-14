@@ -13,11 +13,29 @@ class EmailSender:
 
         token = uuid.uuid4()
         confirmation_link = f"{remote}confirm-email/?token={token}"
+        # confirmation_link = 'https://example.com'
 
-        MailVerificationTokens.objects.create(user=user, confirmation_token=token)
+        MailVerificationTokens.objects.create(user=user, confirmation_token=token,)
 
         subject = "Please, confirm your email"
         message = f"Please click the following link to confirm your email address: {confirmation_link}"
+
+        send_mail(
+            subject,
+            message,
+            settings.EMAIL_HOST_USER,
+            [user.email]
+        )
+
+    @staticmethod
+    def send_password_reset_email(user, redirect_link):
+        token = uuid.uuid4()
+        MailVerificationTokens.objects.create(user=user, confirmation_token=token)
+
+        link = f'{redirect_link}?token={token}'
+
+        subject = "Reset Password"
+        message = f"Please click the following link to reset your password: {link}"
 
         send_mail(
             subject,
