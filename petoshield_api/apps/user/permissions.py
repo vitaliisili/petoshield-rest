@@ -8,7 +8,7 @@ class UserPermission(permissions.BasePermission):
             return request.user.is_authenticated and request.user.is_staff
         elif view.action in ['create', 'reset_password', 'reset_password_confirm']:
             return True
-        elif view.action in ['retrieve', 'update', 'partial_update', 'destroy', 'me']:
+        elif view.action in ['retrieve', 'update', 'partial_update', 'destroy', 'me', 'change_password']:
             return request.user.is_authenticated
         elif view.action == 'verify_email':
             return True
@@ -27,7 +27,7 @@ class UserPermission(permissions.BasePermission):
             return request.user.is_staff
         elif view.action == 'me':
             return obj == request.user
-        elif view.action in ['verify_email', 'reset_password', 'reset_password_confirm']:
+        elif view.action in ['verify_email', 'reset_password', 'reset_password_confirm', 'change_password']:
             return True
         else:
             return False

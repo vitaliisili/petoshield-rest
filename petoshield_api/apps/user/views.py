@@ -12,7 +12,7 @@ from apps.user.models import Role, MailVerificationTokens
 from apps.user.permissions import UserPermission
 from django.utils.translation import gettext_lazy as _
 from apps.user.serializers import BaseUserSerializer, ExtendUserSerializer, RoleSerializer, RegisterUserSerializer, \
-    ResetPasswordSerializer
+    ResetPasswordSerializer, ChangePasswordSerializer
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -94,6 +94,30 @@ class UserViewSet(viewsets.ModelViewSet):
         user_instance.save()
 
         return Response({'message': _('Password has been reset successfully')}, status=status.HTTP_200_OK)
+
+    @action(detail=False, methods=['post'])
+    def change_password(self, request):
+        serializer = ChangePasswordSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        old_password = request.data.get('old_password')
+        new_password = request.data.get('new_password')
+        user = request.user
+
+        if not user.check_password(old_password):
+            raise RestValidationError(_('Old password is not correct'))
+
+        try:
+            validate_password(new_password)
+        except ValidationError as error:
+            raise RestValidationError(error)
+
+        user.set_password(new_password)
+        user.save()
+
+        #  TODO: send email to user
+
+        return Response({'message': 'Password has been changed successfully'})
 
 
 class RoleViewSet(viewsets.ModelViewSet):
