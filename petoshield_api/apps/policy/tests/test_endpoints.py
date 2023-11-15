@@ -163,6 +163,241 @@ class TestServiceProviderEndpoints:
         response = api_client.get(self.endpoint)
         assert response.status_code == 401
 
+    def test_service_provider_patch_with_admin_success(self, staff_user, service_provider, api_client):
+        api_client.force_authenticate(staff_user)
+        response = api_client.patch(f'{self.endpoint}{service_provider.id}/', {'phone': '+499999999999'})
+        assert response.status_code == 200
+        assert json.loads(response.content).get('phone') == '+499999999999'
+
+    def test_service_provider_patch_with_simple_user_forbidden(self, simple_user, service_provider, api_client):
+        api_client.force_authenticate(simple_user)
+        response = api_client.patch(f'{self.endpoint}{service_provider.id}/', {'phone': '+499999999999'})
+        assert response.status_code == 403
+
+    def test_service_provider_patch_with_service_provider_success(self, provider_user, service_provider, api_client):
+        api_client.force_authenticate(provider_user)
+        response = api_client.patch(f'{self.endpoint}{service_provider.id}/', {'phone': '+499999999999'})
+        assert response.status_code == 200
+        assert json.loads(response.content).get('phone') == '+499999999999'
+
+    def test_service_provider_patch_with_anonymous_user_unauthorized(self, api_client, service_provider):
+        response = api_client.patch(f'{self.endpoint}{service_provider.id}/', {'phone': '+499999999999'})
+        assert response.status_code == 401
+
+    def test_service_provider_save_with_admin_user_success(self, staff_user, api_client):
+        api_client.force_authenticate(staff_user)
+        data = {"user": {
+                        "name": "Roberto",
+                        "password": "password1A@",
+                        "email": "provider@mail.com"
+                        },
+                "service_provider": {
+                        "company_name": "PetWorld Insdurance",
+                        "registration_number": "AK42345670-23",
+                        "phone": "+49176855452",
+                        "address": "Ludwig Strasse 7, 31134 Hildesheim",
+                        "iban": "DE52114575800000254"
+                        }
+                }
+        response = api_client.post(f'{self.endpoint}', data=data, format='json')
+        assert response.status_code == 201
+
+    def test_service_provider_save_with_admin_user_bad_request(self, staff_user, api_client):
+        api_client.force_authenticate(staff_user)
+        data = {
+                "company_name": "PetWorld Insdurance",
+                "registration_number": "AK42345670-23",
+                "phone": "+49176855452",
+                "address": "Ludwig Strasse 7, 31134 Hildesheim",
+                "iban": "DE52114575800000254"
+                }
+        response = api_client.post(f'{self.endpoint}', data=data, format='json')
+        assert response.status_code == 400
+
+    def test_service_provider_save_with_simple_user_success(self, simple_user, api_client):
+        api_client.force_authenticate(simple_user)
+        data = {"user": {
+                        "name": "Roberto",
+                        "password": "password1A@",
+                        "email": "provider@mail.com"
+                        },
+                "service_provider": {
+                        "company_name": "PetWorld Insdurance",
+                        "registration_number": "AK42345670-23",
+                        "phone": "+49176855452",
+                        "address": "Ludwig Strasse 7, 31134 Hildesheim",
+                        "iban": "DE52114575800000254"
+                        }
+                }
+        response = api_client.post(f'{self.endpoint}', data=data, format='json')
+        assert response.status_code == 201
+
+    def test_service_provider_save_with_anonymous_user_success(self, simple_user, api_client):
+        api_client.force_authenticate(simple_user)
+        data = {"user": {
+                        "name": "Roberto",
+                        "password": "password1A@",
+                        "email": "provider@mail.com"
+                        },
+                "service_provider": {
+                        "company_name": "PetWorld Insdurance",
+                        "registration_number": "AK42345670-23",
+                        "phone": "+49176855452",
+                        "address": "Ludwig Strasse 7, 31134 Hildesheim",
+                        "iban": "DE52114575800000254"
+                        }
+                }
+        response = api_client.post(f'{self.endpoint}', data=data, format='json')
+        assert response.status_code == 201
+
+    def test_service_provider_save_with_service_provider_success(self, provider_user, api_client):
+        api_client.force_authenticate(provider_user)
+        data = {"user": {
+                        "name": "Roberto",
+                        "password": "password1A@",
+                        "email": "provider1@mail.com"
+                        },
+                "service_provider": {
+                        "company_name": "PetWorld Insdurance",
+                        "registration_number": "AK42345670-23",
+                        "phone": "+49176855452",
+                        "address": "Ludwig Strasse 7, 31134 Hildesheim",
+                        "iban": "DE52114575800000254"
+                        }
+                }
+        response = api_client.post(f'{self.endpoint}', data=data, format='json')
+        assert response.status_code == 201
+
+    @pytest.mark.parametrize('name, password, email, company_name, registration_number, phone, address, iban',
+        [('', "password1A@", "provider@mail.com", "PetWorld Insdurance", "AK42345670-23", "+49176855452",
+            "Ludwig Strasse 7, 31134 Hildesheim", "DE52114575800000254"),
+         ("Roberto", "password1A@", "", "PetWorld Insdurance", "AK42345670-23", "+49176855452",
+            "Ludwig Strasse 7, 31134 Hildesheim", "DE52114575800000254"),
+         ("Roberto", "password1A@", "provider@mail.com", "", "AK42345670-23", "+49176855452",
+            "Ludwig Strasse 7, 31134 Hildesheim", "DE52114575800000254"),
+         ("Roberto", "password1A@", "provider@mail.com", "PetWorld Insdurance", "", "+49176855452",
+            "Ludwig Strasse 7, 31134 Hildesheim", "DE52114575800000254"),
+         ("Roberto", "password1A@", "provider@mail.com", "PetWorld Insdurance", "AK42345670-23", "",
+            "Ludwig Strasse 7, 31134 Hildesheim", "DE52114575800000254"),
+         ("Roberto", "password1A@", "provider@mail.com", "PetWorld Insdurance", "AK42345670-23", "+49176855452",
+            "", "DE52114575800000254"),
+         ("Roberto", "password1A@", "provider@mail.com", "PetWorld Insdurance", "AK42345670-23", "+49176855452",
+            "Ludwig Strasse 7, 31134 Hildesheim", ""),
+        ])
+    def test_service_provider_save_with_blank_or_empty_data(self,
+                                                            staff_user,
+                                                            api_client,
+                                                            name,
+                                                            password,
+                                                            email,
+                                                            company_name,
+                                                            registration_number,
+                                                            phone,
+                                                            address,
+                                                            iban):
+        api_client.force_authenticate(staff_user)
+        data = {"user": {
+                        "name": name,
+                        "password": password,
+                        "email": email
+                        },
+                "service_provider": {
+                        "company_name": company_name,
+                        "registration_number": registration_number,
+                        "phone": phone,
+                        "address": address,
+                        "iban": iban
+                        }
+                }
+        response = api_client.post(f'{self.endpoint}', data=data, format='json')
+        assert response.status_code == 400
+
+    def test_service_provider_put_with_admin_user_success(self, staff_user, api_client, service_provider):
+        api_client.force_authenticate(staff_user)
+        data = {"company_name": "PetWorld Insurance AG",
+                "phone": "+49176855452",
+                "registration_number": "FT53822U",
+                "address": "Ludwig Strasse 7, 31134 Hildesheim",
+                "iban": "DE52114575800000254"
+                }
+        response = api_client.put(f'{self.endpoint}{service_provider.id}/', data=data, format='json')
+        assert response.status_code == 200
+        assert json.loads(response.content).get('iban') == "DE52114575800000254"
+
+    def test_service_provider_put_with_simple_user_forbidden(self, simple_user, api_client, service_provider):
+        api_client.force_authenticate(simple_user)
+        data = {"company_name": "PetWorld Insurance AG",
+                "phone": "+49176855452",
+                "registration_number": "FT53822U",
+                "address": "Ludwig Strasse 7, 31134 Hildesheim",
+                "iban": "DE52114575800000254"
+                }
+        response = api_client.put(f'{self.endpoint}{service_provider.id}/', data=data, format='json')
+        assert response.status_code == 403
+
+    def test_service_provider_put_with_provider_user_success(self, provider_user, api_client, service_provider):
+        api_client.force_authenticate(provider_user)
+        data = {"company_name": "PetWorld Insurance AG",
+                "phone": "+49176855452",
+                "registration_number": "FT53822U",
+                "address": "Ludwig Strasse 7, 31134 Hildesheim",
+                "iban": "DE52114575800000254"
+                }
+        response = api_client.put(f'{self.endpoint}{service_provider.id}/', data=data, format='json')
+        assert response.status_code == 200
+        assert json.loads(response.content).get('iban') == "DE52114575800000254"
+
+    def test_service_provider_put_with_anonymous_user_unauthorized(self, api_client, service_provider):
+        data = {"company_name": "PetWorld Insurance AG",
+                "phone": "+49176855452",
+                "registration_number": "FT53822U",
+                "address": "Ludwig Strasse 7, 31134 Hildesheim",
+                "iban": "DE52114575800000254"
+                }
+        response = api_client.put(f'{self.endpoint}{service_provider.id}/', data=data, format='json')
+        assert response.status_code == 401
+
+    def test_service_provider_put_service_provider_not_found(self, staff_user, api_client):
+        api_client.force_authenticate(staff_user)
+        data = {"company_name": "PetWorld Insurance AG",
+                "phone": "+49176855452",
+                "registration_number": "FT53822U",
+                "address": "Ludwig Strasse 7, 31134 Hildesheim",
+                "iban": "DE52114575800000254"
+                }
+        response = api_client.put(f'{self.endpoint}5556585/', data=data, format='json')
+        assert response.status_code == 404
+
+    def test_service_provider_delete_with_admin_user_success(self, staff_user, api_client, service_provider):
+        api_client.force_authenticate(staff_user)
+        response = api_client.delete(f'{self.endpoint}{service_provider.id}/')
+        assert response.status_code == 204
+
+    def test_service_provider_delete_with_simple_user_forbidden(self, simple_user, api_client, service_provider):
+        api_client.force_authenticate(simple_user)
+        response = api_client.delete(f'{self.endpoint}{service_provider.id}/')
+        assert response.status_code == 403
+
+    def test_service_provider_delete_with_provider_user_forbidden(self,
+                                                                  provider_user,
+                                                                  api_client,
+                                                                  service_provider_list):
+        api_client.force_authenticate(provider_user)
+        response = api_client.delete(f'{self.endpoint}{service_provider_list[3].id}/')
+        assert response.status_code == 403
+
+    def test_service_provider_delete_himself_with_provider_user_success(self,
+                                                                        provider_user,
+                                                                        api_client,
+                                                                        service_provider):
+        api_client.force_authenticate(provider_user)
+        response = api_client.delete(f'{self.endpoint}{service_provider.id}/')
+        assert response.status_code == 204
+
+    def test_service_provider_delete_with_anonymous_user_unauthorized(self, api_client, service_provider):
+        response = api_client.delete(f'{self.endpoint}{service_provider.id}/')
+        assert response.status_code == 401
+
 
 class TestPolicyEndpoints:
     endpoint = '/api/insurance/policies/'
