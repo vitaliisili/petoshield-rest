@@ -25,7 +25,7 @@ class RegisterUserSerializer(BaseUserSerializer):
     class Meta:
         model = get_user_model()
         fields = ['email', 'name', 'password']
-        extra_kwargs = {'password': {'write_only': True}}
+        # extra_kwargs = {'password': {'write_only': True}}
 
 
 class ExtendUserSerializer(BaseUserSerializer):
@@ -61,3 +61,8 @@ class EmailVerificationSerializer(serializers.ModelSerializer):
 class ResetPasswordSerializer(serializers.Serializer):
     email = serializers.EmailField(required=True)
     redirect_link = serializers.URLField(required=True)
+
+
+class ChangePasswordSerializer(serializers.Serializer):
+    old_password = serializers.CharField(max_length=250)
+    new_password = serializers.CharField(max_length=150)

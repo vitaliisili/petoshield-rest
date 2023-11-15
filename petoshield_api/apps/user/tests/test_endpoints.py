@@ -1,5 +1,6 @@
 import json
 import pytest
+from django.utils.translation import gettext_lazy as _
 
 
 class TestUserEndpoints:
@@ -237,7 +238,6 @@ class TestUserEndpoints:
         response = api_client.get(f'{self.endpoint}?page={page}&page_size=2')
         assert response.status_code == 404
 
-    # test user filter by role
     @pytest.mark.parametrize('role_, length',
                              [('client', 4), ('cl', 4), ('ADMIN', 1), ('provider', 0), (' ', 5), ('nothing', 0)])
     def test_user_filter_by_role_success(self, staff_user, users_list, api_client, role_, length):
@@ -246,7 +246,6 @@ class TestUserEndpoints:
         assert response.status_code == 200
         assert len(json.loads(response.content)) == length
 
-    # test filter by created_at
     def test_user_filter_by_created_at_year_exact_success(self, staff_user, users_list, api_client):
         api_client.force_authenticate(staff_user)
         response = api_client.get(f'{self.endpoint}?created_at__year__exact=2023')
@@ -292,7 +291,6 @@ class TestUserEndpoints:
         response = api_client.get(f'{self.endpoint}?created_at=2023-10-10')
         assert response.status_code == 200
 
-    # test filter by email
     @pytest.mark.parametrize(
         'email_, length',
         [
@@ -309,7 +307,6 @@ class TestUserEndpoints:
         assert response.status_code == 200
         assert len(json.loads(response.content)) == length
 
-    # test filter by _name
     @pytest.mark.parametrize('user_name, length', [('Example Name1', 1), ('Example', 3), (' ', 5)])
     def test_user_filter_by_name_icontains_success(self, staff_user, users_list, user_name, api_client, length):
         api_client.force_authenticate(staff_user)
@@ -324,7 +321,6 @@ class TestUserEndpoints:
         assert response.status_code == 200
         assert len(json.loads(response.content)) == length
 
-    # test filter by is_active
     @pytest.mark.parametrize('is_active_, length', [('true', 4), (1, 4), (' ', 5), (0, 1), ('false', 1)])
     def test_user_filter_by_is_active_success(self, staff_user, users_list, is_active_, api_client, length):
         api_client.force_authenticate(staff_user)
@@ -332,11 +328,86 @@ class TestUserEndpoints:
         assert response.status_code == 200
         assert len(json.loads(response.content)) == length
 
+    def test_user_change_password_success(self, simple_user, api_client, raw_password):
+        api_client.force_authenticate(simple_user)
+        data = {
+            'old_password': raw_password,
+            'new_password': 'password'
+        }
+        response = api_client.post(f'{self.endpoint}change_password/', data=data, format='json')
+        assert response.status_code == 200
+        assert json.loads(response.content).get('message') == 'Password has been changed successfully'
+
+    def test_user_change_password_with_unauthorized_user(self, api_client, raw_password):
+        data = {
+            'old_password': raw_password,
+            'new_password': 'password'
+        }
+        response = api_client.post(f'{self.endpoint}change_password/', data=data, format='json')
+        assert response.status_code == 401
+
+    @pytest.mark.parametrize('new_password', ['', ' ', '1234', 'abc'])
+    def test_user_change_password_with_wrong_data(self, simple_user, api_client, raw_password, new_password):
+        api_client.force_authenticate(simple_user)
+        data = {
+            'old_password': raw_password,
+            'new_password': new_password
+        }
+        response = api_client.post(f'{self.endpoint}change_password/', data=data, format='json')
+        assert response.status_code == 400
+
+    def test_user_reset_password(self, api_client, simple_user):
+        data = {
+            'email': simple_user.email,
+            'redirect_link': 'https://example.com'
+        }
+        response = api_client.post(f'{self.endpoint}reset_password/', data=data, format='json')
+        assert response.status_code == 200
+        assert json.loads(response.content).get('message') == 'Email was send'
+
+    def test_user_reset_password_with_non_existing_email(self, api_client, users_list):
+        data = {
+            'email': 'wrong@mail.com',
+            'redirect_link': 'https://example.com'
+        }
+        response = api_client.post(f'{self.endpoint}reset_password/', data=data, format='json')
+        assert response.status_code == 400
+
+    @pytest.mark.parametrize('link', [
+        'httr://example.com',
+        'http://example',
+        'example',
+        'example.com',
+    ])
+    def test_user_reset_password_with_wrong_link(self, api_client, simple_user, link):
+        data = {
+            'email': simple_user.email,
+            'redirect_link': link
+        }
+        response = api_client.post(f'{self.endpoint}reset_password/', data=data, format='json')
+        assert response.status_code == 400
+
+    def test_user_reset_password_confirm_success(self, api_client, simple_user, confirmation_token):
+        data = {
+            'token': confirmation_token.confirmation_token,
+            'password': 'newpassword'
+        }
+        response = api_client.post(f'{self.endpoint}reset_password_confirm/', data=data, format='json')
+        assert response.status_code == 200
+        assert json.loads(response.content).get('message') == _('Password has been reset successfully')
+
+    def test_user_reset_password_confirm_wrong_token(self, api_client, simple_user, confirmation_token):
+        data = {
+            'token': 'jhdfghj4gh3jg576786gh',
+            'password': 'newpassword'
+        }
+        response = api_client.post(f'{self.endpoint}reset_password_confirm/', data=data, format='json')
+        assert response.status_code == 400
+
 
 class TestRoleEndpoints:
     endpoint = '/api/roles/'
 
-    # testing creation of the user role
     def test_role_save_with_staff_user_success(self, staff_user, api_client):
         api_client.force_authenticate(staff_user)
         data = {
@@ -392,7 +463,6 @@ class TestRoleEndpoints:
         response = api_client.post(self.endpoint, data=data, format='json')
         assert response.status_code == 400
 
-    # testing geting of the list of user roles
     def test_role_get_list_with_staff_user_success(self, staff_user, api_client):
         api_client.force_authenticate(staff_user)
         response = api_client.get(self.endpoint)
@@ -412,7 +482,6 @@ class TestRoleEndpoints:
         response = api_client.get(self.endpoint)
         assert response.status_code == 401
 
-    # testing retieve of the user's role
     def test_role_retrieve_one_with_staff_user_status_success(self, staff_user, api_client, roles):
         api_client.force_authenticate(staff_user)
         response = api_client.get(f'{self.endpoint}{roles[0].id}/')
@@ -438,7 +507,6 @@ class TestRoleEndpoints:
         response = api_client.get(f'{self.endpoint}{id}/')
         assert response.status_code == 404
 
-    # testing update of the user's role
     def test_role_update_with_staff_user_success(self, staff_user, api_client, roles):
         api_client.force_authenticate(staff_user)
         data = {
@@ -475,7 +543,6 @@ class TestRoleEndpoints:
         response = api_client.put(f'{self.endpoint}{roles[0].id}/', data=data, format="json")
         assert response.status_code == 401
 
-    # testing patching of the particular user's role
     def test_role_patch_with_staff_user_success(self, staff_user, api_client, roles):
         api_client.force_authenticate(staff_user)
         data = {
@@ -509,7 +576,6 @@ class TestRoleEndpoints:
         response = api_client.patch(f'{self.endpoint}{roles[0].id}/', data=data, format="json")
         assert response.status_code == 401
 
-    # testing deletion of the user's role
     def test_role_delete_with_staff_user_success(self, staff_user, api_client, roles):
         api_client.force_authenticate(staff_user)
         response = api_client.delete(f'{self.endpoint}{roles[0].id}/')
@@ -539,7 +605,6 @@ class TestRoleEndpoints:
         response = api_client.delete(f'{self.endpoint}{roles[0].id}/', data=data, format="json")
         assert response.status_code == 401
 
-    # test filter by _name
     @pytest.mark.parametrize('role_name, length', [('admin', 1), ('client', 1), (' ', 3), ('provider', 1)])
     def test_role_filter_by_name_exact_success(self, staff_user, roles, users_list, role_name, api_client, length):
         api_client.force_authenticate(staff_user)
