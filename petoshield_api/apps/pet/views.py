@@ -79,6 +79,7 @@ class PetViewSet(viewsets.ModelViewSet):
             price=utils.get_policy_price(pet_instance)
         )
 
+        EmailSender.send_welcome_email(user_instance)
         EmailSender.send_confirmation_email(user_instance, request.META.get('HTTP_REFERER'))
 
         response = JwtToken.get_jwt_token(user_instance)

@@ -11,8 +11,13 @@ from apps.user.filters import RoleFilter, UserFilter
 from apps.user.models import Role, MailVerificationTokens
 from apps.user.permissions import UserPermission
 from django.utils.translation import gettext_lazy as _
-from apps.user.serializers import BaseUserSerializer, ExtendUserSerializer, RoleSerializer, RegisterUserSerializer, \
-    ResetPasswordSerializer
+from apps.user.serializers import (
+    BaseUserSerializer,
+    ExtendUserSerializer,
+    RoleSerializer,
+    RegisterUserSerializer,
+    ResetPasswordSerializer,
+    ChangePasswordSerializer)
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -38,7 +43,8 @@ class UserViewSet(viewsets.ModelViewSet):
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
 
-        EmailSender.send_confirmation_email(user, request.META.get('HTTP_REFERER'))  # TODO: Send welcome message
+        EmailSender.send_welcome_email(user)
+        EmailSender.send_confirmation_email(user, request.META.get('HTTP_REFERER'))
 
         return Response(JwtToken.get_jwt_token(user), status=status.HTTP_201_CREATED)
 
@@ -56,7 +62,6 @@ class UserViewSet(viewsets.ModelViewSet):
             raise RestValidationError(_('Email verification fail'))
 
         get_user_model().objects.filter(pk=mail_verification_token_instance.user.id).update(is_verified=True)
-
         return Response({'message': _('Email was verified')}, status=status.HTTP_200_OK)
 
     @action(detail=False, methods=['post'])
@@ -94,6 +99,30 @@ class UserViewSet(viewsets.ModelViewSet):
         user_instance.save()
 
         return Response({'message': _('Password has been reset successfully')}, status=status.HTTP_200_OK)
+
+    @action(detail=False, methods=['post'])
+    def change_password(self, request):
+        serializer = ChangePasswordSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        old_password = request.data.get('old_password')
+        new_password = request.data.get('new_password')
+        user = request.user
+
+        if not user.check_password(old_password):
+            raise RestValidationError(_('Old password is not correct'))
+
+        try:
+            validate_password(new_password)
+        except ValidationError as error:
+            raise RestValidationError(error)
+
+        user.set_password(new_password)
+        user.save()
+
+        #  TODO: send email to user
+
+        return Response({'message': 'Password has been changed successfully'})
 
 
 class RoleViewSet(viewsets.ModelViewSet):
