@@ -43,21 +43,6 @@ class EmailSender:
             settings.EMAIL_HOST_USER,
             [user.email]
         )
-    
-    @staticmethod
-    def send_reply_to_ticket(id, email, reply, link):
-        subject = f"Answer to your question # {id} on {link} site"
-        message = f"{reply}"
-        
-        send_mail(
-            subject,
-            message,
-            settings.EMAIL_HOST_USER,
-            [email]
-        )
-
-        
-        
 
     @staticmethod
     def send_welcome_email(user):
