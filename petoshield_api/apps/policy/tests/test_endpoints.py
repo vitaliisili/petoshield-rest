@@ -268,22 +268,25 @@ class TestServiceProviderEndpoints:
         response = api_client.post(f'{self.endpoint}', data=data, format='json')
         assert response.status_code == 201
 
-    @pytest.mark.parametrize('name, password, email, company_name, registration_number, phone, address, iban',
-        [('', "password1A@", "provider@mail.com", "PetWorld Insdurance", "AK42345670-23", "+49176855452",
+    @pytest.mark.parametrize(
+        'name, password, email, company_name, registration_number, phone, address, iban',
+        [
+            ('', "password1A@", "provider@mail.com", "PetWorld Insdurance", "AK42345670-23",
+            "+49176855452", "Ludwig Strasse 7, 31134 Hildesheim", "DE52114575800000254"),
+            ("Roberto", "password1A@", "", "PetWorld Insdurance", "AK42345670-23", "+49176855452",
             "Ludwig Strasse 7, 31134 Hildesheim", "DE52114575800000254"),
-         ("Roberto", "password1A@", "", "PetWorld Insdurance", "AK42345670-23", "+49176855452",
+            ("Roberto", "password1A@", "provider@mail.com", "", "AK42345670-23", "+49176855452",
             "Ludwig Strasse 7, 31134 Hildesheim", "DE52114575800000254"),
-         ("Roberto", "password1A@", "provider@mail.com", "", "AK42345670-23", "+49176855452",
-            "Ludwig Strasse 7, 31134 Hildesheim", "DE52114575800000254"),
-         ("Roberto", "password1A@", "provider@mail.com", "PetWorld Insdurance", "", "+49176855452",
-            "Ludwig Strasse 7, 31134 Hildesheim", "DE52114575800000254"),
-         ("Roberto", "password1A@", "provider@mail.com", "PetWorld Insdurance", "AK42345670-23", "",
-            "Ludwig Strasse 7, 31134 Hildesheim", "DE52114575800000254"),
-         ("Roberto", "password1A@", "provider@mail.com", "PetWorld Insdurance", "AK42345670-23", "+49176855452",
-            "", "DE52114575800000254"),
-         ("Roberto", "password1A@", "provider@mail.com", "PetWorld Insdurance", "AK42345670-23", "+49176855452",
-            "Ludwig Strasse 7, 31134 Hildesheim", ""),
-        ])
+            ("Roberto", "password1A@", "provider@mail.com", "PetWorld Insdurance", "",
+            "+49176855452", "Ludwig Strasse 7, 31134 Hildesheim", "DE52114575800000254"),
+            ("Roberto", "password1A@", "provider@mail.com", "PetWorld Insdurance", "AK42345670-23", "",
+             "Ludwig Strasse 7, 31134 Hildesheim", "DE52114575800000254"),
+            ("Roberto", "password1A@", "provider@mail.com", "PetWorld Insdurance", "AK42345670-23", "+49176855452", "",
+             "DE52114575800000254"),
+            ("Roberto", "password1A@", "provider@mail.com", "PetWorld Insdurance", "AK42345670-23", "+49176855452",
+             "Ludwig Strasse 7, 31134 Hildesheim", "")
+        ]
+    )
     def test_service_provider_save_with_blank_or_empty_data(self,
                                                             staff_user,
                                                             api_client,
@@ -500,7 +503,6 @@ class TestPolicyEndpoints:
         assert response.status_code == 400
 
         # test filter by price
-
     @pytest.mark.parametrize('price_, length', [(17.25, 1), (12.58, 1), ('', 4), ('99999', 0)])
     def test_policy_filter_by_price_exact_success(self, staff_user, policies_list, api_client, price_, length):
         api_client.force_authenticate(staff_user)
@@ -617,6 +619,7 @@ class TestPolicyEndpoints:
         response = api_client.get(self.endpoint)
         assert response.status_code == 200
 
+    # Have to check, ERROR
     # def test_policy_list_with_provider_user_success(self, provider_user, api_client, policies_list):
     #     api_client.force_authenticate(provider_user)
     #     response = api_client.get(self.endpoint)
@@ -786,26 +789,30 @@ class TestPolicyEndpoints:
 
     @pytest.mark.parametrize('policy_number, start_date, end_date, status, initial_limit, current_limit, deductible',
                              [
-                                ("", "2022-10-10", "2023-10-10", "expired", "10000.00", "10000.00", "500.00"),
-                                ("new field", "", "2023-10-10", "expired", "10000.00", "10000.00","500.00"),
-                                ("new field", "2022-10-10", "", "expired", 10000.00, "10000.00","500.00"),
-                                ("new field", "2022-10-10", "2023-10-10", "", "10000.00", "10000.00","500.00"),
-                                ("new field", "2022-10-10", "2023-10-10", "expired", "", 10000.00,"500.00"),
-                                ("new field", "2022-10-10", "2023-10-10", "expired", "10000.00", "",500.00),
-                                ("new field", "2022-10-10", "2023-10-10", "expired", "10000.00", "10000.00","")
-                             ])
-    def test_policy_put_with_blank_or_empty_data(self,
-                                                 staff_user,
-                                                 policy,
-                                                 pet,
-                                                 api_client,
-                                                 policy_number,
-                                                 start_date,
-                                                 end_date,
-                                                 status,
-                                                 initial_limit,
-                                                 current_limit,
-                                                 deductible):
+                                 ("", "2022-10-10", "2023-10-10", "expired", "10000.00", "10000.00", "500.00"),
+                                 ("new field", "2022/10/10", "2023-10-10", "expired", "10000.00", "10000.00", "500.00"),
+                                 ("new field", "", "2023-10-10", "expired", "10000.00", "10000.00", "500.00"),
+                                 ("new field", "2022-10-10", "", "expired", 10000.00, "10000.00", "500.00"),
+                                 ("new field", "2022-10-10", "2023-10-10", "", "10000.00", "10000.00", "500.00"),
+                                 ("new field", "2022-10-10", "2023-10-10", "expired", "", 10000.00, "500.00"),
+                                 ("new field", "2022-10-10", "2023-10-10", "expired", "10000.00", "", 500.00),
+                                 ("new field", "2022-10-10", "2023-10-10", "expired", "10000.00", "10000.00", ""),
+                                 ("new field", "2022-10-10", "2023-10-10", "expired", "10000.00", "10000.00",
+                                  "five hundred")
+                             ]
+                            )
+    def test_policy_put_with_blank_or_wrong_data_bad_request(self,
+                                                            staff_user,
+                                                            policy,
+                                                            pet,
+                                                            api_client,
+                                                            policy_number,
+                                                            start_date,
+                                                            end_date,
+                                                            status,
+                                                            initial_limit,
+                                                            current_limit,
+                                                            deductible):
         api_client.force_authenticate(staff_user)
         data = {
                     "policy_number": policy_number,
@@ -843,6 +850,7 @@ class TestPolicyEndpoints:
         api_client.force_authenticate(staff_user)
         response = api_client.delete(f"{self.endpoint}55666/")
         assert response.status_code == 404
+
 
 class TestInsuranceCaseEndpoints:
     endpoint = '/api/insurance/insurance-cases/'
@@ -940,6 +948,227 @@ class TestInsuranceCaseEndpoints:
         response = api_client.get(f'{self.endpoint}?status__icontains={status}')
         assert response.status_code == 200
         assert len(json.loads(response.content)) == length
+
+    def test_insurance_case_list_with_staff_user_success(self, staff_user, insurance_cases_list, api_client):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(self.endpoint)
+        assert response.status_code == 200
+        assert len(json.loads(response.content)) == len(insurance_cases_list)
+
+    def test_insurance_case_list_with_simple_user_success(self, simple_user, insurance_cases_list, api_client):
+        api_client.force_authenticate(simple_user)
+        response = api_client.get(self.endpoint)
+        assert response.status_code == 200
+
+    def test_insurance_case_list_with_provider_user_success(self, provider_user, insurance_cases_list, api_client):
+        api_client.force_authenticate(provider_user)
+        response = api_client.get(self.endpoint)
+        assert response.status_code == 200
+
+    def test_insurance_case_list_with_anonymous_user_unauthorize(self, insurance_cases_list, api_client):
+        response = api_client.get(self.endpoint)
+        assert response.status_code == 401
+
+    def test_insurance_case_save_with_staff_user_success(self, staff_user, service_provider, policy, api_client):
+        api_client.force_authenticate(staff_user)
+        data = {
+                    "claim_date": "2023-09-30",
+                    "description": "Test insurance case",
+                    "status": "accept",
+                    "service_provider": service_provider.id,
+                    "policy": policy.id
+                }
+        response = api_client.post(f'{self.endpoint}', data=data, format='json')
+        assert response.status_code == 201
+
+    def test_insurance_case_save_with_staff_user_bad_request(self, staff_user, service_provider, policy, api_client):
+        api_client.force_authenticate(staff_user)
+        data = {
+                    "claim_date": "2023-09-30",
+                    "description": "Test insurance case",
+                    "status": "accept"
+                }
+        response = api_client.post(f'{self.endpoint}', data=data, format='json')
+        assert response.status_code == 400
+
+    def test_insurance_case_save_with_simple_user_forbidden(self, simple_user, service_provider, policy, api_client):
+        api_client.force_authenticate(simple_user)
+        data = {
+                    "claim_date": "2023-09-30",
+                    "description": "Test insurance case",
+                    "status": "accept",
+                    "service_provider": service_provider.id,
+                    "policy": policy.id
+                }
+        response = api_client.post(f'{self.endpoint}', data=data, format='json')
+        assert response.status_code == 403
+
+    def test_insurance_case_save_with_provider_user_forbidden(self, provider_user, service_provider,
+                                                              policy, api_client):
+        api_client.force_authenticate(provider_user)
+        data = {
+                    "claim_date": "2023-09-30",
+                    "description": "Test insurance case",
+                    "service_provider": service_provider.id,
+                    "policy": policy.id
+                }
+        response = api_client.post(f'{self.endpoint}', data=data, format='json')
+        assert response.status_code == 201
+
+    def test_insurance_case_save_with_anonymous_user_unauthorize(self, service_provider, policy, api_client):
+        data = {
+                    "claim_date": "2023-09-30",
+                    "description": "Test insurance case",
+                    "service_provider": service_provider.id,
+                    "policy": policy.id
+                }
+        response = api_client.post(f'{self.endpoint}', data=data, format='json')
+        assert response.status_code == 401
+
+    @pytest.mark.parametrize("claim_date, description",
+                             [
+                                 ("", "Test insurance case"),
+                                 ("30-10-2023", "Test insurance case"),
+                                 ("2023-09-30", "")
+                             ])
+    def test_insurance_case_save_with_blank_or_wrong_data(self, staff_user, claim_date, description,
+                                                          service_provider, policy, api_client):
+        api_client.force_authenticate(staff_user)
+        data = {
+                    "claim_date": claim_date,
+                    "description": description,
+                    "service_provider": service_provider.id,
+                    "policy": policy.id
+                }
+        response = api_client.post(f'{self.endpoint}', data=data, format='json')
+        assert response.status_code == 400
+
+    def test_insurance_case_put_with_staff_user_success(self, staff_user, insurance_case, service_provider,
+                                                        policy, api_client):
+        api_client.force_authenticate(staff_user)
+        data = {
+                    "claim_date": "2023-09-30",
+                    "description": "Cat broke his leg",
+                    "service_provider": service_provider.id,
+                    "policy": policy.id
+                }
+        response = api_client.put(f'{self.endpoint}{insurance_case.id}/', data=data, format='json')
+        assert response.status_code == 200
+        assert json.loads(response.content).get('description') == "Cat broke his leg"
+
+    def test_insurance_case_put_with_staff_user_not_found(self, staff_user, service_provider, policy, api_client):
+        api_client.force_authenticate(staff_user)
+        data = {
+                    "claim_date": "2023-09-30",
+                    "description": "Cat broke his leg",
+                    "service_provider": service_provider.id,
+                    "policy": policy.id
+                }
+        response = api_client.put(f'{self.endpoint}996565/', data=data, format='json')
+        assert response.status_code == 404
+
+    @pytest.mark.parametrize('claim_date, description, status',
+                             {
+                                 ("", "Cat broke his leg", "active"),
+                                 ("2023-09-30", "Cat broke his leg", 1),
+                                 ("2023-09-30", "Cat broke his leg", "inactive"),
+                                 ("2023-09-30", "", "active")
+                             })
+    def test_insurance_case_put_with_blank_or_wrong_data_bad_request(self, staff_user, insurance_case, service_provider,
+                                                        policy, api_client, claim_date, description, status):
+        api_client.force_authenticate(staff_user)
+        data = {
+                    "claim_date": claim_date,
+                    "description": description,
+                    "status": status,
+                    "service_provider": service_provider.id,
+                    "policy": policy.id
+                }
+        response = api_client.put(f'{self.endpoint}{insurance_case.id}/', data=data, format='json')
+        assert response.status_code == 400
+
+    def test_insurance_case_put_with_simple_user_forbidden(self, simple_user, insurance_case, service_provider,
+                                                        policy, api_client):
+        api_client.force_authenticate(simple_user)
+        data = {
+                    "claim_date": "2023-09-30",
+                    "description": "Cat broke his leg",
+                    "service_provider": service_provider.id,
+                    "policy": policy.id
+                }
+        response = api_client.put(f'{self.endpoint}{insurance_case.id}/', data=data, format='json')
+        assert response.status_code == 403
+
+    def test_insurance_case_put_with_provider_user_forbidden(self, provider_user, insurance_case, service_provider,
+                                                        policy, api_client):
+        api_client.force_authenticate(provider_user)
+        data = {
+                    "claim_date": "2023-09-30",
+                    "description": "Cat broke his leg",
+                    "service_provider": service_provider.id,
+                    "policy": policy.id
+                }
+        response = api_client.put(f'{self.endpoint}{insurance_case.id}/', data=data, format='json')
+        assert response.status_code == 403
+
+    def test_insurance_case_put_with_anonymous_user_unauthorize(self, insurance_case, service_provider,
+                                                        policy, api_client):
+        data = {
+                    "claim_date": "2023-09-30",
+                    "description": "Cat broke his leg",
+                    "service_provider": service_provider.id,
+                    "policy": policy.id
+                }
+        response = api_client.put(f'{self.endpoint}{insurance_case.id}/', data=data, format='json')
+        assert response.status_code == 401
+
+    def test_insurance_case_patch_with_staff_user_success(self, staff_user, insurance_cases_list, api_client):
+        api_client.force_authenticate(staff_user)
+        response = api_client.patch(f'{self.endpoint}{insurance_cases_list[2]}.id',
+                                    {"description": "Cat broke his leg"})
+        assert response.status_code == 200
+        assert json.loads(response.content).get('description') == "Cat broke his leg"
+
+    def test_insurance_case_patch_with_simple_user_forbidden(self, simple_user, insurance_cases_list, api_client):
+        api_client.force_authenticate(simple_user)
+        response = api_client.patch(f'{self.endpoint}{insurance_cases_list[1]}.id',
+                                    {"description": "Cat broke his leg"})
+        assert response.status_code == 403
+
+    def test_insurance_case_patch_with_provider_user_forbidden(self, provider_user, insurance_cases_list, api_client):
+        api_client.force_authenticate(provider_user)
+        response = api_client.patch(f'{self.endpoint}{insurance_cases_list[1]}.id',
+                                    {"description": "Cat broke his leg"})
+        assert response.status_code == 403
+
+    def test_insurance_case_patch_with_anonymous_user_unauthorize(self, insurance_cases_list, api_client):
+        response = api_client.patch(f'{self.endpoint}{insurance_cases_list[0]}.id',
+                                    {"description": "Cat broke his leg"})
+        assert response.status_code == 401
+
+    def test_insurance_case_delete_with_staff_user_success(self, staff_user, insurance_cases_list, api_client):
+        api_client.force_authenticate(staff_user)
+        response = api_client.delete(f'{self.endpoint}{insurance_cases_list[1].id}/')
+        assert response.status_code == 204
+
+    def test_insurance_case_delete_with_simple_user_forbidden(self, simple_user, insurance_cases_list, api_client):
+        api_client.force_authenticate(simple_user)
+        response = api_client.delete(f'{self.endpoint}{insurance_cases_list[0].id}/')
+        assert response.status_code == 403
+
+    def test_insurance_case_delete_with_provider_user_forbidden(self, provider_user, insurance_cases_list, api_client):
+        api_client.force_authenticate(provider_user)
+        response = api_client.delete(f'{self.endpoint}{insurance_cases_list[2].id}/')
+        assert response.status_code == 403
+
+    def test_insurance_case_delete_with_anonymous_user_unauthorize(self, insurance_cases_list, api_client):
+        response = api_client.delete(f'{self.endpoint}{insurance_cases_list[2].id}/')
+        assert response.status_code == 401
+
+    def test_insurance_case_delete_case_not_found(self, staff_user, api_client):
+        api_client.force_authenticate(staff_user)
+        response = api_client.delete(f'{self.endpoint}5644/')
+        assert response.status_code == 404
 
 
 class TestIncomingInvoiceEndpoints:
