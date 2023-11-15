@@ -1,6 +1,5 @@
 from django.db import models
 from apps.core.models import BaseModel
-from apps.user.models import User
 
 
 class Ticket(BaseModel):
