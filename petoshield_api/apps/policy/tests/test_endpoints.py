@@ -398,6 +398,14 @@ class TestServiceProviderEndpoints:
         response = api_client.delete(f'{self.endpoint}{service_provider.id}/')
         assert response.status_code == 401
 
+    def test_service_provider_delete_provider_not_found(self,
+                                                        staff_user,
+                                                        api_client,
+                                                        service_provider):
+        api_client.force_authenticate(staff_user)
+        response = api_client.delete(f'{self.endpoint}595665/')
+        assert response.status_code == 404
+
 
 class TestPolicyEndpoints:
     endpoint = '/api/insurance/policies/'
@@ -598,6 +606,243 @@ class TestPolicyEndpoints:
         response = api_client.get(f'{self.endpoint}?created_at=2023-10-10')
         assert response.status_code == 200
 
+    def test_policy_list_with_staff_user_success(self, staff_user, api_client, policies_list):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(self.endpoint)
+        assert response.status_code == 200
+        assert len(json.loads(response.content)) == len(policies_list)
+
+    def test_policy_list_with_simple_user_success(self, simple_user, api_client, policies_list):
+        api_client.force_authenticate(simple_user)
+        response = api_client.get(self.endpoint)
+        assert response.status_code == 200
+
+    # def test_policy_list_with_provider_user_success(self, provider_user, api_client, policies_list):
+    #     api_client.force_authenticate(provider_user)
+    #     response = api_client.get(self.endpoint)
+    #     assert response.status_code == 200
+
+    def test_policy_list_with_anonymous_user_unauthorized(self, api_client, policies_list):
+        response = api_client.get(self.endpoint)
+        assert response.status_code == 401
+
+    def test_policy_save_with_staff_user_forbidden(self, staff_user, api_client):
+        api_client.force_authenticate(staff_user)
+        data = {
+                    "policy_number": "123-456-234567",
+                    "start_date": "2023-10-10",
+                    "end_date": "2024-10-10",
+                    "status": "valid",
+                    "initial_limit": 10000,
+                    "current_limit": 10000,
+                    "deductible": 500,
+                    "pet": 11,
+                    "providers": []
+                }
+        response = api_client.post(f'{self.endpoint}', data=data)
+        assert response.status_code == 403
+
+    def test_policy_save_with_simple_user_forbidden(self, simple_user, api_client):
+        api_client.force_authenticate(simple_user)
+        data = {
+                    "policy_number": "123-456-234567",
+                    "start_date": "2023-10-10",
+                    "end_date": "2024-10-10",
+                    "status": "valid",
+                    "initial_limit": 10000,
+                    "current_limit": 10000,
+                    "deductible": 500,
+                    "pet": 11,
+                    "providers": []
+                }
+        response = api_client.post(f'{self.endpoint}', data=data)
+        assert response.status_code == 403
+
+    def test_policy_save_with_provider_user_forbidden(self, provider_user, api_client):
+        api_client.force_authenticate(provider_user)
+        data = {
+                    "policy_number": "123-456-234567",
+                    "start_date": "2023-10-10",
+                    "end_date": "2024-10-10",
+                    "status": "valid",
+                    "initial_limit": 10000,
+                    "current_limit": 10000,
+                    "deductible": 500,
+                    "pet": 11,
+                    "providers": []
+                }
+        response = api_client.post(f'{self.endpoint}', data=data)
+        assert response.status_code == 403
+
+    def test_policy_save_with_anonymous_user_unauthorized(self, api_client):
+        data = {
+                    "policy_number": "123-456-234567",
+                    "start_date": "2023-10-10",
+                    "end_date": "2024-10-10",
+                    "status": "valid",
+                    "initial_limit": 10000,
+                    "current_limit": 10000,
+                    "deductible": 500,
+                    "pet": 11,
+                    "providers": []
+                }
+        response = api_client.post(f'{self.endpoint}', data=data)
+        assert response.status_code == 401
+
+    def test_policy_patch_with_staff_user_success(self, staff_user, policy, api_client):
+        api_client.force_authenticate(staff_user)
+        data = {
+                    "status": "expired"
+                }
+        response = api_client.patch(f'{self.endpoint}{policy.id}/', data=data)
+        assert response.status_code == 200
+        assert json.loads(response.content).get('status') == "expired"
+
+    def test_policy_patch_with_simple_user_forbidden(self, simple_user, policy, api_client):
+        api_client.force_authenticate(simple_user)
+        data = {
+                    "status": "expired"
+                }
+        response = api_client.patch(f'{self.endpoint}{policy.id}/', data=data)
+        assert response.status_code == 403
+
+    def test_policy_patch_with_provider_user_forbidden(self, provider_user, policy, api_client):
+        api_client.force_authenticate(provider_user)
+        data = {
+                    "status": "expired"
+                }
+        response = api_client.patch(f'{self.endpoint}{policy.id}/', data=data)
+        assert response.status_code == 403
+
+    def test_policy_patch_with_anonymous_user_unauthorized(self, api_client, policy):
+        data = {
+                    "status": "expired"
+                }
+        response = api_client.patch(f'{self.endpoint}{policy.id}/', data=data)
+        assert response.status_code == 401
+
+    def test_policy_put_with_staff_user_success(self, staff_user, policy, pet, api_client):
+        api_client.force_authenticate(staff_user)
+        data = {
+                    "created_at": "2023-10-26T08:20:36.990701Z",
+                    "updated_at": "2023-10-26T08:20:36.990721Z",
+                    "policy_number": "new field",
+                    "start_date": "2022-10-10",
+                    "end_date": "2023-10-10",
+                    "status": "expired",
+                    "initial_limit": "10000.00",
+                    "current_limit": "10000.00",
+                    "deductible": "500.00",
+                    "pet": pet.id
+                }
+        response = api_client.put(f'{self.endpoint}{policy.id}/', data=data, format='json')
+        assert response.status_code == 200
+        assert json.loads(response.content).get('status') == 'expired'
+        assert json.loads(response.content).get('end_date') == '2023-10-10'
+
+    def test_policy_put_with_simple_user_forbidden(self, simple_user, policy, pet, api_client):
+        api_client.force_authenticate(simple_user)
+        data = {
+                    "policy_number": "new field",
+                    "start_date": "2022-10-10",
+                    "end_date": "2023-10-10",
+                    "status": "expired",
+                    "initial_limit": "10000.00",
+                    "current_limit": "10000.00",
+                    "deductible": "500.00",
+                    "pet": pet.id
+                }
+        response = api_client.put(f'{self.endpoint}{policy.id}/', data=data, format='json')
+        assert response.status_code == 403
+
+    def test_policy_put_with_provider_user_forbidden(self, provider_user, policy, pet, api_client):
+        api_client.force_authenticate(provider_user)
+        data = {
+                    "policy_number": "new field",
+                    "start_date": "2022-10-10",
+                    "end_date": "2023-10-10",
+                    "status": "expired",
+                    "initial_limit": "10000.00",
+                    "current_limit": "10000.00",
+                    "deductible": "500.00",
+                    "pet": pet.id
+                }
+        response = api_client.put(f'{self.endpoint}{policy.id}/', data=data, format='json')
+        assert response.status_code == 403
+
+    def test_policy_put_with_anonymous_user_unauthorize(self, policy, pet, api_client):
+        data = {
+                    "policy_number": "new field",
+                    "start_date": "2022-10-10",
+                    "end_date": "2023-10-10",
+                    "status": "expired",
+                    "initial_limit": "10000.00",
+                    "current_limit": "10000.00",
+                    "deductible": "500.00",
+                    "pet": pet.id
+                }
+        response = api_client.put(f'{self.endpoint}{policy.id}/', data=data, format='json')
+        assert response.status_code == 401
+
+    @pytest.mark.parametrize('policy_number, start_date, end_date, status, initial_limit, current_limit, deductible',
+                             [
+                                ("", "2022-10-10", "2023-10-10", "expired", "10000.00", "10000.00", "500.00"),
+                                ("new field", "", "2023-10-10", "expired", "10000.00", "10000.00","500.00"),
+                                ("new field", "2022-10-10", "", "expired", 10000.00, "10000.00","500.00"),
+                                ("new field", "2022-10-10", "2023-10-10", "", "10000.00", "10000.00","500.00"),
+                                ("new field", "2022-10-10", "2023-10-10", "expired", "", 10000.00,"500.00"),
+                                ("new field", "2022-10-10", "2023-10-10", "expired", "10000.00", "",500.00),
+                                ("new field", "2022-10-10", "2023-10-10", "expired", "10000.00", "10000.00","")
+                             ])
+    def test_policy_put_with_blank_or_empty_data(self,
+                                                 staff_user,
+                                                 policy,
+                                                 pet,
+                                                 api_client,
+                                                 policy_number,
+                                                 start_date,
+                                                 end_date,
+                                                 status,
+                                                 initial_limit,
+                                                 current_limit,
+                                                 deductible):
+        api_client.force_authenticate(staff_user)
+        data = {
+                    "policy_number": policy_number,
+                    "start_date": start_date,
+                    "end_date": end_date,
+                    "status": status,
+                    "initial_limit": initial_limit,
+                    "current_limit": current_limit,
+                    "deductible": deductible,
+                    "pet": pet.id
+                }
+        response = api_client.put(f'{self.endpoint}{policy.id}/', data=data, format='json')
+        assert response.status_code == 400
+
+    def test_policy_delete_with_staff_user_success(self, staff_user, policy, api_client):
+        api_client.force_authenticate(staff_user)
+        response = api_client.delete(f"{self.endpoint}{policy.id}/")
+        assert response.status_code == 204
+
+    def test_policy_delete_with_simple_user_forbidden(self, simple_user, policy, api_client):
+        api_client.force_authenticate(simple_user)
+        response = api_client.delete(f"{self.endpoint}{policy.id}/")
+        assert response.status_code == 403
+
+    def test_policy_delete_with_forbidden(self, provider_user, policy, api_client):
+        api_client.force_authenticate(provider_user)
+        response = api_client.delete(f"{self.endpoint}{policy.id}/")
+        assert response.status_code == 403
+
+    def test_policy_delete_with_anonymous_user_unauthorize(self, policy, api_client):
+        response = api_client.delete(f"{self.endpoint}{policy.id}/")
+        assert response.status_code == 401
+
+    def test_policy_delete_not_found(self, staff_user, policy, api_client):
+        api_client.force_authenticate(staff_user)
+        response = api_client.delete(f"{self.endpoint}55666/")
+        assert response.status_code == 404
 
 class TestInsuranceCaseEndpoints:
     endpoint = '/api/insurance/insurance-cases/'
@@ -744,7 +989,6 @@ class TestIncomingInvoiceEndpoints:
         assert response.status_code == 400
 
         # test filter by amount
-
     @pytest.mark.parametrize('amount_, length', [('125.39', 1), (125.39, 1), (750.50, 1)])
     def test_incoming_invoice_filter_by_amount_exact_success(self, staff_user, incoming_invoices_list, api_client,
                                                              amount_, length):
@@ -799,8 +1043,7 @@ class TestIncomingInvoiceEndpoints:
         response = api_client.get(f'{self.endpoint}?insurance_case=05-11-2023')
         assert response.status_code == 400
 
-        # test filter by created_at
-
+    # test filter by created_at
     def test_incoming_invoice_filter_by_created_at_year_exact_success(self, staff_user, incoming_invoices_list,
                                                                       api_client):
         api_client.force_authenticate(staff_user)
