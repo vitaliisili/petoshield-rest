@@ -106,9 +106,9 @@ class JwtToken:
 class Validate:
     
     @staticmethod
-    def password_validation(request):
+    def password_validation(raw_password):
         try:
-            validate_password(request.data.get('password'))
+            validate_password(raw_password)
         except ValidationError as error:
             raise RestValidationError(error)
     

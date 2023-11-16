@@ -32,7 +32,8 @@ class UserViewSet(viewsets.ModelViewSet):
         return BaseUserSerializer
 
     def create(self, request, *args, **kwargs):
-        Validate.password_validation(request)
+        password = request.data.get('password')
+        Validate.password_validation(password)
 
         serializer = RegisterUserSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -84,8 +85,9 @@ class UserViewSet(viewsets.ModelViewSet):
 
         if not user_instance:
             raise RestValidationError(_('User not found'))
-
-        Validate.password_validation(request)
+        
+        password = request.data.get('password')
+        Validate.password_validation(password)
 
         user_instance.set_password(request.data.get('password'))
         user_instance.save()
@@ -103,8 +105,9 @@ class UserViewSet(viewsets.ModelViewSet):
 
         if not user.check_password(old_password):
             raise RestValidationError(_('Old password is not correct'))
-
-        Validate.password_validation(request)
+        
+        password = request.data.get('password')
+        Validate.password_validation(password)
 
         user.set_password(new_password)
         user.save()
