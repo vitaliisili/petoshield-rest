@@ -1,9 +1,8 @@
-import uuid
 from apps.tickets.models import Ticket
 import pytest
 from django.contrib.auth import get_user_model
 from rest_framework.test import APIClient
-from apps.user.models import Role, MailVerificationTokens
+from apps.user.models import Role
 
 
 @pytest.fixture
@@ -56,6 +55,7 @@ def provider_user(roles, raw_password):
                                                     role=roles[2])
     return provider
 
+
 @pytest.fixture
 def ticket(db):
     simple_ticket = Ticket.objects.create(visitor_email='example@mail.com',
@@ -63,18 +63,19 @@ def ticket(db):
                                           visitor_message='example message')
     return simple_ticket
 
+
 @pytest.fixture
 def ticket_list(db):
     return [
         Ticket.objects.create(visitor_email='amanda@mail.com',
-                                          visitor_name='Amanda',
-                                          visitor_message='Hello Amanda'),
-        
+                              visitor_name='Amanda',
+                              visitor_message='Hello Amanda'),
+
         Ticket.objects.create(visitor_email='genevieve@mail.com',
-                                          visitor_name='Genevieve',
-                                          visitor_message='The message is love'),
-        
+                              visitor_name='Genevieve',
+                              visitor_message='The message is love'),
+
         Ticket.objects.create(visitor_email='Eolie@mail.com',
-                                          visitor_name='Eolie',
-                                          visitor_message='Welcome Eolie')
+                              visitor_name='Eolie',
+                              visitor_message='Welcome Eolie')
     ]
