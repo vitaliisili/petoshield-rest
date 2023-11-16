@@ -78,14 +78,14 @@ def ticket_list(db):
         Ticket.objects.create(visitor_email='Eolie@mail.com',
                               visitor_name='Eolie',
                               visitor_message='Welcome Eolie'),
-        
+
         Ticket.objects.create(visitor_email='Matilda@mail.com',
                               visitor_name='Matilda',
                               visitor_message='Welcome Matilda',
                               ticket_status='close'),
-        
+
         Ticket.objects.create(visitor_email='Thorsten@mail.com',
                               visitor_name='Thorsten',
                               visitor_message='Welcome Thorsten',
-                              ticket_status='open'),      
+                              ticket_status='open'),
     ]

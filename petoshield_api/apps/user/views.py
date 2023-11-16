@@ -85,7 +85,7 @@ class UserViewSet(viewsets.ModelViewSet):
 
         if not user_instance:
             raise RestValidationError(_('User not found'))
-        
+
         password = request.data.get('password')
         Validate.password_validation(password)
 
@@ -105,7 +105,7 @@ class UserViewSet(viewsets.ModelViewSet):
 
         if not user.check_password(old_password):
             raise RestValidationError(_('Old password is not correct'))
-        
+
         password = request.data.get('password')
         Validate.password_validation(password)
 

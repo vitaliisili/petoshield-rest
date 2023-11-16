@@ -19,3 +19,4 @@ export const API_POLICIES_URL = `${HOST}/insurance/policies/`
 export const API_INSURANCE_CASES_URL = `${HOST}/insurance/insurance-cases/`
 export const API_INCOMING_INVOICES_URL = `${HOST}/insurance/incoming-invoices/`
 export const API_PAYMENT_CHECKOUT = `${HOST}/payment/create_checkout/`
+export const API_PAYMENT_CHECKOUT_CONFIRM = `${HOST}/payment/checkout_confirm/`

@@ -11,13 +11,6 @@ from apps.policy.models import Policy
 
 
 class StripeViewSet(viewsets.ModelViewSet):
-    # queryset = get_user_model().objects.all()
-    # permission_classes = (UserPermission,)
-    # search_fields = ['$name']
-    # ordering_fields = ['name', 'created_at']
-    # ordering = ['-created_at']
-    # filterset_class = UserFilter
-
     stripe.api_key = settings.STRIPE_SECRET_KEY
 
     @action(detail=False, methods=['post'])
@@ -54,10 +47,8 @@ class StripeViewSet(viewsets.ModelViewSet):
             policy = Policy.objects.get(pet__id=data.get('pet'))
             StripeSession.objects.create(session_id=checkout_session.id, policy=policy)
 
-            print(checkout_session)
             return Response({"checkout_url": checkout_session.url}, status=status.HTTP_200_OK)
-        except Exception as e:
-            print("ERROR:", e)
+        except Exception:
             return Response({'error': 'something went wrong when creating stripe checkout session:'},
                             status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 

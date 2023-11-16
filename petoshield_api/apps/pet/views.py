@@ -68,7 +68,7 @@ class PetViewSet(viewsets.ModelViewSet):
         pet = serializer.validated_data['pet']
         pet['user'] = user_instance
         pet_instance = Pet.objects.create(**pet)
-        
+
         Policy.objects.create(
             policy_number=uuid.uuid4(),
             start_date=date.today(),
