@@ -32,6 +32,7 @@ const Account = () => {
                     setIsLoading(false)
                 }
             }).catch(error => {
+                console.log(error)
                 toast.error('Failed to load profile')
             })
     }, [])
@@ -81,15 +82,17 @@ const Account = () => {
                             <div>
                                 <div className='flex justify-between items-center'>
                                     <div className='text-sm font-bold text-nobel-dark'>Email Address</div>
-                                    <div className='text-xs text-gallery-dark font-bold'>verified</div>
-                                    {/*<div className='text-xs text-rose-dark font-bold'>not verified</div>*/}
+                                    {profile.is_verified ?
+                                        <div className='text-xs text-gallery-dark font-bold'>verified</div> :
+                                        <div className='text-xs text-rose-dark font-bold'>not verified</div>
+                                    }
                                 </div>
                                 <div className=''>{profile.email}</div>
                             </div>
 
                             <div className='flex flex-col'>
                                 <div className='text-sm font-bold text-nobel-dark'>Profile Settings</div>
-                                <div className='text-sm'><Link className='hover:text-rose shadow-sm' to=''>Update Profile</Link> | <Link className='hover:text-rose shadow-sm' to='#'>Delete Account</Link></div>
+                                <div className='text-sm'><Link className='hover:text-rose shadow-sm' to={`/profile-update/${profile.id}`}>Update Profile</Link></div>
                             </div>
 
                             <button onClick={logoutHandler} className='flex justify-center text-xs items-center border border-rose rounded-md w-28 py-1.5 px-1.5 bg-rose text-white font-bold uppercase hover:bg-rose-dark transition-all duration-300 shadow-[rgba(255,0,131,0.5)_0px_10px_40px_-10px]'><IoLogOutOutline className='text-xl mr-2'/> Logout</button>

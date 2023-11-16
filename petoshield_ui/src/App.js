@@ -18,6 +18,8 @@ import PetProfile from "./pages/PetProfile";
 import PrivateRoute from "./utils/PrivateRoute";
 import EmailVerification from "./pages/EmailVerification";
 import Quote from "./pages/Quote";
+import Payment from "./pages/Payment";
+import UserProfileUpdate from "./pages/UserProfileUpdate";
 
 const App = () => {
     return (
@@ -39,6 +41,8 @@ const App = () => {
                 <Route path='/new-pet' element={<PrivateRoute><PetOnlyRegistration/></PrivateRoute>}/>
                 <Route path='/pet-profile/:id' element={<PrivateRoute><PetProfile/></PrivateRoute>}/>
                 <Route path='/pet-quote/:id' element={<PrivateRoute><Quote/></PrivateRoute>}/>
+                <Route path='/profile-update/:id' element={<PrivateRoute><UserProfileUpdate/></PrivateRoute>}/>
+                <Route path='/payment' element={<Payment/>}/>
                 <Route path='*' element={<NotFound/>}/>
             </Routes>
         </BrowserRouter>

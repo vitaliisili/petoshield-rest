@@ -1,0 +1,1 @@
+export const ANNUAL_DISCOUNT = 24
