@@ -6,8 +6,8 @@ class TicketFilter(filters.FilterSet):
     class Meta:
         model = Ticket
         fields = {
-            'visitor_name': ['iexact', 'icontains'],
-            'visitor_email': ['iexact', 'icontains'],
+            'visitor_name': ['exact', 'icontains'],
+            'visitor_email': ['exact', 'icontains'],
             'visitor_message': ['icontains'],
             'ticket_status': ['exact'],
             'created_at': ['exact', 'gt', 'lt'],
