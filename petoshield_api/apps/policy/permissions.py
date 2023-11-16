@@ -51,8 +51,10 @@ class InsuranceCasePermissions(permissions.BasePermission):
     def has_permission(self, request, view):
         if view.action in ['list', 'retrieve']:
             return request.user.role.name in self.ROLES
-        elif view.action in ['create', 'update', 'partial_update', 'destroy']:
+        elif view.action in ['create']:
             return request.user.role.name in ['admin', 'provider']
+        elif view.action in ['update', 'partial_update', 'destroy']:
+            return request.user.role.name in ['admin']
         else:
             return False
 
