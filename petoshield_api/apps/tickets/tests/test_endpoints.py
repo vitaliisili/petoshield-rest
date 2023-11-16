@@ -1,8 +1,9 @@
 import pytest
 
+
 class TestTicketEndpoint:
     endpoint = '/api/help/tickets/'
-    
+
     @pytest.mark.django_db
     def test_ticket_save_success(self, api_client):
         data = {
@@ -12,7 +13,7 @@ class TestTicketEndpoint:
         }
         response = api_client.post(self.endpoint, data=data)
         assert response.status_code == 201
-        
+
     @pytest.mark.django_db
     @pytest.mark.parametrize('name, email, message', [
         ("", "test@email.com", "ticket text"),
@@ -31,4 +32,3 @@ class TestTicketEndpoint:
         }
         response = api_client.post(self.endpoint, data=data)
         assert response.status_code == 400
-        
