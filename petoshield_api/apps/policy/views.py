@@ -53,7 +53,6 @@ class PolicyViewSet(viewsets.ModelViewSet):
         if self.request.user.role.name == 'client':
             return Policy.objects.filter(pet__user=self.request.user)
         elif self.request.user.role.name == 'provider':
-            #return ServiceProvider.objects.get(user=self.request.user).policies.all()
             return Policy.objects.filter(insurance_cases__service_provider__user=self.request.user)
 
         return Policy.objects.all()

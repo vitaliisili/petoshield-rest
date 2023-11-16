@@ -1125,25 +1125,25 @@ class TestInsuranceCaseEndpoints:
 
     def test_insurance_case_patch_with_staff_user_success(self, staff_user, insurance_cases_list, api_client):
         api_client.force_authenticate(staff_user)
-        response = api_client.patch(f'{self.endpoint}{insurance_cases_list[2]}.id',
+        response = api_client.patch(f'{self.endpoint}{insurance_cases_list[2].id}/',
                                     {"description": "Cat broke his leg"})
         assert response.status_code == 200
         assert json.loads(response.content).get('description') == "Cat broke his leg"
 
     def test_insurance_case_patch_with_simple_user_forbidden(self, simple_user, insurance_cases_list, api_client):
         api_client.force_authenticate(simple_user)
-        response = api_client.patch(f'{self.endpoint}{insurance_cases_list[1]}.id',
+        response = api_client.patch(f'{self.endpoint}{insurance_cases_list[1].id}/',
                                     {"description": "Cat broke his leg"})
         assert response.status_code == 403
 
     def test_insurance_case_patch_with_provider_user_forbidden(self, provider_user, insurance_cases_list, api_client):
         api_client.force_authenticate(provider_user)
-        response = api_client.patch(f'{self.endpoint}{insurance_cases_list[1]}.id',
+        response = api_client.patch(f'{self.endpoint}{insurance_cases_list[1].id}/',
                                     {"description": "Cat broke his leg"})
         assert response.status_code == 403
 
     def test_insurance_case_patch_with_anonymous_user_unauthorize(self, insurance_cases_list, api_client):
-        response = api_client.patch(f'{self.endpoint}{insurance_cases_list[0]}.id',
+        response = api_client.patch(f'{self.endpoint}{insurance_cases_list[0].id}/',
                                     {"description": "Cat broke his leg"})
         assert response.status_code == 401
 
