@@ -39,3 +39,6 @@ testprint:
 
 test-cov:
 	cd petoshield_api && python -m pytest --cov
+
+shell:
+	cd petoshield_api && python -m manage shell
