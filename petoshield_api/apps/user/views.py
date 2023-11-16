@@ -1,12 +1,10 @@
 from django.contrib.auth import get_user_model
-from django.contrib.auth.password_validation import validate_password
-from django.core.exceptions import ValidationError
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
-from rest_framework.exceptions import ValidationError as RestValidationError
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
-from apps.core.utils import EmailSender, JwtToken
+from rest_framework.exceptions import ValidationError as RestValidationError
+from apps.core.utils import EmailSender, JwtToken, Validate
 from apps.user.filters import RoleFilter, UserFilter
 from apps.user.models import Role, MailVerificationTokens
 from apps.user.permissions import UserPermission
@@ -34,10 +32,7 @@ class UserViewSet(viewsets.ModelViewSet):
         return BaseUserSerializer
 
     def create(self, request, *args, **kwargs):
-        try:
-            validate_password(request.data.get('password'))
-        except ValidationError as error:
-            raise RestValidationError(error)
+        Validate.password_validation(request)
 
         serializer = RegisterUserSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -90,10 +85,7 @@ class UserViewSet(viewsets.ModelViewSet):
         if not user_instance:
             raise RestValidationError(_('User not found'))
 
-        try:
-            validate_password(request.data.get('password'))
-        except ValidationError as error:
-            raise RestValidationError(error)
+        Validate.password_validation(request)
 
         user_instance.set_password(request.data.get('password'))
         user_instance.save()
@@ -112,10 +104,7 @@ class UserViewSet(viewsets.ModelViewSet):
         if not user.check_password(old_password):
             raise RestValidationError(_('Old password is not correct'))
 
-        try:
-            validate_password(new_password)
-        except ValidationError as error:
-            raise RestValidationError(error)
+        Validate.password_validation(request)
 
         user.set_password(new_password)
         user.save()

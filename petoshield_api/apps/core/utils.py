@@ -1,4 +1,7 @@
 from django.core.mail import send_mail
+from django.contrib.auth.password_validation import validate_password
+from django.core.exceptions import ValidationError
+from rest_framework.exceptions import ValidationError as RestValidationError
 from rest_framework_simplejwt.tokens import RefreshToken
 from apps.user.models import User, MailVerificationTokens
 import uuid
@@ -98,3 +101,14 @@ class JwtToken:
             'refresh': str(jtw_token)
         }
         return response
+
+
+class Validate:
+    
+    @staticmethod
+    def password_validation(request):
+        try:
+            validate_password(request.data.get('password'))
+        except ValidationError as error:
+            raise RestValidationError(error)
+    
