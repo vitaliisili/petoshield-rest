@@ -106,7 +106,7 @@ class UserViewSet(viewsets.ModelViewSet):
         if not user.check_password(old_password):
             raise RestValidationError(_('Old password is not correct'))
 
-        password = request.data.get('password')
+        password = request.data.get('new_password')
         Validate.password_validation(password)
 
         user.set_password(new_password)
