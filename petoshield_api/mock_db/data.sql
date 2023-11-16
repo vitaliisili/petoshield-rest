@@ -7,6 +7,7 @@ truncate table policy_insurancecase RESTART IDENTITY CASCADE;
 -- truncate table policy_policy_providers RESTART IDENTITY CASCADE;
 truncate table policy_serviceprovider RESTART IDENTITY CASCADE;
 truncate table user_role RESTART IDENTITY CASCADE;
+truncate table tickets_ticket RESTART IDENTITY CASCADE;
 
 
 
@@ -183,3 +184,15 @@ INSERT INTO policy_incominginvoice(created_at, updated_at, insurance_case_id, am
 --invoice for simple user pets
 INSERT INTO policy_incominginvoice(created_at, updated_at, insurance_case_id, amount, invoice_date) VALUES ('2022-12-20 00:00:00.000000 +00:00', '2023-10-19 00:00:00.000000', 9,  234.18,  '2023-10-19 00:00:00.000000');
 INSERT INTO policy_incominginvoice(created_at, updated_at, insurance_case_id, amount, invoice_date) VALUES ('2022-12-20 00:00:00.000000 +00:00', '2023-10-19 00:00:00.000000', 10,  654.43,  '2023-10-19 00:00:00.000000');
+
+-- TICKETS_TABLE
+INSERT INTO public.tickets_ticket (created_at,updated_at,visitor_name,visitor_email,visitor_message,ticket_status) VALUES('2022-12-20 01:00:00+01','2022-12-20 01:00:00+01','John','john@emal.com','Please tell me how to do things','closed');
+INSERT INTO public.tickets_ticket (created_at,updated_at,visitor_name,visitor_email,visitor_message,ticket_status) VALUES('2022-12-21 01:00:00+01','2022-12-21 01:00:00+01','Mary','mary@emal.com','How much cost policy for my cat','closed');
+INSERT INTO public.tickets_ticket (created_at,updated_at,visitor_name,visitor_email,visitor_message,ticket_status) VALUES('2022-12-21 01:00:00+01','2022-12-21 01:00:00+01','Leroy Jenkins','leroy@emal.com','I love my dog','new');
+INSERT INTO public.tickets_ticket (created_at,updated_at,visitor_name,visitor_email,visitor_message,ticket_status) VALUES('2022-12-23 01:00:00+01','2022-12-23 01:00:00+01','Fatima','fftm@emal.com','How many policies did you sell last month','in_process');
+INSERT INTO public.tickets_ticket (created_at,updated_at,visitor_name,visitor_email,visitor_message,ticket_status) VALUES('2022-12-25 01:00:00+01','2022-12-25 01:00:00+01','Andrea','andie@mal.com','Please tell me, what is your name','closed');
+INSERT INTO public.tickets_ticket (created_at,updated_at,visitor_name,visitor_email,visitor_message,ticket_status) VALUES('2022-12-26 01:00:00+01','2022-12-26 01:00:00+01','Sarah','sarah.r@mal.com','Hello! I wanna work in your company','in_process');
+INSERT INTO public.tickets_ticket (created_at,updated_at,visitor_name,visitor_email,visitor_message,ticket_status) VALUES('2022-12-29 01:00:00+01','2022-12-29 01:00:00+01','Lesly','les.jackson@mal.com','Sorry. Wrong message','in_process');
+INSERT INTO public.tickets_ticket (created_at,updated_at,visitor_name,visitor_email,visitor_message,ticket_status) VALUES('2023-01-10 01:00:00+01','2023-01-10 01:00:00+01','Peter','p.walles@gmal.com','Testing your tickt system ','closed');
+INSERT INTO public.tickets_ticket (created_at,updated_at,visitor_name,visitor_email,visitor_message,ticket_status) VALUES('2023-01-11 01:00:00+01','2023-01-11 01:00:00+01','Felicia','fel.dor@gmal.com','Message for the Director General','new');
+INSERT INTO public.tickets_ticket (created_at,updated_at,visitor_name,visitor_email,visitor_message,ticket_status) VALUES('2023-01-11 01:00:00+01','2023-01-11 01:00:00+01','Jake','j.smith@gmal.com','Leave me alone. Do not send your emails to me','new');
