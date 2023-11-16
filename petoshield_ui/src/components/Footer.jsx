@@ -66,10 +66,10 @@ const Footer = () => {
                     <div className='mt-7'>
                         <div className='font-bold text-nobel text-sm'>FOLLOW US</div>
                         <div className='mt-5 flex justify-start space-x-4 md:space-x-0 md:justify-between text-2xl text-gallery'>
-                            <Link to=''><FaFacebookF className='hover:text-rose cursor-pointer transition-all duration-300'/></Link>
-                            <Link to=''><FaTwitter className='hover:text-rose cursor-pointer transition-all duration-300'/></Link>
-                            <Link to=''><FaYoutube className='hover:text-rose cursor-pointer transition-all duration-300'/></Link>
-                            <Link to=''><FaInstagram className='hover:text-rose cursor-pointer transition-all duration-300'/></Link>
+                            <Link to='https://www.facebook.com/petoshield.eu/' target="_blank" rel="noopener noreferrer"><FaFacebookF className='hover:text-rose cursor-pointer transition-all duration-300'/></Link>
+                            <Link to='https://twitter.com/petoshield' target="_blank" rel="noopener noreferrer"><FaTwitter className='hover:text-rose cursor-pointer transition-all duration-300'/></Link>
+                            <Link to='https://www.youtube.com/@petoshield' target="_blank" rel="noopener noreferrer"><FaYoutube className='hover:text-rose cursor-pointer transition-all duration-300'/></Link>
+                            <Link to='https://www.instagram.com/petoshield.eu/' target="_blank" rel="noopener noreferrer"><FaInstagram className='hover:text-rose cursor-pointer transition-all duration-300'/></Link>
                         </div>
                     </div>
 

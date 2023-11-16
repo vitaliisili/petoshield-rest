@@ -6,13 +6,13 @@ import axios from "axios";
 import {getCookie, removeCookie} from "../utils/cookiesUtils";
 import {Link, useNavigate} from "react-router-dom";
 import defaultProfile from '../static/images/account/default-profile.svg'
-// import defaultProfile from '../static/images/account/test-profile.png'
 import {API_PETS_URL, API_USER_SELF, API_USER_URL} from "../utils/apiUrls";
 import {toast, ToastContainer} from "react-toastify";
 import {IoLogOutOutline} from "react-icons/io5";
-import {PiCatDuotone, PiDogDuotone} from "react-icons/pi";
 import catIcon from "../static/images/account/cat-icon.svg";
 import dogIcon from "../static/images/account/dog-icon.svg";
+import cat from "../static/images/price/cat-passive.svg"
+import dog from "../static/images/price/dog-passive.svg"
 
 const Account = () => {
 
@@ -67,7 +67,7 @@ const Account = () => {
             <NavBar/>
             <HelpModal/>
 
-            <main className='flex flex-col pt-28 pb-10 bg-black-haze items-center justify-center font-lato'>
+            <main className='flex flex-grow flex-col pt-28 pb-10 bg-black-haze items-center justify-center font-lato'>
                 <div className='flex flex-col lg:flex-row items-center lg:items-start'>
                     { profile &&
                         <div className='left flex flex-col w-96 lg:w-72 h-fit bg-white p-8 rounded-md space-y-8'>
@@ -110,13 +110,13 @@ const Account = () => {
                             {pets && pets.map((pet) => (
                                     <div onClick={() => navigate(`/pet-profile/${pet.id}`)} key={pet.id} className='pet-card flex justify-center items-center border-2 border-gallery rounded-md p-4 shadow-md transition-all duration-500 hover:scale-105 cursor-pointer'>
                                         <div className=''>
-                                            {pet.species === 'cat'? <img src={catIcon} alt="cat"/> : <img src={dogIcon} alt="dog"/>}
+                                            <img src={pet.species === 'cat' ? cat : dog} alt="pet" className='-mt-6'/>
                                         </div>
                                         <div className='flex flex-col ml-4 w-full'>
                                             <div className='flex justify-between'>
-                                                <div className='font-bold text-lg'>{pet.name}</div>
+                                                <div className='font-bold text-2xl text-nobel-dark font-dancing'>{pet.name}</div>
                                                 {pet.policy.status === 'invalid' && <div className='text-sm text-rose'>insurance is not active</div>}
-                                                {pet.policy.status === 'valid' && <div className='text-sm text-rose'>insurance is active</div>}
+                                                {pet.policy.status === 'valid' && <div className='text-sm text-rose font-bold'>insurance is active</div>}
                                                 {pet.policy.status === 'expired' && <div className='text-sm text-rose'>insurance expired</div>}
 
                                             </div>
@@ -133,6 +133,7 @@ const Account = () => {
                                 ))}
                         </div>
                     </div>
+
                 </div>
 
             </main>

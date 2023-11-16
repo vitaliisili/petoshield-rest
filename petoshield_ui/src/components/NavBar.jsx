@@ -54,7 +54,7 @@ const NavBar = () => {
                          className='right-menu cursor-pointer transition-all duration-700 hover:scale-110 flex items-center text-2xl md:hidden'>
                         <VscAccount/></div>
                 </div>
-                <div className='font-bold font-dancing text-3xl flex justify-center -mt-8'>Petoshield</div>
+                <div className='font-bold font-dancing text-3xl flex justify-center -mt-8'><Link to='/'>Petoshield</Link></div>
             </nav>
             {isMenuOpen &&
                 <div ref={menuRef} className='md:hidden'>

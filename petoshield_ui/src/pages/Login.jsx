@@ -8,11 +8,13 @@ import {toast, ToastContainer} from "react-toastify";
 import axios from "axios";
 import {API_AUTH_TOKEN} from "../utils/apiUrls";
 import {setCookie} from "../utils/cookiesUtils";
+import {FaRegEye, FaRegEyeSlash} from "react-icons/fa";
 
 const Login = () => {
     const navigate = useNavigate()
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [isHidden, setIsHidden] = useState(true)
 
 
     const loginHandler = () => {
@@ -56,8 +58,11 @@ const Login = () => {
                             <input onChange={(e) => setEmail(e.target.value)} value={email} type="email" id='email' className='input-focus p-3.5 outline-0 border border-gallery rounded-md focus:border-gallery focus:ring-0' placeholder='Email'/>
                         </div>
 
-                        <div className='flex flex-col relative'>
-                            <input onChange={(e) => setPassword(e.target.value)} value={password} type="password" id='password' className='input-focus p-3.5 outline-0 border border-gallery rounded-md focus:border-gallery focus:ring-0' placeholder='Password'/>
+                        <div className='flex flex-col relative justify-center'>
+                            <input onChange={(e) => setPassword(e.target.value)} value={password} type={isHidden ? "password" : "text"} id='password' className=' w-full input-focus p-3.5 outline-0 border border-gallery rounded-md focus:border-gallery focus:ring-0' placeholder='Password'/>
+                            {isHidden ?
+                                <FaRegEyeSlash className='text-2xl absolute right-4'  onClick={() => setIsHidden(!isHidden)}/> :
+                                <FaRegEye className='text-2xl absolute right-4' onClick={() => setIsHidden(!isHidden)}/>}
                         </div>
 
                         <div>
