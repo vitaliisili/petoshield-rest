@@ -12,7 +12,7 @@ const Blog = () => {
             <HelpModal/>
 
             <main className='flex flex-grow flex-col pt-28 items-center font-lato'>
-                Blog
+                Blog Page
             </main>
 
             <footer>
