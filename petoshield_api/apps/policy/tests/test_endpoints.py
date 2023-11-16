@@ -619,11 +619,12 @@ class TestPolicyEndpoints:
         response = api_client.get(self.endpoint)
         assert response.status_code == 200
 
-    # Have to check, ERROR
-    # def test_policy_list_with_provider_user_success(self, provider_user, api_client, policies_list):
-    #     api_client.force_authenticate(provider_user)
-    #     response = api_client.get(self.endpoint)
-    #     assert response.status_code == 200
+    def test_policy_list_with_provider_user_success(self, provider_user, api_client, policies_list,
+                                                    insurance_cases_list):
+        api_client.force_authenticate(provider_user)
+        response = api_client.get(self.endpoint)
+        assert response.status_code == 200
+        assert len(json.loads(response.content)) == 1
 
     def test_policy_list_with_anonymous_user_unauthorized(self, api_client, policies_list):
         response = api_client.get(self.endpoint)
@@ -1323,3 +1324,192 @@ class TestIncomingInvoiceEndpoints:
         api_client.force_authenticate(staff_user)
         response = api_client.get(f'{self.endpoint}?created_at=2023-10-10')
         assert response.status_code == 200
+        
+    def test_incoming_invoice_list_with_staff_user_success(self, staff_user, incoming_invoices_list, api_client):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}')
+        assert response.status_code == 200
+
+    def test_incoming_invoice_list_with_provider_user_success(self, provider_user, incoming_invoices_list,
+                                                                api_client):
+        api_client.force_authenticate(provider_user)
+        response = api_client.get(f'{self.endpoint}')
+        assert response.status_code == 200
+
+    def test_incoming_invoice_list_with_simple_user_forbidden(self, simple_user, incoming_invoices_list, api_client):
+        api_client.force_authenticate(simple_user)
+        response = api_client.get(f'{self.endpoint}')
+        assert response.status_code == 403
+
+    def test_incoming_invoice_list_with_anonymous_user_unauthorize(self, incoming_invoices_list, api_client):
+        response = api_client.get(f'{self.endpoint}')
+        assert response.status_code == 401
+
+    def test_incoming_invoice_save_with_staff_user_success(self, staff_user, insurance_case, api_client):
+        api_client.force_authenticate(staff_user)
+        data = {
+                "invoice_date": "2023-09-20",
+                "amount": 255.23,
+                "insurance_case": insurance_case.id
+        }
+        response = api_client.post(f'{self.endpoint}', data=data, format='json')
+        assert response.status_code == 201
+
+    def test_incoming_invoice_save_with_simple_user_forbidden(self, simple_user, insurance_case, api_client):
+        api_client.force_authenticate(simple_user)
+        data = {
+                "invoice_date": "2023-09-20",
+                "amount": 255.23,
+                "insurance_case": insurance_case.id
+        }
+        response = api_client.post(f'{self.endpoint}', data=data, format='json')
+        assert response.status_code == 403
+
+    def test_incoming_invoice_save_with_provider_user_success(self, provider_user, insurance_case, api_client):
+        api_client.force_authenticate(provider_user)
+        data = {
+                "invoice_date": "2023-09-20",
+                "amount": 255.23,
+                "insurance_case": insurance_case.id
+        }
+        response = api_client.post(f'{self.endpoint}', data=data, format='json')
+        assert response.status_code == 201
+
+    def test_incoming_invoice_save_with_anonymous_user_unauthorize(self, insurance_case, api_client):
+        data = {
+                "invoice_date": "2023-09-20",
+                "amount": 255.23,
+                "insurance_case": insurance_case.id
+        }
+        response = api_client.post(f'{self.endpoint}', data=data, format='json')
+        assert response.status_code == 401
+
+    @pytest.mark.parametrize('invoice_date, amount',[
+        (" ", 302.55),
+        ("2023-09-20", "three hundred"),
+        ("30-10-2023", "302.55")
+    ])
+    def test_incoming_invoice_save_with_blank_or_wrong_data_bad_request(self, staff_user, insurance_case, api_client,
+                                                                        invoice_date, amount):
+        api_client.force_authenticate(staff_user)
+        data = {
+                "invoice_date": invoice_date,
+                "amount": amount,
+                "insurance_case": insurance_case.id
+        }
+        response = api_client.post(f'{self.endpoint}', data=data, format='json')
+        assert response.status_code == 400
+
+    def test_incoming_invoice_put_with_staff_user_success(self, staff_user, incoming_invoice, insurance_case,
+                                                          api_client):
+        api_client.force_authenticate(staff_user)
+        data = {
+                "invoice_date": "2023-10-03",
+                "amount": 30000,
+                "insurance_case": insurance_case.id
+        }
+        response = api_client.put(f'{self.endpoint}{incoming_invoice.id}/', data=data, format='json')
+        assert response.status_code == 200
+        assert json.loads(response.content).get('amount') == '30000.00'
+
+    def test_incoming_invoice_put_with_simple_user_forbidden(self, simple_user, incoming_invoice, insurance_case,
+                                                          api_client):
+        api_client.force_authenticate(simple_user)
+        data = {
+                "invoice_date": "2023-10-03",
+                "amount": 30000,
+                "insurance_case": insurance_case.id
+        }
+        response = api_client.put(f'{self.endpoint}{incoming_invoice.id}/', data=data, format='json')
+        assert response.status_code == 403
+
+    def test_incoming_invoice_put_with_provider_user_success(self, provider_user, incoming_invoice, insurance_case,
+                                                          api_client):
+        api_client.force_authenticate(provider_user)
+        data = {
+                "invoice_date": "2024-10-03",
+                "amount": 2411.25,
+                "insurance_case": insurance_case.id
+        }
+        response = api_client.put(f'{self.endpoint}{incoming_invoice.id}/', data=data, format='json')
+        assert response.status_code == 200
+        assert json.loads(response.content).get('invoice_date') == "2024-10-03"
+
+    def test_incoming_invoice_put_with_anonymous_user_unauthorize(self, incoming_invoice, insurance_case, api_client):
+        data = {
+                "invoice_date": "2023-10-03",
+                "amount": 30000,
+                "insurance_case": insurance_case.id
+        }
+        response = api_client.put(f'{self.endpoint}{incoming_invoice.id}/', data=data, format='json')
+        assert response.status_code == 401
+
+    @pytest.mark.parametrize('invoice_date, amount',[
+        (" ", 302.55),
+        ("2023-09-20", "three hundred"),
+        ("30-10-2023", "302.55")
+    ])
+    def test_incoming_invoice_put_with_blank_or_wrong_data_bad_request(self, staff_user, incoming_invoice,
+                                                                       insurance_case, api_client,
+                                                                       invoice_date, amount):
+        api_client.force_authenticate(staff_user)
+        data = {
+                "invoice_date": invoice_date,
+                "amount": amount,
+                "insurance_case": insurance_case.id
+        }
+        response = api_client.put(f'{self.endpoint}{incoming_invoice.id}/', data=data, format='json')
+        assert response.status_code == 400
+
+    def test_incoming_invoice_patch_with_staff_user_success(self, staff_user, incoming_invoice, api_client):
+        api_client.force_authenticate(staff_user)
+        response = api_client.patch(f'{self.endpoint}{incoming_invoice.id}/', {"invoice_date": "2022-11-11"})
+        assert response.status_code == 200
+        assert json.loads(response.content).get("invoice_date") == "2022-11-11"
+
+    def test_incoming_invoice_patch_with_provider_user_success(self, provider_user, incoming_invoice, api_client):
+        api_client.force_authenticate(provider_user)
+        response = api_client.patch(f'{self.endpoint}{incoming_invoice.id}/', {"invoice_date": "2022-11-11"})
+        assert response.status_code == 200
+        assert json.loads(response.content).get("invoice_date") == "2022-11-11"
+
+    def test_incoming_invoice_patch_with_simple_user_forbidden(self, simple_user, incoming_invoice, api_client):
+        api_client.force_authenticate(simple_user)
+        response = api_client.patch(f'{self.endpoint}{incoming_invoice.id}/', {"invoice_date": "2022-11-11"})
+        assert response.status_code == 403
+
+    def test_incoming_invoice_patch_with_anonymous_user_unauthorize(self, incoming_invoice, api_client): 
+        response = api_client.patch(f'{self.endpoint}{incoming_invoice.id}/', {"invoice_date": "2022-11-11"})
+        assert response.status_code == 401
+
+    def test_incoming_invoice_patch_with_staff_user_not_found(self, staff_user, api_client):
+        api_client.force_authenticate(staff_user)
+        response = api_client.patch(f'{self.endpoint}66585/', {"invoice_date": "2022-11-11"})
+        assert response.status_code == 404
+
+    def test_incoming_invoice_delete_with_staff__user__success(self, incoming_invoice, staff_user, api_client):
+        api_client.force_authenticate(staff_user)
+        response = api_client.delete(f'{self.endpoint}{incoming_invoice.id}/')
+        assert response.status_code == 204
+
+    def test_incoming_invoice_delete_with_staff_user_not_found(self, staff_user, api_client):
+        api_client.force_authenticate(staff_user)
+        response = api_client.delete(f'{self.endpoint}55235/')
+        assert response.status_code == 404
+
+    def test_incoming_invoice_delete_with_provider_user_success(self, incoming_invoice, provider_user, api_client):
+        api_client.force_authenticate(provider_user)
+        response = api_client.delete(f'{self.endpoint}{incoming_invoice.id}/')
+        assert response.status_code == 204
+
+    def test_incoming_invoice_delete_with_simple_user_forbidden(self, simple_user, incoming_invoice, api_client):
+        api_client.force_authenticate(simple_user)
+        response = api_client.delete(f'{self.endpoint}{incoming_invoice.id}/')
+        assert response.status_code == 403
+
+    def test_incoming_invoice_delete_with_anonymous_user_unauthorize(self, incoming_invoice, api_client):
+        response = api_client.delete(f'{self.endpoint}{incoming_invoice.id}/')
+        assert response.status_code == 401
+        
+    
+        

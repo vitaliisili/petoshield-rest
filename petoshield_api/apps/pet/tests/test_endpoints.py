@@ -841,7 +841,6 @@ class TestPetsEndpoints:
         assert response.status_code == 400
 
         # test filter by age
-
     @pytest.mark.parametrize('age, length', [('3', 1), ('4', 1), ('5', 1), (999, 0)])
     def test_pet_filter_by_age_exact_success(self, staff_user, pets_list, api_client, age, length):
         api_client.force_authenticate(staff_user)
