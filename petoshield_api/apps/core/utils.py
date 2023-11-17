@@ -147,6 +147,9 @@ class Validate:
 
     @staticmethod
     def password_validation(raw_password):
+        if raw_password is None:
+            raise ValueError("Password cannot be None. Please provide a valid password.")
+        
         try:
             validate_password(raw_password)
         except ValidationError as error:
