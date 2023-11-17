@@ -3,6 +3,7 @@ from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 
 urlpatterns = [
     path('api/auth/token', TokenObtainPairView.as_view(), name='token_obtain_pair'),
@@ -13,6 +14,8 @@ urlpatterns = [
     path('api/insurance/', include('apps.policy.urls')),
     path('api/help/', include('apps.tickets.urls')),
     path('api/payment/', include('apps.payment.urls')),
+    path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
+    path('api/docs/', SpectacularSwaggerView.as_view(url_name='schema')),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
