@@ -20,6 +20,8 @@ class StripeViewSet(viewsets.ModelViewSet):
         serializer = StripeCheckOutSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
+        redirect_link = data.get('redirect_link')
+
         try:
             price = stripe.Price.create(
                 product=settings.STRIPE_ANNUAL if data.get('frequency') == 'annual' else settings.STRIPE_MONTHLY,
@@ -37,11 +39,10 @@ class StripeViewSet(viewsets.ModelViewSet):
                 ],
                 client_reference_id=request.user.id,
                 payment_method_types=['card'],
-                # mode='payment',
                 mode='subscription',
                 customer_email=request.user.email,
-                success_url='http://localhost:3000/payment?success=true&session_id={CHECKOUT_SESSION_ID}',
-                cancel_url='http://localhost:3000/payment?cancel=true'
+                success_url=redirect_link + '?success=true&session_id={CHECKOUT_SESSION_ID}',
+                cancel_url=redirect_link + '?cancel=true'
             )
 
             policy = Policy.objects.get(pet__id=data.get('pet'))

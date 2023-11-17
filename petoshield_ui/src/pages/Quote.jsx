@@ -9,7 +9,7 @@ import {useLocation, useNavigate, useParams} from "react-router-dom";
 import catIcon from "../static/images/account/cat-icon.svg"
 import dogIcon from "../static/images/account/dog-icon.svg"
 import {BsCurrencyEuro} from "react-icons/bs";
-import {ANNUAL_DISCOUNT} from "../utils/config";
+import {ANNUAL_DISCOUNT, PAYMENT_REDIRECT_LINK} from "../utils/config";
 
 const Quote = () => {
     const navigate = useNavigate()
@@ -47,7 +47,8 @@ const Quote = () => {
         axios.post(API_PAYMENT_CHECKOUT, {
             frequency,
             "final_price": parseFloat(finalPrice).toFixed(2),
-            'pet': pet.id
+            'pet': pet.id,
+            'redirect_link': PAYMENT_REDIRECT_LINK
         },{
             headers: {
                 'Authorization': `Bearer ${getCookie('accessToken')}`
