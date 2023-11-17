@@ -3,15 +3,16 @@ import NavBar from "../components/NavBar";
 import HelpModal from "../components/HelpModal";
 import Footer from "../components/Footer";
 import axios from "axios";
-import {API_PETS_URL} from "../utils/apiUrls";
+import {API_PAYMENT_CHECKOUT, API_PETS_URL} from "../utils/apiUrls";
 import {getCookie} from "../utils/cookiesUtils";
-import {useParams} from "react-router-dom";
+import {useLocation, useNavigate, useParams} from "react-router-dom";
 import catIcon from "../static/images/account/cat-icon.svg"
 import dogIcon from "../static/images/account/dog-icon.svg"
 import {BsCurrencyEuro} from "react-icons/bs";
+import {ANNUAL_DISCOUNT} from "../utils/config";
 
 const Quote = () => {
-
+    const navigate = useNavigate()
     const [pet, setPet] = useState(null)
     const params = useParams()
     const [frequency, setFrequency] = useState('annual')
@@ -37,13 +38,28 @@ const Quote = () => {
         if (pet) {
             const monthly_price = pet.policy.price
             setPrice(frequency === 'annual' ? (monthly_price * 12).toFixed(2) : monthly_price)
-            setDiscount(frequency === 'annual' ? 24 : 0)
+            setDiscount(frequency === 'annual' ? ANNUAL_DISCOUNT : 0)
             setFinalPrice(frequency === 'annual' ? (price - discount).toFixed(2) : monthly_price)
         }
     }, [frequency, pet, finalPrice, price])
 
     const paymentHandler = () => {
-
+        axios.post(API_PAYMENT_CHECKOUT, {
+            frequency,
+            "final_price": parseFloat(finalPrice).toFixed(2),
+            'pet': pet.id
+        },{
+            headers: {
+                'Authorization': `Bearer ${getCookie('accessToken')}`
+            }
+        }).then(response => {
+            if (response.status === 200) {
+                // console.log(response.data)
+                window.location.replace(response.data.checkout_url)
+            }
+        }).catch(error => {
+            console.log(error)
+        })
     }
 
     return (

@@ -4,7 +4,6 @@
 
 const API_VERSION = 'api'
 const REACT_APP_BACKEND_URL = process.env.REACT_APP_BACKEND_URL
-// const REACT_APP_BACKEND_URL = 'https://api.petoshield.com'
 const HOST = `${REACT_APP_BACKEND_URL}/${API_VERSION}`
 
 export const API_AUTH_TOKEN = `${HOST}/auth/token`
@@ -19,3 +18,5 @@ export const API_SERVICE_PROVIDERS_URL = `${HOST}/insurance/service-providers/`
 export const API_POLICIES_URL = `${HOST}/insurance/policies/`
 export const API_INSURANCE_CASES_URL = `${HOST}/insurance/insurance-cases/`
 export const API_INCOMING_INVOICES_URL = `${HOST}/insurance/incoming-invoices/`
+export const API_PAYMENT_CHECKOUT = `${HOST}/payment/create_checkout/`
+export const API_PAYMENT_CHECKOUT_CONFIRM = `${HOST}/payment/checkout_confirm/`

@@ -18,6 +18,9 @@ import PetProfile from "./pages/PetProfile";
 import PrivateRoute from "./utils/PrivateRoute";
 import EmailVerification from "./pages/EmailVerification";
 import Quote from "./pages/Quote";
+import Payment from "./pages/Payment";
+import UserProfileUpdate from "./pages/UserProfileUpdate";
+import PasswordRecoveryConfirm from "./pages/PasswordRecoveryConfirm";
 
 const App = () => {
     return (
@@ -33,12 +36,15 @@ const App = () => {
                 <Route path='/giveback' element={<Giveback/>}/>
                 <Route path='/login' element={<Login/>}/>
                 <Route path='/register' element={<Register/>}/>
-                <Route path='/pass-recovery' element={<PrivateRoute><PasswordRecovery/></PrivateRoute>}/>
+                <Route path='/pass-recovery' element={<PasswordRecovery/>}/>
+                <Route path='/pass-recovery/confirm' element={<PasswordRecoveryConfirm/>}/>
                 <Route path='/pet-registration' element={<PetRegistration/>}/>
                 <Route path='/confirm-email' element={<EmailVerification/>}/>
                 <Route path='/new-pet' element={<PrivateRoute><PetOnlyRegistration/></PrivateRoute>}/>
                 <Route path='/pet-profile/:id' element={<PrivateRoute><PetProfile/></PrivateRoute>}/>
                 <Route path='/pet-quote/:id' element={<PrivateRoute><Quote/></PrivateRoute>}/>
+                <Route path='/profile-update/:id' element={<PrivateRoute><UserProfileUpdate/></PrivateRoute>}/>
+                <Route path='/payment' element={<Payment/>}/>
                 <Route path='*' element={<NotFound/>}/>
             </Routes>
         </BrowserRouter>

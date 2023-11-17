@@ -7,10 +7,12 @@ import {API_BREEDS_URL, API_PETS_CREATE_WITH_USER_URL} from "../utils/apiUrls";
 import axios from "axios";
 import {getCookie, setCookie} from "../utils/cookiesUtils";
 import {toast, ToastContainer} from "react-toastify";
+import {FaRegEye, FaRegEyeSlash} from "react-icons/fa";
 
 const PetRegistration = () => {
     const location = useLocation()
     const navigate = useNavigate()
+    const [isHidden, setIsHidden] = useState(true)
 
     const [petName, setPetName] = useState('')
     const [petAge, setPetAge] = useState('')
@@ -27,6 +29,10 @@ const PetRegistration = () => {
     const [breeds, setBreeds] = useState([])
 
     useEffect(() => {
+        if (getCookie('accessToken')) {
+            navigate('/new-pet')
+        }
+
         if (location.state) {
             setPetSpecies(location.state.type)
         } else {
@@ -101,7 +107,8 @@ const PetRegistration = () => {
                                        placeholder='Pet Name'/>
                                 <div className='flex justify-around'>
                                     <div className='flex justify-center items-center p-3'>
-                                        <input onChange={(e) => setPetGender(e.target.value)} checked
+                                        <input onChange={(e) => setPetGender(e.target.value)}
+                                               checked={petGender === 'F'}
                                                className='w-4 h-4 focus:ring-0 text-rose' type="radio" id='pet-gender-f'
                                                value='F' name='pet-gender'/>
                                         <label htmlFor="pet-gender-f" className='ml-1'>Female</label>
@@ -109,6 +116,7 @@ const PetRegistration = () => {
 
                                     <div className='flex justify-center items-center p-3'>
                                         <input onChange={(e) => setPetGender(e.target.value)}
+                                               checked={petGender === 'M'}
                                                className='w-4 h-4 focus:ring-0 text-rose' type="radio" id='pet-gender-m'
                                                value='M' name='pet-gender'/>
                                         <label htmlFor="pet-gender-m" className='ml-1'>Male</label>
@@ -165,13 +173,20 @@ const PetRegistration = () => {
                                 <input onChange={(e) => setUserEmail(e.target.value)} value={userEmail} type="email"
                                        className='outline-0 p-3 border border-gallery rounded-md focus:ring-1 focus:ring-rose shadow-sm focus:border-rose'
                                        placeholder='Email Adress'/>
-                                <input onChange={(e) => setUserPassword(e.target.value)} value={userPassword}
-                                       type="password"
-                                       className='outline-0 p-3 border border-gallery rounded-md focus:ring-1 focus:ring-rose shadow-sm focus:border-rose'
-                                       placeholder='Password'/>
-                                <input onChange={(e) => setUserVerifyPassword(e.target.value)} value={userVerifyPassword} type="password"
-                                       className='outline-0 p-3 border border-gallery rounded-md focus:ring-1 focus:ring-rose shadow-sm focus:border-rose'
-                                       placeholder='Verify Password'/>
+
+                                <div className='flex flex-col relative justify-center'>
+                                    <input onChange={(e) => setUserPassword(e.target.value)} value={userPassword} type={isHidden ? "password" : "text"} id='user-password' className=' w-full input-focus p-3.5 outline-0 border border-gallery rounded-md focus:border-gallery focus:ring-0' placeholder='Password'/>
+                                    {isHidden ?
+                                        <FaRegEyeSlash className='text-2xl absolute right-4'  onClick={() => setIsHidden(!isHidden)}/> :
+                                        <FaRegEye className='text-2xl absolute right-4' onClick={() => setIsHidden(!isHidden)}/>}
+                                </div>
+
+                                <div className='flex flex-col relative justify-center'>
+                                    <input onChange={(e) => setUserVerifyPassword(e.target.value)} value={userVerifyPassword} type={isHidden ? "password" : "text"} id='user-verify-password' className=' w-full input-focus p-3.5 outline-0 border border-gallery rounded-md focus:border-gallery focus:ring-0' placeholder='Verify password'/>
+                                    {isHidden ?
+                                        <FaRegEyeSlash className='text-2xl absolute right-4'  onClick={() => setIsHidden(!isHidden)}/> :
+                                        <FaRegEye className='text-2xl absolute right-4' onClick={() => setIsHidden(!isHidden)}/>}
+                                </div>
                             </div>
                         </div>
                     </div>

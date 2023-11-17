@@ -1,6 +1,7 @@
 import pytest
 import json
 
+
 class TestTicketEndpoint:
     endpoint = '/api/help/tickets/'
 
@@ -38,18 +39,18 @@ class TestTicketEndpoint:
         response = api_client.get(self.endpoint)
         assert response.status_code == 200
         assert len(json.loads(response.content)) == len(ticket_list)
-        
+
     def test_ticket_list_with_simple_user_forbidden(self, api_client, simple_user):
         api_client.force_authenticate(simple_user)
         response = api_client.get(self.endpoint)
-        assert response.status_code == 403 
-        
+        assert response.status_code == 403
+
     def test_ticket_list_with_provider_user_forbidden(self, api_client, provider_user):
         api_client.force_authenticate(provider_user)
         response = api_client.get(self.endpoint)
         assert response.status_code == 403
-    
-    @pytest.mark.django_db    
+
+    @pytest.mark.django_db
     def test_ticket_list_with_anonymous_user_forbidden(self, api_client):
         response = api_client.get(self.endpoint)
         assert response.status_code == 401
@@ -67,7 +68,7 @@ class TestTicketEndpoint:
         patch_data = {
             "visitor_name": "Non-Existent Visitor"
         }
-        response = api_client.patch(f'{self.endpoint}9999999999999999999/', data=patch_data) 
+        response = api_client.patch(f'{self.endpoint}9999999999999999999/', data=patch_data)
         assert response.status_code == 404
 
     def test_ticket_update_unauthorized(self, api_client, ticket):

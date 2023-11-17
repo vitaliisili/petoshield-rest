@@ -24,6 +24,7 @@ module.exports = {
       'nobel': '#b7b7b7',
       'nobel-dark': '#989898',
       'green': '#74E39A',
+      'lilac': '#f8faff',
     }
   },
   plugins: [require('@tailwindcss/forms')],

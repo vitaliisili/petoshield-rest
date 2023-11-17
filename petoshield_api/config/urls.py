@@ -12,6 +12,7 @@ urlpatterns = [
     path('api/pet-profile/', include('apps.pet.urls')),
     path('api/insurance/', include('apps.policy.urls')),
     path('api/help/', include('apps.tickets.urls')),
+    path('api/payment/', include('apps.payment.urls')),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

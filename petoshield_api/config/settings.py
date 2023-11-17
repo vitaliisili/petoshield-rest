@@ -22,6 +22,7 @@ CUSTOM_APPS = [
     'apps.policy',
     'apps.pet',
     'apps.tickets',
+    'apps.payment',
 ]
 
 THIRD_PARTY_APPS = [
@@ -138,7 +139,6 @@ MEDIA_ROOT = Path(BASE_DIR, 'media/')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'user.User'
 
-# SMTP settings
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
@@ -153,3 +153,7 @@ POLICY_DEDUCTIBLE = 250.00
 
 USE_X_FORWARDED_HOST = True
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+STRIPE_SECRET_KEY = env.str('STRIPE_SECRET_KEY')
+STRIPE_ANNUAL = 'prod_P13amaActCQhyV'
+STRIPE_MONTHLY = 'prod_P0tkkj2h6SYhAu'

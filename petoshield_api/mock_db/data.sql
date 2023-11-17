@@ -4,7 +4,6 @@ truncate table policy_policy RESTART IDENTITY CASCADE;
 truncate table user_user RESTART IDENTITY CASCADE;
 truncate table policy_incominginvoice RESTART IDENTITY CASCADE;
 truncate table policy_insurancecase RESTART IDENTITY CASCADE;
--- truncate table policy_policy_providers RESTART IDENTITY CASCADE;
 truncate table policy_serviceprovider RESTART IDENTITY CASCADE;
 truncate table user_role RESTART IDENTITY CASCADE;
 truncate table tickets_ticket RESTART IDENTITY CASCADE;
@@ -133,7 +132,7 @@ INSERT INTO public.policy_policy (price, created_at, updated_at, policy_number, 
 INSERT INTO public.policy_policy (price, created_at, updated_at, policy_number, start_date, end_date, status, initial_limit, current_limit, deductible, pet_id) VALUES (13.45, '2022-11-01 00:00:00.000000 +0200', '2022-11-01 00:00:00.000000 +0200', '35-544-9388', '2022-11-01', '2023-06-20', 'expired', 10000.00, 10000.00, 250.00, 19);
 INSERT INTO public.policy_policy (price, created_at, updated_at, policy_number, start_date, end_date, status, initial_limit, current_limit, deductible, pet_id) VALUES (17.60, '2023-10-12 00:00:00.000000 +0200', '2023-10-12 00:00:00.000000 +0200', '32-128-1016', '2023-10-12', '2022-12-11', 'expired', 10000.00, 10000.00, 250.00, 20);
 -- policy for simple user pets with id 21, 22, 23
-INSERT INTO public.policy_policy (price, created_at, updated_at, policy_number, start_date, end_date, status, initial_limit, current_limit, deductible, pet_id) VALUES (14.96, '2023-10-12 00:00:00.000000 +0200', '2023-10-12 00:00:00.000000 +0200', '34-227-2019', '2023-10-12', '2022-12-11', 'active', 10000.00, 10000.00, 250.00, 21);
+INSERT INTO public.policy_policy (price, created_at, updated_at, policy_number, start_date, end_date, status, initial_limit, current_limit, deductible, pet_id) VALUES (14.96, '2023-10-12 00:00:00.000000 +0200', '2023-10-12 00:00:00.000000 +0200', '34-227-2019', '2023-10-12', '2022-12-11', 'valid', 10000.00, 10000.00, 250.00, 21);
 INSERT INTO public.policy_policy (price, created_at, updated_at, policy_number, start_date, end_date, status, initial_limit, current_limit, deductible, pet_id) VALUES (11.40, '2023-10-12 00:00:00.000000 +0200', '2023-10-12 00:00:00.000000 +0200', '35-323-3026', '2023-10-12', '2022-12-11', 'invalid', 10000.00, 10000.00, 250.00, 22);
 INSERT INTO public.policy_policy (price, created_at, updated_at, policy_number, start_date, end_date, status, initial_limit, current_limit, deductible, pet_id) VALUES (14.35, '2023-10-12 00:00:00.000000 +0200', '2023-10-12 00:00:00.000000 +0200', '36-425-4013', '2023-10-12', '2022-12-11', 'expired', 10000.00, 10000.00, 250.00, 23);
 
