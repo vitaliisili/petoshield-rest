@@ -271,6 +271,8 @@ class TestServiceProviderEndpoints:
     @pytest.mark.parametrize(
         'name, password, email, company_name, registration_number, phone, address, iban',
         [
+            ("Roberto", "", "provider@mail.com", "PetWorld Insdurance", "AK42345670-23",
+             "+49176855452", "Ludwig Strasse 7, 31134 Hildesheim", "DE52114575800000254"),
             ('', "password1A@", "provider@mail.com", "PetWorld Insdurance", "AK42345670-23",
              "+49176855452", "Ludwig Strasse 7, 31134 Hildesheim", "DE52114575800000254"),
             ("Roberto", "password1A@", "", "PetWorld Insdurance", "AK42345670-23", "+49176855452",
