@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from apps.policy.models import ServiceProvider, Policy, InsuranceCase, IncomingInvoice
-from apps.user.serializers import BaseUserSerializer
+from apps.user.serializers import RegisterUserSerializer
 
 
 class ServiceProviderSerializer(serializers.ModelSerializer):
@@ -11,7 +11,7 @@ class ServiceProviderSerializer(serializers.ModelSerializer):
 
 
 class UserServiceProviderSerializer(serializers.Serializer):
-    user = BaseUserSerializer()
+    user = RegisterUserSerializer()
     service_provider = ServiceProviderSerializer()
 
 
