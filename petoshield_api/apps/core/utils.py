@@ -90,6 +90,55 @@ The Petoshield Pet Insurance Team'''
             [user.email]
         )
 
+    @staticmethod
+    def send_welcome_email_for_service_provider(user):
+        subject = "Welcome to Petoshield Pet Insurance - Your Partner in awesome Protection!"
+        message = f'''
+
+Dear {user.name},
+
+We hope this email finds you well. On behalf of the entire Petoshield Insurance team, we extend a warm welcome to you
+as our newest registered service provider. We are thrilled to have you on board and look forward to a successful
+partnership in providing top-notch services to our valued customers.
+
+At Petoshield, we are dedicated to offering comprehensive insurance coverage for pets, ensuring the health and
+well-being of our customers' beloved companions. Your role as a service provider is integral to this mission, and we
+are confident that your expertise will contribute significantly to the satisfaction and peace of mind of our
+policyholders.
+
+Here are a few key points to get you started:
+
+1. Profile Setup: Please take a moment to review and complete your service provider profile on our platform. Ensure that
+all relevant information, including contact details and services offered, is accurate and up to date.
+
+2. Insurance Claims: As a registered service provider, you may be involved in processing insurance claims related to pet
+care. Familiarize yourself with our claims procedures, and feel free to reach out to our dedicated support team for any
+assistance.
+
+3. Communication: Clear communication is essential for a successful partnership. If you have any questions, concerns, or
+if there are updates to your services, please keep us informed. We value transparency and collaboration.
+
+4. Training and Resources: Stay tuned for any training sessions, updates, or resources that we provide to enhance your
+understanding of our insurance processes and to improve the overall customer experience.
+
+Once again, welcome to the Petoshield Insurance family. We are excited about the opportunities that lie ahead and are
+confident that together, we can make a positive impact on the lives of pets and their owners.
+
+If you have any immediate questions or if there is anything we can assist you with, please don't hesitate to contact
+our support team at petoshield@gmail.com
+
+Thank you for choosing Petoshield Insurance. We look forward to a successful partnership!
+
+Warm regards,
+The Petoshield Pet Insurance Team'''
+
+        send_mail(
+            subject,
+            message,
+            settings.EMAIL_HOST_USER,
+            [user.email]
+        )
+
     def send_reset_password_warning_email(user):
         subject = "Subject: Notification: Password Change Request"
         message = f'''
