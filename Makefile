@@ -42,3 +42,6 @@ test-cov:
 
 shell:
 	cd petoshield_api && python -m manage shell
+
+spectacular:
+	cd petoshield_api && python -m manage spectacular --file schema.yml
