@@ -15,7 +15,7 @@ urlpatterns = [
     path('api/help/', include('apps.tickets.urls')),
     path('api/payment/', include('apps.payment.urls')),
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
-    path('api/docs/', SpectacularSwaggerView.as_view(url_name='schema')),
+    path('', SpectacularSwaggerView.as_view(url_name='schema')),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
