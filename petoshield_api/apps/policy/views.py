@@ -4,7 +4,6 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from apps.policy.models import ServiceProvider, Policy, InsuranceCase, IncomingInvoice
 from apps.user.models import Role
-from apps.core.utils import Validate
 from apps.policy.permissions import (PolicyPermissions,
                                      ProviderPermissions,
                                      InsuranceCasePermissions,
@@ -18,6 +17,7 @@ from apps.policy.filters import (PolicyFilter,
                                  ServiceProviderFilter,
                                  InsuranceCaseFilter,
                                  IncomingInvoiceFilter)
+from apps.core.utils import EmailSender, JwtToken
 
 
 class ServiceProviderViewSet(viewsets.ModelViewSet):
@@ -35,12 +35,14 @@ class ServiceProviderViewSet(viewsets.ModelViewSet):
         user = serializer.validated_data['user']
         user['role'] = Role.objects.get(name='provider')
         user_instance = get_user_model().objects.create_user(**user)
-
         provider = serializer.validated_data['service_provider']
         provider['user'] = user_instance
         ServiceProvider.objects.create(**provider)
+        
+        EmailSender.send_welcome_email_for_service_provider(user_instance)
+        EmailSender.send_confirmation_email(user_instance, request.META.get('HTTP_REFERER'))
 
-        return Response(data=serializer.data, status=status.HTTP_201_CREATED)
+        return Response(JwtToken.get_jwt_token(user_instance), status=status.HTTP_201_CREATED)
 
 
 class PolicyViewSet(viewsets.ModelViewSet):
