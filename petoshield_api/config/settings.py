@@ -31,6 +31,7 @@ THIRD_PARTY_APPS = [
     'rest_framework_simplejwt',
     'drf_standardized_errors',
     'django_filters',
+    'drf_spectacular',
 ]
 
 INSTALLED_APPS = [
@@ -55,6 +56,10 @@ REST_FRAMEWORK = {
         'rest_framework.filters.OrderingFilter',
     ],
     'DEFAULT_PAGINATION_CLASS': 'apps.core.pagination.ResultSetPagination',
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Petoshield API',
 }
 
 SIMPLE_JWT = {

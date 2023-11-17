@@ -112,7 +112,7 @@ class UserViewSet(viewsets.ModelViewSet):
         user.set_password(new_password)
         user.save()
 
-        #  TODO: send email to user
+        EmailSender.send_reset_password_warning_email(user)
 
         return Response({'message': 'Password has been changed successfully'})
 
