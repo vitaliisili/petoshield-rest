@@ -13,3 +13,4 @@ django-cors-headers==4.3.0
 gunicorn==21.2.0
 whitenoise==6.6.0
 stripe==7.4.0
+drf-spectacular==0.26.5
