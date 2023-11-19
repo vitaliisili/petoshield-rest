@@ -10,33 +10,14 @@ import HelpModal from "../components/HelpModal";
 import Carousel from "../components/Carousel";
 import NavBar from "../components/NavBar";
 import Footer from "../components/Footer";
+import Clouds from "../components/Clouds";
 
 const Home = () => {
     return (
         <div className='text-black overflow-y-hidden'>
             <HelpModal/>
             <NavBar/>
-            <div className="absolute top-0 w-full -z-20 pt-20 overflow-hidden">
-                <div className="x1">
-                    <div className="cloud cloud1"></div>
-                </div>
-
-                <div className="x2">
-                    <div className="cloud cloud2"></div>
-                </div>
-
-                <div className="x3">
-                    <div className="cloud cloud3"></div>
-                </div>
-
-                <div className="x4">
-                    <div className="cloud cloud4"></div>
-                </div>
-
-                <div className="x5">
-                    <div className="cloud cloud5"></div>
-                </div>
-            </div>
+            <Clouds type='dark' zIndex='-z-20'/>
             <header className=''>
                 <div className='flex flex-col items-center h-full relative mt-32 overflow-hidden'>
                     <h1 className='text-3xl md:text-5xl pl-5 pr-5 font-bold content-center font-merriweather leading-10 md:leading-[70px] text-center'>

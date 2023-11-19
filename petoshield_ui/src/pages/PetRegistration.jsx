@@ -58,7 +58,7 @@ const PetRegistration = () => {
     const onSubmitHandler = () => {
         const id = toast.loading('Please Wait...')
         if (userPassword !== userVerifyPassword){
-            toast.update(id, {render: 'Password and verify password not equals', type: "error", isLoading: false, autoClose: 10000})
+            toast.update(id, {render: 'Password and verify password not equals', type: "error", isLoading: false, autoClose: 7000})
             return
         }
 
@@ -85,7 +85,11 @@ const PetRegistration = () => {
                 }, 1000)
             }
         }).catch(error => {
-            toast.update(id, {render: error.response.data.errors[0].detail, type: "error", isLoading: false, autoClose: 10000})
+            if (error.response) {
+                toast.update(id, {render: error.response.data.errors[0].detail, type: "error", isLoading: false, autoClose: 5000})
+            }else{
+                toast.update(id, {render: 'Server error please contact administrator', type: "error", isLoading: false, autoClose: 5000})
+            }
         })
     }
 

@@ -1,6 +1,4 @@
-import React, {useEffect, useState} from 'react'
-import {FiHelpCircle} from "react-icons/fi"
-import {AiOutlineClose} from "react-icons/ai";
+import React from 'react'
 
 const TermsModal = ({callback}) => {
 
@@ -8,7 +6,7 @@ const TermsModal = ({callback}) => {
     return (
         <div className='fixed bg-gallery-transparent w-screen h-screen z-40 top-0 py-20 flex justify-center'>
             <div className='z-50 flex flex-col text-center bg-white rounded-md p-8 '>
-                <div className='max-h-[700px] w-[500px] overflow-y-scroll'>
+                <div className='max-h-[700px] w-[300px] md:w-[500px] overflow-y-scroll'>
                     <p>Terms</p>
                     <h1 id="terms-of-website-use-for-petoshield">Terms of Website Use for Petoshield</h1>
                     <h2 id="introduction">Introduction</h2>

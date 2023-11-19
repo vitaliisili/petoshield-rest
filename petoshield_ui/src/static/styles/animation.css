@@ -90,6 +90,16 @@
     width: 350px;
 }
 
+.cloud-light {
+    background: #ffffff;
+    -webkit-border-radius: 100px;
+    -moz-border-radius: 100px;
+    border-radius: 100px;
+    height: 120px;
+    position: relative;
+    width: 350px;
+}
+
 .cloud2 {
     top: -100px;
     left: 200px;
@@ -110,7 +120,14 @@
     z-indeX: -1;
 }
 
-.cloud:after {
+.cloud-light:after, .cloud-light:before {
+    background:#ffffff;
+    content: '';
+    position: absolute;
+    z-indeX: -1;
+}
+
+.cloud:after, .cloud-light:after {
     -webkit-border-radius: 100px;
     -moz-border-radius: 100px;
     border-radius: 100px;
@@ -121,7 +138,7 @@
     width: 100px;
 }
 
-.cloud:before {
+.cloud:before, .cloud-light:before{
     -webkit-border-radius: 200px;
     -moz-border-radius: 200px;
     border-radius: 200px;

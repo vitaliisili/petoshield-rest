@@ -30,9 +30,7 @@ const App = () => {
                 <Route path='/price' element={<Price/>}/>
                 <Route path='/account' element={<PrivateRoute><Account/></PrivateRoute>}/>
                 <Route path='/partners' element={<Partners/>}/>
-                <Route path='/blog' element={<Blog/>}/>
                 <Route path='/team' element={<Team/>}/>
-                <Route path='/question' element={<FAQ/>}/>
                 <Route path='/giveback' element={<Giveback/>}/>
                 <Route path='/login' element={<Login/>}/>
                 <Route path='/register' element={<Register/>}/>
@@ -43,7 +41,7 @@ const App = () => {
                 <Route path='/new-pet' element={<PrivateRoute><PetOnlyRegistration/></PrivateRoute>}/>
                 <Route path='/pet-profile/:id' element={<PrivateRoute><PetProfile/></PrivateRoute>}/>
                 <Route path='/pet-quote/:id' element={<PrivateRoute><Quote/></PrivateRoute>}/>
-                <Route path='/profile-update/:id' element={<PrivateRoute><UserProfileUpdate/></PrivateRoute>}/>
+                <Route path='/profile-update' element={<PrivateRoute><UserProfileUpdate/></PrivateRoute>}/>
                 <Route path='/payment' element={<Payment/>}/>
                 <Route path='*' element={<NotFound/>}/>
             </Routes>

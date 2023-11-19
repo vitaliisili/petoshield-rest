@@ -14,7 +14,7 @@ const SideMenu = (props) => {
                 <ul className='flex flex-col text-white space-y-5 font-lato'>
                     <Link to='/'><li className='transition-all duration-300 hover:text-rose'>Home</li></Link>
                     <Link to='/price'><li className='transition-all duration-300 hover:text-rose'>Price</li></Link>
-                    <Link to='/blog'><li className='transition-all duration-300 hover:text-rose'>Blog</li></Link>
+                    {/*<Link to='/blog'><li className='transition-all duration-300 hover:text-rose'>Blog</li></Link>*/}
                     <Link to='/partners'><li className='transition-all duration-300 hover:text-rose'>Partners Program</li></Link>
                     <Link to='/account'><li className='transition-all duration-300 hover:text-rose'>My Account</li></Link>
                 </ul>

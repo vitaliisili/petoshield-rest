@@ -1,17 +1,14 @@
 import React, {useEffect} from 'react';
 import NavBar from "../components/NavBar";
 import HelpModal from "../components/HelpModal";
-import givebackPizza from "../static/images/giveback/giveback-pizza.svg";
-import {MdOutlineDone} from "react-icons/md";
-import givebackPhone from "../static/images/giveback/giveback-phone.svg";
-import givebackArrow from "../static/images/giveback/arrow.svg";
-import givebackFaces from "../static/images/giveback/giveback-people.svg";
-import givebackCoin from "../static/images/giveback/giveback-coin.svg";
-import givebackHearth from "../static/images/giveback/giveback-hearth.svg";
-import {Link, useNavigate, useParams} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import Footer from "../components/Footer";
 import axios from "axios";
 import {API_USER_URL} from "../utils/apiUrls";
+import {ToastContainer} from "react-toastify";
+import boyBike from  "../static/images/boy-and-bike.svg"
+import Clouds from "../components/Clouds";
+
 
 const EmailVerification = () => {
 
@@ -32,12 +29,17 @@ const EmailVerification = () => {
     }, [])
 
     return (
-        <div className='text-black'>
+        <div className='text-black flex flex-col h-screen'>
+            <ToastContainer/>
             <NavBar/>
             <HelpModal/>
 
-            <main className='pt-32'>
-
+            <main className='flex flex-grow flex-col pt-28 bg-black-haze items-center font-lato'>
+                    <div className='flex flex-col justify-center items-center w-full h-full '>
+                        <div className='text-[60px] font-dancing flex justify-center items-center text-rose text-center'>Thanks for verification</div>
+                        <button onClick={() => navigate('/account')} className='mt-16 rounded-md bg-rose hover:bg-rose-dark font-bold transition-all duration-300 shadow-[rgba(255,0,131,0.5)_0px_10px_40px_-10px] w-80 p-3.5 text-white'>Go To Account</button>
+                    </div>
+                    <img src={boyBike} alt="boy"/>
             </main>
 
             <footer>

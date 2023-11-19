@@ -4,7 +4,7 @@ const PrivacyPolicyModal = ({callback}) => {
     return (
         <div className='fixed bg-gallery-transparent w-screen h-screen z-40 top-0 py-20 flex justify-center'>
             <div className='z-50 flex flex-col text-center bg-white rounded-md p-8 '>
-                <div className='max-h-[700px] w-[500px] overflow-y-scroll'>
+                <div className='max-h-[700px] w-[300px] md:w-[500px] overflow-y-scroll'>
                     <p>Privacy Policy</p>
 
                     <h1 id="petoshieldprivacypolicy">Petoshield Privacy Policy</h1>
