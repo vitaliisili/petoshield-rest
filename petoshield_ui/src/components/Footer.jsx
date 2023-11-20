@@ -24,6 +24,7 @@ const Footer = () => {
                 <div className='flex flex-col'>
                     <h3 className='uppercase font-bold text-nobel text-sm'>Resources</h3>
                     <ul className='text-white flex flex-col mt-5 space-y-4'>
+                        <Link to='/account'><li className='hover:text-rose transition-all duration-500'>Account</li></Link>
                         <Link to='https://api.petoshield.com' target="_blank" rel="noopener noreferrer"><li className='hover:text-rose transition-all duration-500'>API Doc</li></Link>
                     </ul>
                 </div>

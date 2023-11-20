@@ -110,7 +110,6 @@ const Account = () => {
                         </div>
                         
                         <div className='flex flex-col mt-8 space-y-4'>
-
                             {pets && pets.map((pet) => (
                                     <div onClick={() => navigate(`/pet-profile/${pet.id}`)} key={pet.id} className='pet-card flex justify-center items-center border-2 border-gallery rounded-md p-4 shadow-md transition-all duration-500 hover:scale-105 cursor-pointer'>
                                         <div className=''>
