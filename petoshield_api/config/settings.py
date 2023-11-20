@@ -32,6 +32,7 @@ THIRD_PARTY_APPS = [
     'drf_standardized_errors',
     'django_filters',
     'drf_spectacular',
+    'django_cleanup.apps.CleanupConfig',
 ]
 
 INSTALLED_APPS = [
