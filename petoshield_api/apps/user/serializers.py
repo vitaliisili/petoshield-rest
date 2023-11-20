@@ -11,10 +11,12 @@ class RoleSerializer(serializers.ModelSerializer):
 
 
 class BaseUserSerializer(serializers.ModelSerializer):
+    image = serializers.ImageField(required=False)
+
     class Meta:
         model = get_user_model()
         fields = ['id', 'email', 'name', 'image', 'is_verified']
-        read_only_fields = ['id']
+        read_only_fields = ['id', 'created_at', 'updated_at']
 
     def create(self, validated_data):
         validated_data['role'] = Role.objects.get(name='client')
@@ -25,7 +27,6 @@ class RegisterUserSerializer(BaseUserSerializer):
     class Meta:
         model = get_user_model()
         fields = ['email', 'name', 'password']
-        # extra_kwargs = {'password': {'write_only': True}}
 
 
 class ExtendUserSerializer(BaseUserSerializer):
