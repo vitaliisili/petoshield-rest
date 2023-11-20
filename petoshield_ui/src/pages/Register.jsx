@@ -5,7 +5,7 @@ import Footer from "../components/Footer";
 import cat from '../static/images/register/cat-round.gif'
 import {Link, useNavigate} from "react-router-dom";
 import axios from "axios";
-import {API_AUTH_TOKEN, API_USER_URL} from "../utils/apiUrls";
+import {API_USER_URL} from "../utils/apiUrls";
 import {toast, ToastContainer} from "react-toastify";
 import {setCookie} from "../utils/cookiesUtils";
 import {FaRegEye, FaRegEyeSlash} from "react-icons/fa";
@@ -39,15 +39,19 @@ const Register = () => {
             "name": fullName
         }).then((response) => {
             if (response.status === 201) {
+                toast.update(id, {render: 'Success', type: "success", isLoading: false, autoClose: 1000})
+                setCookie('accessToken', response.data.access)
+                setCookie('refreshToken', response.data.refresh)
                 setTimeout(()=> {
-                    toast.update(id, {render: 'Success', type: "success", isLoading: false, autoClose: 500})
-                    setCookie('accessToken', response.data.access)
-                    setCookie('refreshToken', response.data.refresh)
                     navigate('/account')
-                }, 1000)
+                }, 500)
             }
         }).catch((error) => {
-            toast.update(id, {render: error.response.data.errors[0].detail, type: "error", isLoading: false, autoClose: 10000})
+            if (error.response) {
+                toast.update(id, {render: error.response.data.errors[0].detail, type: "error", isLoading: false, autoClose: 7000})
+            }else{
+                toast.update(id, {render: 'Server error please contact administrator', type: "error", isLoading: false, autoClose: 7000})
+            }
         })
     }
 

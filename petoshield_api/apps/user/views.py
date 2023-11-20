@@ -1,6 +1,7 @@
 from django.contrib.auth import get_user_model
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
+from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 from rest_framework.exceptions import ValidationError as RestValidationError
@@ -20,6 +21,7 @@ from apps.user.serializers import (
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = get_user_model().objects.all()
+    parser_classes = (MultiPartParser, FormParser, JSONParser)
     permission_classes = (UserPermission,)
     search_fields = ['$name']
     ordering_fields = ['name', 'created_at']

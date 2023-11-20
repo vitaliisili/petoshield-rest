@@ -17,7 +17,6 @@ const Footer = () => {
                     <h3 className='uppercase font-bold text-nobel text-sm'>Companies</h3>
                     <ul className='text-white flex flex-col mt-5 space-y-4'>
                         <Link to='/team'><li className='hover:text-rose transition-all duration-500'>Join the Team</li></Link>
-                        <Link to='#'><li className='hover:text-rose transition-all duration-500'>Accessibility</li></Link>
                         <Link to='/partners'><li className='transition-all duration-500 hover:text-rose'>Partners Program</li></Link>
                     </ul>
                 </div>
@@ -25,8 +24,8 @@ const Footer = () => {
                 <div className='flex flex-col'>
                     <h3 className='uppercase font-bold text-nobel text-sm'>Resources</h3>
                     <ul className='text-white flex flex-col mt-5 space-y-4'>
-                        <Link to='/blog'><li className='hover:text-rose transition-all duration-500'>Blog</li></Link>
-                        <Link to='/question'><li className='hover:text-rose transition-all duration-500'>FAQ</li></Link>
+                        <Link to='/account'><li className='hover:text-rose transition-all duration-500'>Account</li></Link>
+                        <Link to='https://api.petoshield.com' target="_blank" rel="noopener noreferrer"><li className='hover:text-rose transition-all duration-500'>API Doc</li></Link>
                     </ul>
                 </div>
 
@@ -35,7 +34,6 @@ const Footer = () => {
                     <ul className='text-white flex flex-col mt-5 space-y-4'>
                         <Link to='/price'><li className='hover:text-rose transition-all duration-500'>Pet Care</li></Link>
                         <Link to='/giveback'><li className='hover:text-rose transition-all duration-500'>Giveback</li></Link>
-                        <Link to='#'><li className='hover:text-rose transition-all duration-500'>API Doc</li></Link>
                     </ul>
                 </div>
 

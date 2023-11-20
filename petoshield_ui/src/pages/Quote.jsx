@@ -5,14 +5,13 @@ import Footer from "../components/Footer";
 import axios from "axios";
 import {API_PAYMENT_CHECKOUT, API_PETS_URL} from "../utils/apiUrls";
 import {getCookie} from "../utils/cookiesUtils";
-import {useLocation, useNavigate, useParams} from "react-router-dom";
-import catIcon from "../static/images/account/cat-icon.svg"
-import dogIcon from "../static/images/account/dog-icon.svg"
+import {useParams} from "react-router-dom";
+import catIcon from "../static/images/pet/cat-passive.svg"
+import dogIcon from "../static/images/pet/dog-passive.svg"
 import {BsCurrencyEuro} from "react-icons/bs";
 import {ANNUAL_DISCOUNT, PAYMENT_REDIRECT_LINK} from "../utils/config";
 
 const Quote = () => {
-    const navigate = useNavigate()
     const [pet, setPet] = useState(null)
     const params = useParams()
     const [frequency, setFrequency] = useState('annual')
@@ -55,7 +54,6 @@ const Quote = () => {
             }
         }).then(response => {
             if (response.status === 200) {
-                // console.log(response.data)
                 window.location.replace(response.data.checkout_url)
             }
         }).catch(error => {
@@ -75,11 +73,10 @@ const Quote = () => {
                             <div className="flex flex-col">
                                 <div className='flex justify-start items-center'>
                                     <div className='flex justify-center items-center'>
-                                        {pet.species === 'cat' ? <img src={catIcon} alt="cat"/> :
-                                            <img src={dogIcon} alt="dog"/>}
+                                        <img src={pet.species === 'cat' ? catIcon : dogIcon} alt="pet" className='w-24 -mt-6'/>
                                     </div>
 
-                                    <div className='text-2xl ml-3'>{pet.name}</div>
+                                    <div className='font-dancing text-[50px] text-nobel-dark ml-3'>{pet.name}</div>
                                 </div>
 
                                 <div className='flex font-bold mt-3'>

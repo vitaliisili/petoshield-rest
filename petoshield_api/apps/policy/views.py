@@ -38,7 +38,7 @@ class ServiceProviderViewSet(viewsets.ModelViewSet):
         provider = serializer.validated_data['service_provider']
         provider['user'] = user_instance
         ServiceProvider.objects.create(**provider)
-        
+
         EmailSender.send_welcome_email_for_service_provider(user_instance)
         EmailSender.send_confirmation_email(user_instance, request.META.get('HTTP_REFERER'))
 

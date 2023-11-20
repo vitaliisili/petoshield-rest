@@ -22,11 +22,15 @@ const PasswordRecovery = () => {
                 "redirect_link": RESET_PASSWORD_REDIRECT_LINK
             }).then(response => {
                 if (response.status === 200) {
-                    toast.update(id, {render: 'Please check your email', type: "success", isLoading: false, autoClose: 5000})
+                    toast.update(id, {render: 'Please check your email', type: "success", isLoading: false, autoClose: 2000})
                     setEmail('')
                 }
             }).catch(error => {
-                toast.update(id, {render: error.response.data.errors[0].detail, type: "error", isLoading: false, autoClose: 5000})
+                if (error.response) {
+                    toast.update(id, {render: error.response.data.errors[0].detail, type: "error", isLoading: false, autoClose: 5000})
+                }else{
+                    toast.update(id, {render: 'Server error please contact administrator', type: "error", isLoading: false, autoClose: 5000})
+                }
             })
         }
 

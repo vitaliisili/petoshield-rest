@@ -10,3 +10,8 @@ class StripeCheckOutSerializer(serializers.Serializer):
     final_price = serializers.DecimalField(max_digits=8, decimal_places=2)
     frequency = serializers.ChoiceField(choices=FREQUENCY)
     redirect_link = serializers.URLField()
+    pet = serializers.IntegerField()
+
+
+class CancelInsuranceSerializer(serializers.Serializer):
+    policy = serializers.IntegerField()

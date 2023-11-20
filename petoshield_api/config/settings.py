@@ -32,6 +32,7 @@ THIRD_PARTY_APPS = [
     'drf_standardized_errors',
     'django_filters',
     'drf_spectacular',
+    'django_cleanup.apps.CleanupConfig',
 ]
 
 INSTALLED_APPS = [
@@ -160,5 +161,6 @@ USE_X_FORWARDED_HOST = True
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 STRIPE_SECRET_KEY = env.str('STRIPE_SECRET_KEY')
-STRIPE_ANNUAL = 'prod_P13amaActCQhyV'
-STRIPE_MONTHLY = 'prod_P0tkkj2h6SYhAu'
+STRIPE_PUBLIC_KEY = env.str('STRIPE_PUBLIC_KEY')
+STRIPE_ANNUAL = 'prod_P1tPcS5M08kBzS'
+STRIPE_MONTHLY = 'prod_P1tMY3EowRzxBq'

@@ -63,12 +63,11 @@ const PetOnlyRegistration = () => {
                     }, 1000)
                 }
             }).catch(error => {
-            toast.update(id, {
-                render: error.response.data.errors[0].detail,
-                type: "error",
-                isLoading: false,
-                autoClose: 10000
-            })
+                if (error.response) {
+                    toast.update(id, {render: error.response.data.errors[0].detail, type: "error", isLoading: false, autoClose: 5000})
+                }else{
+                    toast.update(id, {render: 'Server error please contact administrator', type: "error", isLoading: false, autoClose: 5000})
+                }
         })
     }
 

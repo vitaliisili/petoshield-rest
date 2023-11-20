@@ -35,9 +35,9 @@ const NavBar = () => {
                             <Link to='/price'>
                                 <li className='transition-all duration-700 hover:scale-110'>Price</li>
                             </Link>
-                            <Link to='/blog'>
-                                <li className='transition-all duration-700 hover:scale-110'>Blog</li>
-                            </Link>
+                            {/*<Link to='/blog'>*/}
+                            {/*    <li className='transition-all duration-700 hover:scale-110'>Blog</li>*/}
+                            {/*</Link>*/}
                             <Link to='/giveback'>
                                 <li className='transition-all duration-700 hover:scale-110 hidden lg:block'>Giveback</li>
                             </Link>

@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, {useState} from 'react';
 import NavBar from "../components/NavBar";
 import HelpModal from "../components/HelpModal";
 import Footer from "../components/Footer";
@@ -18,25 +18,26 @@ const Login = () => {
 
 
     const loginHandler = () => {
-        const promise = axios.post(API_AUTH_TOKEN, {
+        const id = toast.loading('Please Wait...')
+        axios.post(API_AUTH_TOKEN, {
             email,
             password
         }).then((response) => {
             if (response.status === 200) {
+                toast.update(id, {render: 'Success', type: "success", isLoading: false, autoClose: 2000})
                 setCookie('accessToken', response.data.access)
                 setCookie('refreshToken', response.data.refresh)
-                navigate('/account')
+                setTimeout(() => {
+                    navigate('/account')
+                }, 1000)
             }
         }).catch((error) => {
-            // console.log(error.response.data.errors[0].detail)
-            throw new Error()
+            if (error.response) {
+                toast.update(id, {render: error.response.data.errors[0].detail, type: "error", isLoading: false, autoClose: 5000})
+            }else{
+                toast.update(id, {render: 'Server error please contact administrator', type: "error", isLoading: false, autoClose: 5000})
+            }
         })
-
-        toast.promise(promise, {
-            pending: 'Please Wait...',
-            success: { render: 'Success', delay: 100 },
-            error: { render: 'Invalid username or password', delay: 100 },
-        });
     }
 
     return (

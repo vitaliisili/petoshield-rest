@@ -4,7 +4,7 @@ import QueryString from 'query-string'
 import axios from "axios";
 import {API_PAYMENT_CHECKOUT_CONFIRM} from "../utils/apiUrls";
 import {getCookie} from "../utils/cookiesUtils";
-import {ToastContainer} from "react-toastify";
+import {toast, ToastContainer} from "react-toastify";
 import NavBar from "../components/NavBar";
 import HelpModal from "../components/HelpModal";
 import Footer from "../components/Footer";
