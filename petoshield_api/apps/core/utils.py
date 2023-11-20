@@ -146,28 +146,28 @@ Dear {user.name},
 
 I trust this email finds you well.
 
-We wanted to bring to your attention that there has been a recent attempt to change the password associated with your 
-account on our platform. The security of your account is of utmost importance to us, and we take every measure to 
+We wanted to bring to your attention that there has been a recent attempt to change the password associated with your
+account on our platform. The security of your account is of utmost importance to us, and we take every measure to
 ensure its protection.
 
-If you initiated this password change request, please disregard this message. However, if you did not make this 
+If you initiated this password change request, please disregard this message. However, if you did not make this
 request, we strongly recommend taking immediate action to secure your account.
 
 Here are a few steps you can take:
 
-1. Reset Your Password: Visit our website and initiate a password reset. Choose a strong and unique password that 
+1. Reset Your Password: Visit our website and initiate a password reset. Choose a strong and unique password that
 includes a combination of letters, numbers, and special characters.
 
-2. Enable Two-Factor Authentication (2FA): For an added layer of security, consider enabling two-factor authentication 
+2. Enable Two-Factor Authentication (2FA): For an added layer of security, consider enabling two-factor authentication
 on your account.
 
-3. Review Account Activity: Check your account activity for any unauthorized access or suspicious activities. If you 
+3. Review Account Activity: Check your account activity for any unauthorized access or suspicious activities. If you
 notice anything unusual, please contact our support team immediately.
 
-If you need any assistance or have concerns about the security of your account, feel free to reach out to our support 
+If you need any assistance or have concerns about the security of your account, feel free to reach out to our support
 team at petoshield@gmail.com.
 
-Thank you for your prompt attention to this matter. We appreciate your cooperation in helping us maintain the security 
+Thank you for your prompt attention to this matter. We appreciate your cooperation in helping us maintain the security
 of your account.
 
 Best regards,
@@ -179,6 +179,7 @@ The Petoshield Pet Insurance Team'''
             settings.EMAIL_HOST_USER,
             [user.email]
         )
+
 
 class JwtToken:
 

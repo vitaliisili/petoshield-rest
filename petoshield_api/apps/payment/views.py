@@ -61,7 +61,7 @@ class StripeViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['post'])
     def webhook(self, request):
-        event = stripe.Event.construct_from(request.data, settings.STRIPE_SECRET_KEY)
+        # event = stripe.Event.construct_from(request.data, settings.STRIPE_SECRET_KEY)
 
         return Response({'success': True}, status.HTTP_200_OK)
 
