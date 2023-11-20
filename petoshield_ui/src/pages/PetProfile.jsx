@@ -74,7 +74,6 @@ const PetProfile = () => {
                                     </div>
                                 </div>
 
-
                                 <div>
                                     <div className='text-nobel-dark text-2xl'>Gender:</div>
                                     <div className='text-dark-grey text-lg'>{pet.gender === 'F' ? 'Female' : 'Male'}</div>

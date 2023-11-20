@@ -139,6 +139,7 @@ The Petoshield Pet Insurance Team'''
             [user.email]
         )
 
+    @staticmethod
     def send_reset_password_warning_email(user):
         subject = "Subject: Notification: Password Change Request"
         message = f'''

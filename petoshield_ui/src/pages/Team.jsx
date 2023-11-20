@@ -2,8 +2,10 @@ import React, {useState} from 'react';
 import NavBar from "../components/NavBar";
 import HelpModal from "../components/HelpModal";
 import Footer from "../components/Footer";
-import {ToastContainer} from "react-toastify";
+import {toast, ToastContainer} from "react-toastify";
 import petSleep from "../static/images/pet-sleep.svg"
+import axios from "axios";
+import {API_JOB_TICKETS_URL, API_TICKETS_URL} from "../utils/apiUrls";
 
 const Team = () => {
     const [position, setPosition] = useState('')
@@ -56,7 +58,28 @@ const Team = () => {
     ]
 
     const positionApplyHandler = () => {
+        const id = toast.loading('Please Wait...')
 
+        axios.post(API_JOB_TICKETS_URL, {
+            position,
+            'first_name': firstName,
+            'last_name': lastName,
+            email
+        }).then(response => {
+            if (response.status === 201) {
+                toast.update(id, {render: 'Success', type: "success", isLoading: false, autoClose: 2000})
+                setFirstName('')
+                setEmail('')
+                setLastName('')
+                setPosition('')
+            }
+        }).catch(error => {
+            if (error.response.data.errors) {
+                toast.update(id, {render: error.response.data.errors[0].detail, type: "error", isLoading: false, autoClose: 5000})
+            }else{
+                toast.update(id, {render: 'Server error please contact administrator', type: "error", isLoading: false, autoClose: 5000})
+            }
+        })
     }
 
     return (
@@ -78,7 +101,7 @@ const Team = () => {
                         <p className='text-center text-xl md:max-w-[640px] mt-8'>Check out our available positions around the world. If you can’t find what you’re looking for, check back often as new positions open up frequently.</p>
                         <div className='bg-white rounded-md mt-16 w-full'>
                             { positionData.map((pos, index) => (
-                              <div onClick={() => setPosition(pos.name)} className='flex border-b-2 px-8 py-8 border-b-black-haze justify-between hover:border hover:border-rose hover:rounded-md cursor-pointer'>
+                              <div key={index} onClick={() => setPosition(pos.name)} className='flex border-b-2 px-8 py-8 border-b-black-haze justify-between hover:border hover:border-rose hover:rounded-md cursor-pointer'>
                                   <div className='font-bold w-1/2'>{pos.name}</div>
                                   <div className='flex w-1/2 pl-4'>
                                       <div className='text-nobel-dark w-1/2'>{pos.shortName}</div>
@@ -102,7 +125,7 @@ const Team = () => {
                         </div>
                         <input className='w-full input-focus p-3 outline-0 border border-gallery rounded-md focus:border-gallery focus:ring-0' type="email" onChange={(e) => setEmail(e.target.value)} value={email} placeholder='Email address'/>
                         <input className='w-full input-focus p-3 outline-0 border border-gallery rounded-md focus:border-gallery focus:ring-0' type="text" placeholder='Position' disabled value={position}/>
-                        <button onClick={() => positionApplyHandler} className='w-full self-end rounded-md bg-rose hover:bg-rose-dark font-bold transition-all duration-300 shadow-[rgba(255,0,131,0.5)_0px_10px_40px_-10px] px-4 py-3 text-white'>APPLY NOW</button>
+                        <button onClick={positionApplyHandler} className='w-full self-end rounded-md bg-rose hover:bg-rose-dark font-bold transition-all duration-300 shadow-[rgba(255,0,131,0.5)_0px_10px_40px_-10px] px-4 py-3 text-white'>APPLY NOW</button>
                     </div>
 
                 </section>

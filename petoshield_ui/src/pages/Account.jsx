@@ -13,6 +13,7 @@ import cat from "../static/images/price/cat-passive.svg"
 import dog from "../static/images/price/dog-passive.svg"
 import houses from "../static/images/account/houses.png"
 import {MdOutlineMail, MdOutlineSettings} from "react-icons/md";
+import {REACT_APP_BACKEND_URL} from "../utils/config";
 
 const Account = () => {
 
@@ -76,7 +77,7 @@ const Account = () => {
                     { profile &&
                         <div className='left flex flex-col w-96 lg:w-72 h-fit bg-white p-8 rounded-md space-y-8 shadow-md'>
                             <div className='flex justify-center items-center border rounded-full w-32 h-32 self-center overflow-hidden'>
-                                <img className='p-1 w-full h-full rounded-full bg-cover' src={profile.image ? profile.image : defaultProfile} alt="profile"/>
+                                <img className='p-1 w-full h-full rounded-full bg-cover' src={profile.image ? `${REACT_APP_BACKEND_URL}/${profile.image}` : defaultProfile} alt="profile"/>
                             </div>
 
                             <div className='flex justify-center items-center'>

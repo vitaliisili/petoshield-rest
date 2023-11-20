@@ -1,6 +1,10 @@
 import React, {useEffect, useState} from 'react'
 import {FiHelpCircle} from "react-icons/fi"
 import {AiOutlineClose} from "react-icons/ai";
+import {toast} from "react-toastify";
+import axios from "axios";
+import {API_TICKETS_URL, API_USER_URL} from "../utils/apiUrls";
+import {getCookie} from "../utils/cookiesUtils";
 
 const HelpModal = () => {
 
@@ -19,11 +23,27 @@ const HelpModal = () => {
     }, [fullName, email, message])
 
     const sendForm = () => {
-    //    Todo: Validate and Send form then empty all fields
-        setFullName('')
-        setEmail('')
-        setMessage('')
-        setModal(false)
+        const id = toast.loading('Please Wait...')
+
+        axios.post(API_TICKETS_URL, {
+            "visitor_name": fullName,
+            "visitor_email": email,
+            "visitor_message": message
+        }).then(response => {
+            if (response.status === 201) {
+                toast.update(id, {render: 'Success', type: "success", isLoading: false, autoClose: 2000})
+                setFullName('')
+                setEmail('')
+                setMessage('')
+                setModal(false)
+            }
+        }).catch(error => {
+            if (error.response.data.errors) {
+                toast.update(id, {render: error.response.data.errors[0].detail, type: "error", isLoading: false, autoClose: 5000})
+            }else{
+                toast.update(id, {render: 'Server error please contact administrator', type: "error", isLoading: false, autoClose: 5000})
+            }
+        })
     }
 
     const handleModal = (e) => {

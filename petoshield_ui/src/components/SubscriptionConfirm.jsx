@@ -40,6 +40,10 @@ const SubscriptionConfirm = ({callback, toggle, object}) => {
         }).then(response => {
             if (response.status === 200) {
                 toast.update(id, {render: 'Subscription was canceled', type: "success", isLoading: false, autoClose: 5000})
+                setModal(false)
+                setTimeout(() => {
+                    navigate('/account')
+                }, 2000)
             }
         }).catch(error => {
             if (error.response) {
