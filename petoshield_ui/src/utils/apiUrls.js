@@ -1,7 +1,3 @@
-// import dotenv from 'dotenv';
-//
-// require('dotenv').config();
-
 const API_VERSION = 'api'
 const REACT_APP_BACKEND_URL = process.env.REACT_APP_BACKEND_URL
 const HOST = `${REACT_APP_BACKEND_URL}/${API_VERSION}`
@@ -21,3 +17,6 @@ export const API_INCOMING_INVOICES_URL = `${HOST}/insurance/incoming-invoices/`
 export const API_PAYMENT_CHECKOUT = `${HOST}/payment/create_checkout/`
 export const API_PAYMENT_CHECKOUT_CONFIRM = `${HOST}/payment/checkout_confirm/`
 export const API_PAYMENT_CANCEL_SUBSCRIPTION = `${HOST}/payment/cancel_insurance/`
+export const API_TICKETS_URL = `${HOST}/help/tickets/`
+export const API_JOB_TICKETS_URL = `${HOST}/help/job-tickets/`
+export const API_PARTNER_TICKETS_URL = `${HOST}/help/partner-tickets/`

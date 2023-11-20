@@ -7,6 +7,9 @@ import partnerContent from "../static/images/partner/partner-content.png"
 import partnerInf from "../static/images/partner/partner-inf.png"
 import partnerMedia from "../static/images/partner/partner-media.png"
 import partnerBrand from "../static/images/partner/partner-brand.png"
+import {toast} from "react-toastify";
+import axios from "axios";
+import {API_JOB_TICKETS_URL, API_PARTNER_TICKETS_URL} from "../utils/apiUrls";
 
 const Partners = () => {
 
@@ -23,7 +26,30 @@ const Partners = () => {
     }, [name, email, message, type, url, businessName])
 
     const sendForm = () => {
-        // TODO: add logic to send form
+        const id = toast.loading('Please Wait...')
+
+        axios.post(API_PARTNER_TICKETS_URL, {
+            name,
+            'business_name': businessName,
+            message,
+            url,
+            email
+        }).then(response => {
+            if (response.status === 201) {
+                toast.update(id, {render: 'Success', type: "success", isLoading: false, autoClose: 2000})
+                setMessage('')
+                setEmail('')
+                setName('')
+                setUrl('')
+                setType('')
+            }
+        }).catch(error => {
+            if (error.response.data.errors) {
+                toast.update(id, {render: error.response.data.errors[0].detail, type: "error", isLoading: false, autoClose: 5000})
+            }else{
+                toast.update(id, {render: 'Server error please contact administrator', type: "error", isLoading: false, autoClose: 5000})
+            }
+        })
     }
 
     return (
