@@ -91,7 +91,8 @@ class PetViewSet(viewsets.ModelViewSet):
         return Response(response, status=status.HTTP_201_CREATED)
 
     def destroy(self, request, *args, **kwargs):
-        policy = Policy.objects.get(pet=self.get_object())
+        pet = self.get_object()
+        policy = Policy.objects.get(pet=pet)
 
         if policy.status == 'valid':
             raise RestValidationError('Cancel subscription first')
