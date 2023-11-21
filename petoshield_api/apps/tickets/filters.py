@@ -13,6 +13,7 @@ class TicketFilter(filters.FilterSet):
             'created_at': ['exact', 'gt', 'lt'],
         }
 
+
 class JobTicketFilter(filters.FilterSet):
     class Meta:
         model = JobTicket
@@ -21,6 +22,7 @@ class JobTicketFilter(filters.FilterSet):
             'last_name': ['exact', 'icontains'],
             'email': ['exact'],
         }
+
 
 class PartnerTicketFilter(filters.FilterSet):
     class Meta:

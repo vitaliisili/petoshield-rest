@@ -73,7 +73,7 @@ const Account = () => {
                     <img className='min-w-[1200px] xl:min-w-[2000px] -mb-32 opacity-10' src={houses} alt="bg"/>
                 </div>
 
-                <div className='flex flex-col lg:flex-row items-center lg:items-start z-20'>
+                <div className='flex flex-col lg:flex-row items-center py-20 lg:items-start z-20'>
                     { profile &&
                         <div className='left flex flex-col w-96 lg:w-72 h-fit bg-white p-8 rounded-md space-y-8 shadow-md'>
                             <div className='flex justify-center items-center border rounded-full w-32 h-32 self-center overflow-hidden'>
@@ -120,7 +120,7 @@ const Account = () => {
                                             <div className='flex justify-between'>
                                                 <div className='font-bold text-2xl text-nobel-dark font-dancing'>{pet.name}</div>
                                                 {pet.policy.status === 'invalid' && <div className='text-sm text-rose'>insurance is not active</div>}
-                                                {pet.policy.status === 'valid' && <div className='text-sm text-rose font-bold'>insurance is active</div>}
+                                                {pet.policy.status === 'valid' && <div className='text-sm text-green font-bold'>insurance is active</div>}
                                                 {pet.policy.status === 'expired' && <div className='text-sm text-rose'>insurance expired</div>}
 
                                             </div>

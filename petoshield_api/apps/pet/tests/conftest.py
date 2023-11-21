@@ -2,6 +2,7 @@ import pytest
 from django.contrib.auth import get_user_model
 from rest_framework.test import APIClient
 from apps.pet.models import Pet, Breed
+from apps.policy.models import Policy
 from apps.user.models import Role
 
 
@@ -73,6 +74,42 @@ def pet(breed, simple_user):
                                     breed=breed,
                                     user=simple_user)
     assert custom_pet.name == 'Lenore'
+
+    Policy.objects.create(
+        policy_number='84-121-4860',
+        start_date='2023-11-01',
+        end_date='2024-11-01',
+        status='invalid',
+        price=12.58,
+        initial_limit=100000,
+        current_limit=100000,
+        deductible=1000,
+        pet=custom_pet
+    )
+    return custom_pet
+
+
+@pytest.fixture
+def pet_with_valid(breed, simple_user):
+    custom_pet = Pet.objects.create(name='Lenore',
+                                    age=5,
+                                    gender='M',
+                                    species='dog',
+                                    breed=breed,
+                                    user=simple_user)
+    assert custom_pet.name == 'Lenore'
+
+    Policy.objects.create(
+        policy_number='84-121-4860',
+        start_date='2023-11-01',
+        end_date='2024-11-01',
+        status='valid',
+        price=12.58,
+        initial_limit=100000,
+        current_limit=100000,
+        deductible=1000,
+        pet=custom_pet
+    )
     return custom_pet
 
 
