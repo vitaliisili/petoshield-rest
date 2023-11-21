@@ -120,8 +120,8 @@ class UserViewSet(viewsets.ModelViewSet):
         return Response({'message': 'Password has been changed successfully'})
 
     def destroy(self, request, *args, **kwargs):
-        user = get_user_model().objects.get(pk=kwargs.get('pk'))
-        policies = Policy.objects.filter(pet__user=user, status='valid')
+        instance = self.get_object()
+        policies = Policy.objects.filter(pet__user=instance, status='valid')
 
         if policies:
             raise RestValidationError(_('You have active insurance subscription, cancel them first'))

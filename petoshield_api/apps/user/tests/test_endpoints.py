@@ -179,7 +179,7 @@ class TestUserEndpoints:
     def test_user_delete_by_himself(self, simple_user, api_client):
         api_client.force_authenticate(simple_user)
         response = api_client.delete(f"{self.endpoint}{simple_user.id}/")
-        assert response.status_code == 403
+        assert response.status_code == 204
 
     def test_user_delete_by_staff_user(self, simple_user, staff_user, api_client):
         api_client.force_authenticate(staff_user)
