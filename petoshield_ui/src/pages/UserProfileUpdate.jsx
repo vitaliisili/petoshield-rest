@@ -119,7 +119,7 @@ const UserProfileUpdate = () => {
                     <img className='min-w-[1200px] xl:min-w-[2000px] mb-28 opacity-10' src={houses} alt="bg"/>
                 </div>
 
-                <section className='z-50 bg-white mb-20 flex space-x-8'>
+                <section className='z-50 bg-white mb-20 flex flex-col md:flex-row space-y-8 md:space-x-8'>
                     <div className='shadow-xl rounded-md p-8'>
                         { profile &&
                             <div className='space-y-8'>
