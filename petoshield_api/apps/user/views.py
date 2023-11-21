@@ -6,6 +6,7 @@ from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 from rest_framework.exceptions import ValidationError as RestValidationError
 from apps.core.utils import EmailSender, JwtToken, Validate
+from apps.policy.models import Policy
 from apps.user.filters import RoleFilter, UserFilter
 from apps.user.models import Role, MailVerificationTokens
 from apps.user.permissions import UserPermission
@@ -117,6 +118,17 @@ class UserViewSet(viewsets.ModelViewSet):
         EmailSender.send_reset_password_warning_email(user)
 
         return Response({'message': 'Password has been changed successfully'})
+
+    def destroy(self, request, *args, **kwargs):
+        user = get_user_model().objects.get(pk=kwargs.get('pk'))
+        policies = Policy.objects.filter(pet__user=user, status='valid')
+
+        if policies:
+            raise RestValidationError(_('You have active insurance subscription, cancel them first'))
+
+        # TODO: send email that account will be deleted
+
+        return super().destroy(request, *args, **kwargs)
 
 
 class RoleViewSet(viewsets.ModelViewSet):

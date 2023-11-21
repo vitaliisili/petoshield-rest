@@ -4,9 +4,11 @@ import NavBar from "../components/NavBar";
 import HelpModal from "../components/HelpModal";
 import Footer from "../components/Footer";
 import axios from "axios";
-import {API_USER_SELF, API_USER_URL} from "../utils/apiUrls";
+import {API_USER_CHANGE_PASSWORD, API_USER_SELF, API_USER_URL} from "../utils/apiUrls";
 import {getCookie} from "../utils/cookiesUtils";
 import houses from "../static/images/boy-and-bike.svg";
+import ConfirmModal from "../components/ConfirmModal";
+import {FaRegEye, FaRegEyeSlash} from "react-icons/fa";
 
 const UserProfileUpdate = () => {
 
@@ -15,6 +17,13 @@ const UserProfileUpdate = () => {
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [image, setImage] = useState(null)
+
+    const [oldPassword, setOldPassword] = useState('')
+    const [newPassword, setNewPassword] = useState('')
+    const [verifyNewPassword, setVerifyNewPassword] = useState('')
+
+    const [deleteModal, setDeleteModal] = useState(false)
+    const [isHidden, setIsHidden] = useState(true)
 
     useEffect(() => {
         const id = toast.loading('Please Wait...')
@@ -39,12 +48,35 @@ const UserProfileUpdate = () => {
         })
     }, [])
 
-    const getFileInfo = (file) => {
-        if (file.target.files[0]) {
-            const formData = new FormData()
-            formData.append('profileImage', file.target.files[0], file.target.files[0].name)
-            setImage(formData)
+    const changePasswordHandler = () => {
+        const id = toast.loading('Please Wait...')
+        if (newPassword !== verifyNewPassword) {
+            toast.update(id, {render: 'new password and verify password not equal', type: "error", isLoading: false, autoClose: 5000})
+            return
         }
+
+        axios.post(API_USER_CHANGE_PASSWORD, {
+            'old_password': oldPassword,
+            'new_password': newPassword
+        }, {
+            headers: {
+                'Authorization': `Bearer ${getCookie('accessToken')}`
+            }
+        }).then(response => {
+            if (response.status === 200) {
+                toast.update(id, {render: 'Success', type: "success", isLoading: false, autoClose: 2000})
+                setNewPassword('')
+                setOldPassword('')
+                setVerifyNewPassword('')
+            }
+        }).catch(error => {
+            if (error.response.data.errors) {
+                toast.update(id, {render: error.response.data.errors[0].detail, type: "error", isLoading: false, autoClose: 5000})
+            }else{
+                toast.update(id, {render: 'Server error please contact administrator', type: "error", isLoading: false, autoClose: 5000})
+            }
+        })
+
     }
     const updateProfileHandler = () => {
         const id = toast.loading('Please Wait...')
@@ -80,6 +112,7 @@ const UserProfileUpdate = () => {
             <ToastContainer/>
             <NavBar/>
             <HelpModal/>
+            {profile && <ConfirmModal type='user' object={profile} toggle={deleteModal} callback={() => setDeleteModal(false)}/>}
 
             <main className='flex flex-grow flex-col pt-28 items-center font-lato relative z-20'>
                 <div className='flex flex-col items-center justify-end w-full h-full z-10 absolute overflow-hidden '>
@@ -112,7 +145,33 @@ const UserProfileUpdate = () => {
                     </div>
 
                     <div className='p-8 bg-white shadow-xl'>
-                        <button onClick={updateProfileHandler} className='w-full self-end rounded-md bg-rose hover:bg-rose-dark font-bold transition-all duration-300 shadow-[rgba(255,0,131,0.5)_0px_10px_40px_-10px] px-4 py-3 text-white'>Save changes</button>
+                        <div className='flex flex-col space-y-4 min-w-[300px]'>
+                            <div className='text-nobel-dark text-xl'>Change password</div>
+                            <div className='flex flex-col relative justify-center'>
+                                <input onChange={(e) => setOldPassword(e.target.value)} value={oldPassword} type={isHidden ? "password" : "text"} className='input-focus p-3 outline-0 border border-gallery rounded-md focus:border-gallery focus:ring-0' placeholder='Old password'/>
+                                {isHidden ?
+                                    <FaRegEyeSlash className='text-2xl absolute right-4'  onClick={() => setIsHidden(!isHidden)}/> :
+                                    <FaRegEye className='text-2xl absolute right-4' onClick={() => setIsHidden(!isHidden)}/>}
+                            </div>
+                            <div className='flex flex-col relative justify-center'>
+                                <input onChange={(e) => setNewPassword(e.target.value)} value={newPassword} type={isHidden ? "password" : "text"} className='input-focus p-3 outline-0 border border-gallery rounded-md focus:border-gallery focus:ring-0' placeholder='New password'/>
+                                {isHidden ?
+                                    <FaRegEyeSlash className='text-2xl absolute right-4'  onClick={() => setIsHidden(!isHidden)}/> :
+                                    <FaRegEye className='text-2xl absolute right-4' onClick={() => setIsHidden(!isHidden)}/>}
+                            </div>
+                            <div className='flex flex-col relative justify-center'>
+                                <input onChange={(e) => setVerifyNewPassword(e.target.value)} value={verifyNewPassword} type={isHidden ? "password" : "text"} className='input-focus p-3 outline-0 border border-gallery rounded-md focus:border-gallery focus:ring-0' placeholder='Verify new password'/>
+                                {isHidden ?
+                                    <FaRegEyeSlash className='text-2xl absolute right-4'  onClick={() => setIsHidden(!isHidden)}/> :
+                                    <FaRegEye className='text-2xl absolute right-4' onClick={() => setIsHidden(!isHidden)}/>}
+                            </div>
+                            <button onClick={changePasswordHandler} className='w-full self-end rounded-md bg-rose hover:bg-rose-dark font-bold transition-all duration-300 shadow-[rgba(255,0,131,0.5)_0px_10px_40px_-10px] px-4 py-3 text-white'>Change password</button>
+                        </div>
+
+                        <div className='flex flex-col'>
+                            <div className='text-nobel-dark text-xl mt-12'>Danger zone</div>
+                            <button onClick={() => setDeleteModal(true)} className='mt-5 w-full self-end rounded-md bg-rose hover:bg-rose-dark font-bold transition-all duration-300 shadow-[rgba(255,0,131,0.5)_0px_10px_40px_-10px] px-4 py-3 text-white'>Remove Account</button>
+                        </div>
                     </div>
                 </section>
             </main>

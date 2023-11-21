@@ -3,6 +3,7 @@ from django.contrib.auth import get_user_model
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from rest_framework.exceptions import ValidationError as RestValidationError
 from apps.core.utils import EmailSender, JwtToken, Validate
 from apps.pet.models import Pet, Breed
 from apps.pet.permissions import BreedPermissions, PetPermission
@@ -88,6 +89,14 @@ class PetViewSet(viewsets.ModelViewSet):
         response['pet'] = pet_instance.id
 
         return Response(response, status=status.HTTP_201_CREATED)
+
+    def destroy(self, request, *args, **kwargs):
+        policy = Policy.objects.get(pet__id=kwargs.get('pk'))
+
+        if policy.status == 'valid':
+            raise RestValidationError('Cancel subscription first')
+
+        return super().destroy(request, *args, *kwargs)
 
     def get_queryset(self):
         if not self.request.user.is_staff:
