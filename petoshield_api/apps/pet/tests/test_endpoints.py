@@ -663,6 +663,11 @@ class TestPetsEndpoints:
         response = api_client.delete(f'{self.endpoint}{pet.id}/')
         assert response.status_code == 204
 
+    def test_pets_delete_with_staff_user_bad_request(self, staff_user, api_client, pet_with_valid):
+        api_client.force_authenticate(staff_user)
+        response = api_client.delete(f'{self.endpoint}{pet_with_valid.id}/')
+        assert response.status_code == 400
+
     def test_pets_delete_with_simple_user_success(self, simple_user, api_client, pet):
         api_client.force_authenticate(simple_user)
         response = api_client.delete(f'{self.endpoint}{pet.id}/')
