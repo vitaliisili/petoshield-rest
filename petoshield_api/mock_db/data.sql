@@ -7,6 +7,9 @@ truncate table policy_insurancecase RESTART IDENTITY CASCADE;
 truncate table policy_serviceprovider RESTART IDENTITY CASCADE;
 truncate table user_role RESTART IDENTITY CASCADE;
 truncate table tickets_ticket RESTART IDENTITY CASCADE;
+truncate table tickets_jobticket RESTART IDENTITY CASCADE;
+truncate table tickets_partnerticket RESTART IDENTITY CASCADE;
+
 
 
 
@@ -195,3 +198,21 @@ INSERT INTO public.tickets_ticket (created_at,updated_at,visitor_name,visitor_em
 INSERT INTO public.tickets_ticket (created_at,updated_at,visitor_name,visitor_email,visitor_message,ticket_status) VALUES('2023-01-10 01:00:00+01','2023-01-10 01:00:00+01','Peter','p.walles@gmal.com','Testing your tickt system ','closed');
 INSERT INTO public.tickets_ticket (created_at,updated_at,visitor_name,visitor_email,visitor_message,ticket_status) VALUES('2023-01-11 01:00:00+01','2023-01-11 01:00:00+01','Felicia','fel.dor@gmal.com','Message for the Director General','new');
 INSERT INTO public.tickets_ticket (created_at,updated_at,visitor_name,visitor_email,visitor_message,ticket_status) VALUES('2023-01-11 01:00:00+01','2023-01-11 01:00:00+01','Jake','j.smith@gmal.com','Leave me alone. Do not send your emails to me','new');
+
+-- JOB TICKETS
+INSERT INTO public.tickets_jobticket (created_at,updated_at,"position",first_name,last_name,email) VALUES
+	 ('2023-11-21 11:51:14.355842+01','2023-11-21 11:51:14.355907+01','System Administrator','John','Bon Jovi','john@email.com'),
+	 ('2023-11-21 11:55:51.418655+01','2023-11-21 11:55:51.418742+01','System Administrator','Jack','Richer','reache@email.com'),
+	 ('2023-11-21 13:45:55.070263+01','2023-11-21 13:45:55.070278+01','Python Developer','Mary','Poppins','poppins@email.com'),
+	 ('2023-11-21 13:47:19.346358+01','2023-11-21 13:47:19.346379+01','Python Developer','Rosa','Robbins','rosa@email.com'),
+	 ('2023-11-21 14:32:20.184664+01','2023-11-21 14:32:20.184688+01','Python Developer','Larry','Robertson','larry@email.com'),
+	 ('2023-11-21 14:32:50.79539+01','2023-11-21 14:32:50.795409+01','Java Developer','Sam','Altman','altman@email.com'),
+	 ('2023-11-21 14:33:31.791777+01','2023-11-21 14:33:31.791797+01','Marketing Director','Leila','Khalid','lkhalid@email.com');
+
+-- PARTNER'S TICKETS
+INSERT INTO public.tickets_partnerticket (created_at,updated_at,"name",business_name,email,message,url) VALUES
+	 ('2023-11-21 12:18:48.851387+01','2023-11-21 12:18:48.851408+01','Willaim Gates','Microsoft','microsoft@email.com','I invite you to my office in Seattle','http://www.microsoft.com'),
+	 ('2023-11-21 12:19:16.688256+01','2023-11-21 12:19:16.68828+01','Jeffry Bezos','Amazon','amazing@email.com','Would you like to buy a part of my company?','http://www.amazon.com'),
+	 ('2023-11-21 14:34:48.715673+01','2023-11-21 14:34:48.715735+01','Mr. Beast','Mr. Beast','mrbeast@email.com','You have a cool project, guyz! I wanna participate','http://www.youtube.com'),
+	 ('2023-11-21 14:38:35.385773+01','2023-11-21 14:38:35.385795+01','Best Blooger','Blogggin Inc.','BBBloger@email.com','Hi! I am a cool bloga. Giv me moni I bring success you 2!','http://www.bbbloger.com'),
+	 ('2023-11-21 14:40:25.241491+01','2023-11-21 14:40:25.241511+01','Ron Fields','Online Advertising Ltd.','OAdvert@email.com','Only this month you have  a possibility to pay only $111 per month','http://www.AdvertAngel.com');
