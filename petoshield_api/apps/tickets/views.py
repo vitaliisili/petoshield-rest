@@ -2,7 +2,7 @@ from rest_framework import viewsets
 from .models import Ticket, PartnerTicket, JobTicket
 from .serializers import TicketSerializer, JobTicketSerializer, PartnerTicketSerializer
 from .permissions import AnyCreateOnlyStaffUpdate
-from .filters import TicketFilter
+from .filters import TicketFilter, JobTicketFilter, PartnerTicketFilter
 
 
 class TicketViewSet(viewsets.ModelViewSet):
@@ -30,7 +30,7 @@ class JobTicketViewSet(viewsets.ModelViewSet):
     serializer_class = JobTicketSerializer
     ordering_fields = ['created_at']
     ordering = ['-created_at']
-    # filterset_class = TicketFilter #  TODO: create filter
+    filterset_class = JobTicketFilter
     search_fields = ['$position', '$last_name', 'email']
 
     def create(self, request, *args, **kwargs):
@@ -49,7 +49,7 @@ class PartnerTicketViewSet(viewsets.ModelViewSet):
     serializer_class = PartnerTicketSerializer
     ordering_fields = ['created_at']
     ordering = ['-created_at']
-    # filterset_class = TicketFilter #  TODO: create filter
+    filterset_class = PartnerTicketFilter
     search_fields = ['$business_name', '$name', 'email']
 
     def create(self, request, *args, **kwargs):
