@@ -138,3 +138,103 @@ class TestTicketEndpoint:
         api_client.force_authenticate(simple_user)
         response = api_client.delete(f'{self.endpoint}{ticket.id}/')
         assert response.status_code == 403
+        
+class TestJobTicketEndpoints:
+    endpoint = '/api/help/job-tickets/'
+
+    def test_job_ticket_create_success(self, api_client, staff_user):
+        api_client.force_authenticate(staff_user)
+        data = {
+            "position": "Engineer",
+            "first_name": "Alain",
+            "last_name": "Bardot",
+            "email": "alain@bardot.fr"
+        }
+        response = api_client.post(self.endpoint, data=data, format='json')
+        assert response.status_code == 201
+        assert 'id' in json.loads(response.content)
+
+    def test_job_ticket_create_unauthorized(self, api_client, simple_user):
+        api_client.force_authenticate(simple_user)
+        data = {
+            "position": "Engineer",
+            "first_name": "Alain",
+            "last_name": "Bardot",
+            "email": ""
+        }
+        response = api_client.post(self.endpoint, data=data, format='json')
+        assert response.status_code == 403
+
+    def test_job_ticket_get_success(self, api_client, staff_user, job_ticket):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}{job_ticket.id}/')
+        assert response.status_code == 200
+        assert json.loads(response.content).get('id') == job_ticket.id
+
+    def test_job_ticket_update_success(self, api_client, staff_user, job_ticket):
+        api_client.force_authenticate(staff_user)
+        updated_data = {
+            "position": "Engineer",
+            "first_name": "Alain",
+            "last_name": "Bardot",
+            "email": "alain@bardot.fr"
+        }
+        response = api_client.put(f'{self.endpoint}{job_ticket.id}/', data=updated_data, format='json')
+        assert response.status_code == 200
+
+    def test_job_ticket_delete_success(self api_client, staff_user):
+        api_client.force_authenticate(staff_user)
+        response = api_client.delete(f'{self.endpoint}{job_ticket.id}/')
+        assert response.status_code == 204
+
+class TestPartnerTicketEndpoints:
+    endpoint = '/api/help/partner-tickets/'
+
+    def test_partner_ticket_create_success(self, api_client, admin_user):
+        api_client.force_authenticate(admin_user)
+        data = {
+            "name": "Engineer",
+            "business_name": "Bardot SA",
+            "email": "ceo@bardot.fr",
+            "message": "Invoice Request",
+            "url": "http://www.bardot.fr"
+        }
+        response = api_client.post(self.endpoint, data=data, format='json')
+        assert response.status_code == 201
+        assert 'id' in json.loads(response.content)
+
+    def test_partner_ticket_create_unauthorized(self, simple_user, api_client):
+        api_client.force_authenticate(simple_user)
+        data = {
+            "name": "Engineer",
+            "business_name": "Bardot SA",
+            "email": "",
+            "message": "Invoice Request",
+            "url": "http://www.bardot.fr"
+        }
+        response = api_client.post(self.endpoint, data=data, format='json')
+        assert response.status_code == 403
+
+    def test_partner_ticket_get_success(self, admin_user, api_client, partner_ticket):
+        api_client.force_authenticate(admin_user)
+        response = api_client.get(f'{self.endpoint}{partner_ticket.id}/')
+        assert response.status_code == 200
+        assert json.loads(response.content).get('id') == partner_ticket.id
+
+    def test_partner_ticket_update_success(self, admin_user, api_client, partner_ticket):
+        api_client.force_authenticate(admin_user)
+        updated_data = {
+            "name": "Engineer",
+            "business_name": "Bardot SA",
+            "email": "ceo@bardot.fr",
+            "message": "Invoice Request",
+            "url": "http://www.bardot.fr"
+        }
+        response = api_client.put(f'{self.endpoint}{partner_ticket.id}/', data=updated_data, format='json')
+        assert response.status_code == 200
+
+    def test_partner_ticket_delete_success(self, admin_user, api_client, partner_ticket):
+        api_client.force_authenticate(admin_user)
+        response = api_client.delete(f'{self.endpoint}{partner_ticket.id}/')
+        assert response.status_code == 204
+

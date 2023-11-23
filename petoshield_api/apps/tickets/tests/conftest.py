@@ -3,6 +3,7 @@ import pytest
 from django.contrib.auth import get_user_model
 from rest_framework.test import APIClient
 from apps.user.models import Role
+from apps.tickets.models import JobTicket, PartnerTicket
 
 
 @pytest.fixture
@@ -89,3 +90,24 @@ def ticket_list(db):
                               visitor_message='Welcome Thorsten',
                               ticket_status='open'),
     ]
+    
+@pytest.fixture
+def job_ticket(db):
+    job_ticket = JobTicket.objects.create(
+        position="CEO",
+        first_name="Thorsten",
+        last_name="Sili",
+        email="thorsten@mail.com"
+    )
+    return job_ticket
+
+@pytest.fixture
+def partner_ticket(db):
+    partner_ticket = PartnerTicket.objects.create(
+        business_name="Bardot GmbH",
+        email="kontakt@bardotgmbh.com",
+        name="Monsieur Bardot",
+        message="merci",
+        url="http://www.bardot.fr"
+    )
+    return partner_ticket
