@@ -1,8 +1,8 @@
 from rest_framework import viewsets
-from .models import Ticket, PartnerTicket, JobTicket
-from .serializers import TicketSerializer, JobTicketSerializer, PartnerTicketSerializer
-from .permissions import AnyCreateOnlyStaffUpdate
-from .filters import TicketFilter, JobTicketFilter, PartnerTicketFilter
+from apps.tickets.models import Ticket, PartnerTicket, JobTicket
+from apps.tickets.serializers import TicketSerializer, JobTicketSerializer, PartnerTicketSerializer
+from apps.tickets.permissions import AnyCreateOnlyStaffUpdate
+from apps.tickets.filters import TicketFilter, JobTicketFilter, PartnerTicketFilter, JobTicketFilter, PartnerTicketFilter
 
 
 class TicketViewSet(viewsets.ModelViewSet):
