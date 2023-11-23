@@ -1,0 +1,13 @@
+Dear {{ name }},
+
+We regret to inform you that your policy with the number {{ policy_number }} has been canceled.
+
+This decision was made after careful consideration and review of the policy terms. We understand the importance of your coverage and apologize for any inconvenience this cancellation may cause.
+
+Should you wish to discuss this further or require clarification on the cancellation, please do not hesitate to reach out to us. Our team is here to assist you and address any concerns you may have.
+
+We value your trust in Petoshield Pet Insurance and appreciate your understanding in this matter.
+
+Best Regards,
+
+Petoshield Pet Insurance Team

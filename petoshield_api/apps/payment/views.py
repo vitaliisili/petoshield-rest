@@ -9,6 +9,7 @@ from django.utils.translation import gettext_lazy as _
 from rest_framework.exceptions import ValidationError as RestValidationError
 from apps.pet.models import Pet
 from apps.policy.models import Policy
+from apps.core.utils import EmailSender
 
 
 class StripeViewSet(viewsets.ModelViewSet):
@@ -83,14 +84,22 @@ class StripeViewSet(viewsets.ModelViewSet):
             invoice_url = stripe.Invoice.retrieve(invoice_id).hosted_invoice_url
 
             # TODO: send confirmation email that subscription was paid use invoice variable to send link
+            email_data = {
+                'name': policy.pet.user.get_username(),
+                'email': policy.pet.user.get_email_field_name(),
+                'policy_number': policy.policy_number,
+                'invoice_id': invoice_id,
+                'invoice_url': invoice_url,
+            }
+
+            EmailSender.send_mail_checkout_confirm(email_data)
 
             return Response({
                 'message': _('Payment has been accepted'),
                 'invoice_url': invoice_url
             })
 
-        except Exception as e:
-            print(e)
+        except Exception:
             return Response({'error': _('something went wrong when try to confirm payment')},
                             status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
@@ -114,4 +123,12 @@ class StripeViewSet(viewsets.ModelViewSet):
         policy.save()
 
         #  TODO: send email that subscription was canceled
+        email_data = {
+            'name': policy.pet.user.get_username(),
+            'email': policy.pet.user.get_email_field_name(),
+            'policy_number': policy.policy_number,
+        }
+
+        EmailSender.send_mail_subscription_cancelled(email_data)
+
         return Response({'message': 'Subscription has been canceled'}, status.HTTP_200_OK)

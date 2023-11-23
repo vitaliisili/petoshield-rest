@@ -1,0 +1,13 @@
+Dear {{ name }},
+
+Thank you for your payment.
+
+We're pleased to confirm that your policy with the number {{ policy_number }} is now active and valid.
+
+Please find your receipt and invoice under #{{ invoice_id }} by following this link: {{ invoice_url }}
+
+Should you have any further inquiries or require assistance, please don't hesitate to reach out to us. We're here to help.
+
+Best Regards,
+
+Your Petoshield Pet Insurance Team

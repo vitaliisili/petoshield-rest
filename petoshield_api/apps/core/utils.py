@@ -230,6 +230,46 @@ The Petoshield Pet Insurance Team'''
             recipient_list=[email_data["email"]],
         )
 
+    @staticmethod
+    def send_mail_checkout_confirm(email_data):
+        subject = 'Payment Confirmation and Policy Validity'
+        template_path = './emails/checkout_confirm_email.txt'
+        context = {
+            'name': email_data['name'],
+            'email': email_data['email'],
+            'policy_number': email_data['policy_number'],
+            'invoice_id': email_data['invoice_id'],
+            'invoice_url': email_data['invoice_url'],
+        }
+
+        email_text = get_template(template_path).render(context)
+
+        send_mail(
+            subject=subject,
+            message=email_text,
+            from_email=settings.EMAIL_HOST_USER,
+            recipient_list=[email_data["email"]],
+        )
+
+    @staticmethod
+    def send_mail_subscription_cancelled(email_data):
+        subject = f'Notice of Policy Cancellation: {email_data["policy_number"]}'
+        template_path = './emails/policy_cancelled_email.txt'
+        context = {
+            'name': email_data['name'],
+            'email': email_data['email'],
+            'policy_number': email_data['policy_number'],
+        }
+
+        email_text = get_template(template_path).render(context)
+
+        send_mail(
+            subject=subject,
+            message=email_text,
+            from_email=settings.EMAIL_HOST_USER,
+            recipient_list=[email_data["email"]],
+        )
+
 
 class JwtToken:
 
