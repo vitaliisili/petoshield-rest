@@ -1,5 +1,5 @@
 from django_filters import rest_framework as filters
-from .models import Ticket, JobTicket, PartnerTicket
+from apps.tickets.models import JobTicket, PartnerTicket, Ticket, JobTicket, PartnerTicket
 
 
 class TicketFilter(filters.FilterSet):
