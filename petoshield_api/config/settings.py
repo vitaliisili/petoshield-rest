@@ -61,6 +61,7 @@ REST_FRAMEWORK = {
 }
 SPECTACULAR_SETTINGS = {
     'TITLE': 'Petoshield API',
+    'VERSION': '0.0.1-beta'
 }
 
 SIMPLE_JWT = {
