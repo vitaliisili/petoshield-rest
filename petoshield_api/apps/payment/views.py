@@ -83,12 +83,9 @@ class StripeViewSet(viewsets.ModelViewSet):
             invoice_id = stripe.Subscription.retrieve(stripe_subscription.id).latest_invoice
             invoice_url = stripe.Invoice.retrieve(invoice_id).hosted_invoice_url
 
-            # TODO: send confirmation email that subscription was paid use invoice variable to send link
             email_data = {
-                'name': policy.pet.user.get_username(),
-                'email': policy.pet.user.get_email_field_name(),
+                'email': session.customer_details.email,
                 'policy_number': policy.policy_number,
-                'invoice_id': invoice_id,
                 'invoice_url': invoice_url,
             }
 
@@ -122,10 +119,9 @@ class StripeViewSet(viewsets.ModelViewSet):
         policy.status = 'invalid'
         policy.save()
 
-        #  TODO: send email that subscription was canceled
         email_data = {
-            'name': policy.pet.user.get_username(),
-            'email': policy.pet.user.get_email_field_name(),
+            'name': request.user.name,
+            'email': request.user.email,
             'policy_number': policy.policy_number,
         }
 
