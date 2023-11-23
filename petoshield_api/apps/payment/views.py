@@ -24,12 +24,12 @@ class StripeViewSet(viewsets.ModelViewSet):
         pet = Pet.objects.get(pk=serializer.data.get('pet'))
 
         try:
-            customer = stripe.Customer.create(name=pet.name)
+            customer = stripe.Customer.create(name=pet.name, email=request.user.email)
             price = stripe.Price.create(
                 product=settings.STRIPE_ANNUAL if data.get('frequency') == 'annual' else settings.STRIPE_MONTHLY,
                 unit_amount=int(float(request.data.get('final_price')) * 100),
                 currency='eur',
-                recurring={'interval': 'year' if data.get('frequency') == 'annual' else 'month'},
+                recurring={'interval': 'year' if data.get('frequency') == 'annual' else 'month'}
             )
 
             checkout_session = stripe.checkout.Session.create(
@@ -39,7 +39,7 @@ class StripeViewSet(viewsets.ModelViewSet):
                         'quantity': 1,
                     },
                 ],
-                payment_method_types=['card'],
+                payment_method_types=['card', 'paypal'],
                 mode='subscription',
                 customer=customer.id,
                 client_reference_id=pet.id,
@@ -72,16 +72,25 @@ class StripeViewSet(viewsets.ModelViewSet):
             policy = StripeSession.objects.get(session_id=session.id).policy
             stripe_customer = StripeCustomer.objects.create(id=session.customer, name=session.customer_details.name)
 
-            StripeSubscription.objects.create(id=session.subscription,
-                                              price=float(session.amount_total / 100),
-                                              stripe_customer=stripe_customer,
-                                              policy=policy)
+            stripe_subscription = StripeSubscription.objects.create(id=session.subscription,
+                                                                    price=float(session.amount_total / 100),
+                                                                    stripe_customer=stripe_customer,
+                                                                    policy=policy)
             policy.status = 'valid'
             policy.save()
 
-            # TODO: send confirmation email that subscription was paid
-            return Response({'message': _('Payment has been accepted')})
-        except Exception:
+            invoice_id = stripe.Subscription.retrieve(stripe_subscription.id).latest_invoice
+            invoice_url = stripe.Invoice.retrieve(invoice_id).hosted_invoice_url
+
+            # TODO: send confirmation email that subscription was paid use invoice variable to send link
+
+            return Response({
+                'message': _('Payment has been accepted'),
+                'invoice_url': invoice_url
+            })
+
+        except Exception as e:
+            print(e)
             return Response({'error': _('something went wrong when try to confirm payment')},
                             status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
