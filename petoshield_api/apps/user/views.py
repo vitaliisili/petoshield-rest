@@ -131,8 +131,9 @@ class UserViewSet(viewsets.ModelViewSet):
             "email": instance.email,
         }
 
-        EmailSender.send_mail_saccount_deleted(email_data)
-        return super().destroy(request, *args, **kwargs) 
+        EmailSender.send_mail_account_deleted(email_data)
+
+        return super().destroy(request, *args, **kwargs)
 
 
 class RoleViewSet(viewsets.ModelViewSet):
