@@ -178,8 +178,8 @@ def pets_list(breed, simple_user, staff_user):
 @pytest.fixture
 def job_ticket_fixture(db, staff_user):
     job_ticket = JobTicket.objects.create(
-        title="Beispieljob",
-        description="Eine detaillierte Beschreibung des Jobs",
+        title="Sample Job",
+        description="My Job",
         creator=staff_user
     )
     return job_ticket
@@ -187,8 +187,8 @@ def job_ticket_fixture(db, staff_user):
 @pytest.fixture
 def partner_ticket_fixture(db, admin_user):
     partner_ticket = PartnerTicket.objects.create(
-        business_name="Beispielfirma",
-        contact_email="kontakt@beispielfirma.com",
+        business_name="Bardot GmbH",
+        contact_email="kontakt@bardotgmbh.com",
         created_by=admin_user
     )
     return partner_ticket
