@@ -32,6 +32,7 @@ jobs:
       POLICY_BASE_PRICE: ${{ secrets.POLICY_BASE_PRICE }}
       STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
       STRIPE_PUBLIC_KEY: ${{ secrets.STRIPE_PUBLIC_KEY }}
+      STRIPE_WEBHOOK_SECRET: ${{ secrets.STRIPE_WEBHOOK_SECRET }}
 
     services:
       database:
