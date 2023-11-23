@@ -1,5 +1,5 @@
 from django_filters import rest_framework as filters
-from apps.tickets.models import JobTicket, PartnerTicket, Ticket
+from apps.tickets.models import JobTicket, PartnerTicket, Ticket, JobTicket, PartnerTicket
 
 
 class TicketFilter(filters.FilterSet):
@@ -34,4 +34,25 @@ class PartnerTicketFilter(filters.FilterSet):
             'business_name': ['exact', 'icontains'],
             'email': ['exact'],
             'url': ['exact']
+        }
+
+class JobTicketFilter(filters.FilterSet):
+    class Meta:
+        model = JobTicket
+        fields = {
+            'position': ['exact', 'icontains'],
+            'last_name': ['exact', 'icontains'],
+            'email': ['exact'],
+        }
+
+
+class PartnerTicketFilter(filters.FilterSet):
+    class Meta:
+        model = PartnerTicket
+        fields = {
+            'name': ['exact', 'icontains'],
+            'business_name': ['exact', 'icontains'],
+            'email': ['exact'],
+            'message': ['icontains'],
+            'url': ['exact', 'icontains'],
         }
