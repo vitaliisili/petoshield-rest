@@ -13,28 +13,6 @@ class TicketFilter(filters.FilterSet):
             'created_at': ['exact', 'gt', 'lt'],
         }
 
-class JobTicketFilter(filters.FilterSet):
-
-    class Meta:
-        model = JobTicket
-        fields = {
-            'position': ['exact', 'icontains'],
-            'first_name': ['exact', 'icontains'],
-            'last_name': ['exact', 'icontains'],
-            'email': ['exact']
-        }
-
-
-class PartnerTicketFilter(filters.FilterSet):
-
-    class Meta:
-        model = PartnerTicket
-        fields = {
-            'name': ['exact', 'icontains'],
-            'business_name': ['exact', 'icontains'],
-            'email': ['exact'],
-            'url': ['exact']
-        }
 
 class JobTicketFilter(filters.FilterSet):
     class Meta:
