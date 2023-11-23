@@ -1,0 +1,16 @@
+Dear {{ name }},
+
+We sincerely appreciate your interest in partnering with Petoshield Pet Insurance and are thrilled to accept your proposal for collaboration.
+
+At Petoshield, we are dedicated to providing comprehensive pet insurance solutions and are excited about the prospect of joining forces with {{ business_name }} to achieve common goals in animal welfare and pet healthcare excellence.
+
+We believe that aligning our efforts will result in a synergistic relationship that brings value to both parties. We are open to discussing various collaboration possibilities. Our aim is to create a partnership that fosters innovation and growth for both our organizations.
+
+Please let us know a suitable time for a discussion or meeting to further explore this opportunity. Additionally, if there are any specific details or requirements you would like to discuss, please feel free to share them with us.
+
+Once again, thank you for considering Petoshield Pet Insurance as a partner. We are looking forward to a fruitful collaboration that benefits both our organizations.
+
+
+Warm Regards,
+
+Petoshield Pet Insurance Team

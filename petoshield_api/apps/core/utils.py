@@ -1,4 +1,6 @@
 from django.core.mail import send_mail
+from django.template.loader import get_template
+from django.shortcuts import render
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 from rest_framework.exceptions import ValidationError as RestValidationError
@@ -179,6 +181,54 @@ The Petoshield Pet Insurance Team'''
             message,
             settings.EMAIL_HOST_USER,
             [user.email]
+        )
+
+    @staticmethod
+    def send_mail_your_ticket_received(email_data):
+        subject = 'Thank you for your interest'
+        template_path = './emails/ticket_received_email.txt'
+        context = {'name': email_data['name']}
+        email_text = get_template(template_path).render(context)
+        
+        send_mail(
+            subject=subject,
+            message=email_text,
+            from_email=settings.EMAIL_HOST_USER,
+            recipient_list=[email_data["email"]],
+        )
+
+    @staticmethod
+    def send_mail_job_ticket_received(email_data):
+        subject = f'Thank you for your Job Application for position of {email_data["position"]}'
+        template_path = './emails/job_ticket_received_email.txt'
+        context = {
+            'name': email_data['name'],
+            'position': email_data['position'],
+        }
+        email_text = get_template(template_path).render(context)
+        
+        send_mail(
+            subject=subject,
+            message=email_text,
+            from_email=settings.EMAIL_HOST_USER,
+            recipient_list=[email_data["email"]],
+        )
+
+    @staticmethod
+    def send_mail_partner_ticket_received(email_data):
+        subject = f'Exploring Partnership Opportunities with Petoshield Pet Insurance'
+        template_path = './emails/partner_ticket_received_email.txt'
+        context = {
+            'name': email_data['name'],
+            'business_name': email_data['business_name'],
+        }
+        email_text = get_template(template_path).render(context)
+        
+        send_mail(
+            subject=subject,
+            message=email_text,
+            from_email=settings.EMAIL_HOST_USER,
+            recipient_list=[email_data["email"]],
         )
 
 
