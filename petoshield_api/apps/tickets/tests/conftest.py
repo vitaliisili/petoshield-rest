@@ -1,4 +1,4 @@
-from apps.tickets.models import Ticket
+from apps.tickets.models import Ticket, JobTicket, PartnerTicket
 import pytest
 from django.contrib.auth import get_user_model
 from rest_framework.test import APIClient
@@ -88,4 +88,66 @@ def ticket_list(db):
                               visitor_name='Thorsten',
                               visitor_message='Welcome Thorsten',
                               ticket_status='open'),
+    ]
+
+
+@pytest.fixture
+def job_ticket(db):
+    simple_job_ticket = JobTicket.objects.create(position='test position name',
+                                                 first_name='test-name',
+                                                 last_name='test-last',
+                                                 email='example@mail.com')
+    return simple_job_ticket
+
+
+@pytest.fixture
+def job_ticket_list(db):
+    return [
+        JobTicket.objects.create(position='insurance manager',
+                                 first_name='Moralez',
+                                 last_name='Korlm',
+                                 email='example1@mail.com'),
+
+        JobTicket.objects.create(position='backend developer',
+                                 first_name='Sara',
+                                 last_name='Poter',
+                                 email='example2@mail.com'),
+
+        JobTicket.objects.create(position='frontend developer',
+                                 first_name='Lara',
+                                 last_name='Miko',
+                                 email='example3@mail.com'),
+    ]
+
+
+@pytest.fixture
+def partner_ticket(db):
+    simple_partner_ticket = PartnerTicket.objects.create(name='Test Name',
+                                                         business_name='test business name',
+                                                         email='example@mail.com',
+                                                         message='test message text',
+                                                         url='https://example.com')
+    return simple_partner_ticket
+
+
+@pytest.fixture
+def partner_ticket_list(db):
+    return [
+        PartnerTicket.objects.create(name='Lina Morex',
+                                     business_name='lina morex gbh Company',
+                                     email='example1@mail.com',
+                                     message='lina text message',
+                                     url='https://example1.com'),
+
+        PartnerTicket.objects.create(name='Mike Nurner',
+                                     business_name='Mike Company gbh',
+                                     email='example2@mail.com',
+                                     message='mike message text',
+                                     url='https://example2.com'),
+
+        PartnerTicket.objects.create(name='Sira',
+                                     business_name='Sira sisters gbh',
+                                     email='example3@mail.com',
+                                     message='sira message text',
+                                     url='https://example3.com')
     ]

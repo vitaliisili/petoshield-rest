@@ -20,6 +20,7 @@ class JobTicketFilter(filters.FilterSet):
         fields = {
             'position': ['exact', 'icontains'],
             'last_name': ['exact', 'icontains'],
+            'first_name': ['exact', 'icontains'],
             'email': ['exact'],
         }
 
@@ -31,6 +32,5 @@ class PartnerTicketFilter(filters.FilterSet):
             'name': ['exact', 'icontains'],
             'business_name': ['exact', 'icontains'],
             'email': ['exact'],
-            'message': ['icontains'],
             'url': ['exact', 'icontains'],
         }
