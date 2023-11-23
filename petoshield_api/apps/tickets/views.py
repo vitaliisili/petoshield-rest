@@ -1,3 +1,4 @@
+from drf_spectacular.utils import extend_schema
 from rest_framework import viewsets
 from apps.tickets.models import Ticket, PartnerTicket, JobTicket
 from apps.tickets.serializers import TicketSerializer, JobTicketSerializer, PartnerTicketSerializer
@@ -6,6 +7,7 @@ from apps.tickets.filters import TicketFilter, JobTicketFilter, PartnerTicketFil
 from apps.core.utils import EmailSender
 
 
+@extend_schema(tags=['Ticket'])
 class TicketViewSet(viewsets.ModelViewSet):
     queryset = Ticket.objects.all()
     permission_classes = (AnyCreateOnlyStaffUpdate,)
@@ -30,6 +32,7 @@ class TicketViewSet(viewsets.ModelViewSet):
         return super().create(request, *args, **kwargs)
 
 
+@extend_schema(tags=['JobTicket'])
 class JobTicketViewSet(viewsets.ModelViewSet):
     queryset = JobTicket.objects.all()
     permission_classes = (AnyCreateOnlyStaffUpdate,)
@@ -54,6 +57,7 @@ class JobTicketViewSet(viewsets.ModelViewSet):
         return super().create(request, *args, **kwargs)
 
 
+@extend_schema(tags=['PartnerTicket'])
 class PartnerTicketViewSet(viewsets.ModelViewSet):
     queryset = PartnerTicket.objects.all()
     permission_classes = (AnyCreateOnlyStaffUpdate,)
