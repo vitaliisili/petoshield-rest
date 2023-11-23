@@ -270,6 +270,24 @@ The Petoshield Pet Insurance Team'''
             recipient_list=[email_data["email"]],
         )
 
+    @staticmethod
+    def send_mail_saccount_deleted(email_data):
+        subject = f'Notice: Account Deletion'
+        template_path = './emails/delete_account_email.txt'
+        context = {
+            'name': email_data['name'],
+            'email': email_data['email'],
+        }
+
+        email_text = get_template(template_path).render(context)
+
+        send_mail(
+            subject=subject,
+            message=email_text,
+            from_email=settings.EMAIL_HOST_USER,
+            recipient_list=[email_data["email"]],
+        )
+
 
 class JwtToken:
 
