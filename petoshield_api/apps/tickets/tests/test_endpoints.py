@@ -182,7 +182,7 @@ class TestJobTicketEndpoints:
         response = api_client.put(f'{self.endpoint}{job_ticket.id}/', data=updated_data, format='json')
         assert response.status_code == 200
 
-    def test_job_ticket_delete_success(self api_client, staff_user):
+    def test_job_ticket_delete_success(self, api_client, staff_user):
         api_client.force_authenticate(staff_user)
         response = api_client.delete(f'{self.endpoint}{job_ticket.id}/')
         assert response.status_code == 204
