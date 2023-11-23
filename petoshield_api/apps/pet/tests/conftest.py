@@ -4,6 +4,8 @@ from rest_framework.test import APIClient
 from apps.pet.models import Pet, Breed
 from apps.policy.models import Policy
 from apps.user.models import Role
+from apps.job.models import JobTicket
+from apps.partner.models import PartnerTicket
 
 
 @pytest.fixture
@@ -172,3 +174,21 @@ def pets_list(breed, simple_user, staff_user):
         ),
     ]
     return pets_list
+
+@pytest.fixture
+def job_ticket_fixture(db, staff_user):
+    job_ticket = JobTicket.objects.create(
+        title="Beispieljob",
+        description="Eine detaillierte Beschreibung des Jobs",
+        creator=staff_user
+    )
+    return job_ticket
+
+@pytest.fixture
+def partner_ticket_fixture(db, admin_user):
+    partner_ticket = PartnerTicket.objects.create(
+        business_name="Beispielfirma",
+        contact_email="kontakt@beispielfirma.com",
+        created_by=admin_user
+    )
+    return partner_ticket
