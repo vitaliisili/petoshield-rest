@@ -1,0 +1,16 @@
+Dear {{ name }}, 
+
+I hope this message finds you well. I wanted to take a moment to express our gratitude for your interest in joining the Petoshield Pet Insurance team and for the time you invested in applying for the {{ position }} position.
+
+Your application and qualifications are important to us, and we are currently reviewing all submissions thoroughly. Our hiring team is diligently assessing each candidate to ensure we find the most suitable match for this role and our company culture.
+
+While we thoroughly evaluate applications, we kindly ask for your patience during this process. Rest assured, we will keep you informed of any updates regarding your application status.
+
+We sincerely appreciate your interest in becoming a part of Petoshield Pet Insurance. Should you have any further questions or wish to provide additional information, please don't hesitate to reach out.
+
+Thank you once again for considering a career opportunity with us. We value your interest and look forward to the possibility of working together.
+
+
+Best Regards,
+
+Petoshield Pet Insurance Team

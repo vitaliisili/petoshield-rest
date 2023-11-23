@@ -1,0 +1,14 @@
+Dear {{ name }},
+
+Thank you for reaching out to Petoshield Pet Insurance. Your inquiry is important to us, and we appreciate the opportunity to assist you.
+
+We have received your message. Our team is currently reviewing your query to provide you with the most accurate and helpful information.
+
+Please expect a detailed response. Meanwhile, if you have any additional information to add or further questions, feel free to reply to this email, and we'll prioritize addressing your concerns promptly.
+
+Thank you for your patience and for considering Petoshield Pet Insurance. We look forward to resolving your query and serving you to the best of our ability.
+
+
+Best Regards,
+
+The Petoshield Pet Insurance Team
