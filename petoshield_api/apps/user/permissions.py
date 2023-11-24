@@ -2,8 +2,21 @@ from rest_framework import permissions
 
 
 class UserPermission(permissions.BasePermission):
+    """Custom permission class for user-related actions.
+    Methods:
+        has_permission: Checks if the user has permission for the requested action.
+        has_object_permission: Checks if the user has permission for the requested object action.
+    """
 
     def has_permission(self, request, view):
+        """Checks if the user has permission for the requested action.
+        Args:
+            request (HttpRequest): The request object.
+            view (APIView): The view object associated with the action.
+        Returns:
+            bool: True if the user has permission, False otherwise.
+        """
+
         if view.action == 'list':
             return request.user.is_authenticated and request.user.is_staff
         elif view.action in ['create', 'reset_password', 'reset_password_confirm']:
@@ -18,9 +31,17 @@ class UserPermission(permissions.BasePermission):
             return False
 
     def has_object_permission(self, request, view, obj):
+        """Checks if the user has permission for the requested object action.
+        Args:
+            request (HttpRequest): The request object.
+            view (APIView): The view object associated with the action.
+            obj: The object related to the action.
+        Returns:
+            bool: True if the user has permission, False otherwise.
+        """
+
         if not request.user.is_authenticated:
             return False
-
         if view.action in ['retrieve', 'destroy']:
             return obj == request.user or request.user.is_staff
         elif view.action in ['update', 'partial_update']:
