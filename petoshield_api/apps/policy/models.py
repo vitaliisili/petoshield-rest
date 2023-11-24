@@ -41,8 +41,10 @@ class Policy(BaseModel):
         policy_number (CharField): The policy number. Max length is 255 characters. Must be unique.
         start_date (DateField): The start date of the policy.
         end_date (DateField): The end date of the policy.
-        status (CharField): The status of the policy. Max length is 20 characters. Choices are 'valid', 'invalid', and 'expired'.
-        price (DecimalField): The price of the policy. Max digits is 8. Decimal places is 2. Default is POLICY_BASE_PRICE from settings.
+        status (CharField): The status of the policy. Max length is 20 characters. Choices are 'valid',
+        'invalid', and 'expired'.
+        price (DecimalField): The price of the policy. Max digits is 8. Decimal places is 2.
+        Default is POLICY_BASE_PRICE from settings.
         initial_limit (DecimalField): The initial limit of the policy. Max digits is 8. Decimal places is 2.
         current_limit (DecimalField): The current limit of the policy. Max digits is 8. Decimal places is 2.
         deductible (DecimalField): The deductible of the policy. Max digits is 6. Decimal places is 2.
