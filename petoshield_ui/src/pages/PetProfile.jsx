@@ -6,7 +6,7 @@ import {useNavigate, useParams} from "react-router-dom";
 import Footer from "../components/Footer";
 import axios from "axios";
 import {API_PETS_URL} from "../utils/apiUrls";
-import {getCookie} from "../utils/cookiesUtils";
+import {getCookie, removeCookie} from "../utils/cookiesUtils";
 import cat from "../static/images/price/cat-passive.svg"
 import dog from "../static/images/price/dog-passive.svg"
 import boy from "../static/images/boy-and-bike.svg"
@@ -35,7 +35,10 @@ const PetProfile = () => {
                 console.log(response.data)
             }
         }).catch(error => {
-            console.log(error)
+            if (error.response.status === 401) {
+                removeCookie('accessToken')
+                navigate('/login')
+            }
         })
     }, [params]);
 

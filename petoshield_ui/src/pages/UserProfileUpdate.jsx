@@ -5,14 +5,16 @@ import HelpModal from "../components/HelpModal";
 import Footer from "../components/Footer";
 import axios from "axios";
 import {API_USER_CHANGE_PASSWORD, API_USER_SELF, API_USER_URL} from "../utils/apiUrls";
-import {getCookie} from "../utils/cookiesUtils";
+import {getCookie, removeCookie} from "../utils/cookiesUtils";
 import houses from "../static/images/boy-and-bike.svg";
 import ConfirmModal from "../components/ConfirmModal";
 import {FaRegEye, FaRegEyeSlash} from "react-icons/fa";
+import {useNavigate} from "react-router-dom";
 
 const UserProfileUpdate = () => {
 
     const [profile, setProfile] = useState(null)
+    const navigate = useNavigate()
 
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
@@ -44,6 +46,10 @@ const UserProfileUpdate = () => {
                 toast.update(id, {render: error.response.data.errors[0].detail, type: "error", isLoading: false, autoClose: 5000})
             }else{
                 toast.update(id, {render: 'Server error please contact administrator', type: "error", isLoading: false, autoClose: 5000})
+            }
+            if (error.response.status === 401) {
+                removeCookie('accessToken')
+                navigate('/login')
             }
         })
     }, [])

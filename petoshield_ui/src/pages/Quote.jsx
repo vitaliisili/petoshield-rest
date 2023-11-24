@@ -4,14 +4,15 @@ import HelpModal from "../components/HelpModal";
 import Footer from "../components/Footer";
 import axios from "axios";
 import {API_PAYMENT_CHECKOUT, API_PETS_URL} from "../utils/apiUrls";
-import {getCookie} from "../utils/cookiesUtils";
-import {useParams} from "react-router-dom";
+import {getCookie, removeCookie} from "../utils/cookiesUtils";
+import {useNavigate, useParams} from "react-router-dom";
 import catIcon from "../static/images/pet/cat-passive.svg"
 import dogIcon from "../static/images/pet/dog-passive.svg"
 import {BsCurrencyEuro} from "react-icons/bs";
 import {ANNUAL_DISCOUNT, PAYMENT_REDIRECT_LINK} from "../utils/config";
 
 const Quote = () => {
+    const navigate = useNavigate()
     const [pet, setPet] = useState(null)
     const params = useParams()
     const [frequency, setFrequency] = useState('annual')
@@ -30,6 +31,10 @@ const Quote = () => {
             }
         }).catch(error => {
             console.log(error)
+            if (error.response.status === 401) {
+                removeCookie('accessToken')
+                navigate('/login')
+            }
         })
     }, [])
 
@@ -58,6 +63,10 @@ const Quote = () => {
             }
         }).catch(error => {
             console.log(error)
+            if (error.response.status === 401) {
+                removeCookie('accessToken')
+                navigate('/login')
+            }
         })
     }
 
