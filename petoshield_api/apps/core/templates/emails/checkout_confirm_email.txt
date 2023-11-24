@@ -2,7 +2,7 @@ Dear Customer,
 
 Thank you for your payment.
 
-We're pleased to confirm that your policy with the number {{ policy_number }} is now active and valid.
+We're pleased to confirm that your policy is now active and valid.
 
 Please find your receipt by following this link: {{ invoice_url }}
 

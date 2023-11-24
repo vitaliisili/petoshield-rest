@@ -12,6 +12,7 @@ from django.utils.translation import gettext_lazy as _
 from rest_framework.exceptions import ValidationError as RestValidationError
 from apps.pet.models import Pet
 from apps.policy.models import Policy
+from apps.core.utils import EmailSender
 
 
 @extend_schema(tags=['Stripe'])
@@ -84,9 +85,12 @@ class StripeViewSet(viewsets.ModelViewSet):
         event = stripe.Event.construct_from(request.data, settings.STRIPE_SECRET_KEY)
         if event.type == 'invoice.paid':
             invoice = event.data.object
-            # invoice.customer_email
-            # invoice.hosted_invoice_url
-            # TODO: send email with invoice
+            email_data = {
+                "email": invoice.customer_email,
+                "invoice_url": invoice.hosted_invoice_url,
+            }
+            EmailSender.send_mail_job_ticket_received(email_data)
+
         return Response({'success': True}, status.HTTP_200_OK)
 
     @action(detail=False, methods=['post'])
@@ -133,5 +137,11 @@ class StripeViewSet(viewsets.ModelViewSet):
         policy = stripe_subscription.policy
         policy.status = 'invalid'
         policy.save()
+        email_data = {
+            "name": request.user.name,
+            "email": request.user.email,
+            "policy_number": policy.policy_number,
+        }
+        EmailSender.send_mail_job_ticket_received(email_data)
 
         return Response({'message': 'Subscription has been canceled'}, status.HTTP_200_OK)

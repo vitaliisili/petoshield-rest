@@ -142,10 +142,7 @@ class EmailSender:
         subject = 'Payment Confirmation and Policy Validity'
         template_path = './emails/checkout_confirm_email.txt'
         context = {
-            'name': email_data['name'],
             'email': email_data['email'],
-            'policy_number': email_data['policy_number'],
-            'invoice_id': email_data['invoice_id'],
             'invoice_url': email_data['invoice_url'],
         }
         email_text = get_template(template_path).render(context)
