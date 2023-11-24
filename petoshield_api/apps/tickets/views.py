@@ -21,7 +21,6 @@ class TicketViewSet(viewsets.ModelViewSet):
         serializer = TicketSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
-        # TODO: Send notification email that ticket received
         email_data = {
             "name": serializer.data.get('visitor_name'),
             "email": serializer.data.get('visitor_email'),

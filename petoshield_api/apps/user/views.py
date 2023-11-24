@@ -128,7 +128,12 @@ class UserViewSet(viewsets.ModelViewSet):
         if policies:
             raise RestValidationError(_('You have active insurance subscription, cancel them first'))
 
-        # TODO: send email that account will be deleted
+        email_data = {
+            "name": instance.name,
+            "email": instance.email,
+        }
+
+        EmailSender.send_mail_account_deleted(email_data)
 
         return super().destroy(request, *args, **kwargs)
 
