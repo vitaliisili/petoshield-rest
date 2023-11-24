@@ -95,7 +95,7 @@ const Account = () => {
                                 <div className='flex justify-between items-center'>
                                     <div className='font-bold text-nobel-dark flex justify-center items-center'><MdOutlineMail className='text-xl mr-2' /> Email Address</div>
                                     {profile.is_verified ?
-                                        <div className='text-xs text-gallery-dark font-bold'>verified</div> :
+                                        <div className='text-xs text-green font-bold'>verified</div> :
                                         <div className='text-xs text-rose-dark font-bold'>not verified</div>
                                     }
                                 </div>
