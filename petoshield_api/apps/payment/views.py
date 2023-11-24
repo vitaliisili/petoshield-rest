@@ -89,7 +89,7 @@ class StripeViewSet(viewsets.ModelViewSet):
                 "email": invoice.customer_email,
                 "invoice_url": invoice.hosted_invoice_url,
             }
-            EmailSender.send_mail_job_ticket_received(email_data)
+            EmailSender.send_mail_checkout_confirm(email_data)
 
         return Response({'success': True}, status.HTTP_200_OK)
 
@@ -142,6 +142,6 @@ class StripeViewSet(viewsets.ModelViewSet):
             "email": request.user.email,
             "policy_number": policy.policy_number,
         }
-        EmailSender.send_mail_job_ticket_received(email_data)
+        EmailSender.send_mail_subscription_cancelled(email_data)
 
         return Response({'message': 'Subscription has been canceled'}, status.HTTP_200_OK)
