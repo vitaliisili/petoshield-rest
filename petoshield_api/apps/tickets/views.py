@@ -40,7 +40,7 @@ class JobTicketViewSet(viewsets.ModelViewSet):
     ordering_fields = ['created_at']
     ordering = ['-created_at']
     filterset_class = JobTicketFilter
-    search_fields = ['$position', '$last_name', 'email']
+    search_fields = ['$position']
 
     def create(self, request, *args, **kwargs):
         serializer = JobTicketSerializer(data=request.data)
@@ -65,7 +65,7 @@ class PartnerTicketViewSet(viewsets.ModelViewSet):
     ordering_fields = ['created_at']
     ordering = ['-created_at']
     filterset_class = PartnerTicketFilter
-    search_fields = ['$business_name', '$name', 'email']
+    search_fields = ['$business_name']
 
     def create(self, request, *args, **kwargs):
         print(request.data)
