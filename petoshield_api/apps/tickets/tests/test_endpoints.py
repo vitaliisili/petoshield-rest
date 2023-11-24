@@ -24,6 +24,10 @@ class TestTicketEndpoint:
         ("Visitor", "test", "ticket text"),
         ("Visitor", "test@email", "ticket text"),
         ("Visitor", "test@email.com", ""),
+        ("Visitor", "@mail.com", "ticket text"),
+        ("Visitor", "a'b(c)d,e:f;g<h>i[jk]l@example.com", "ticket text"),
+        ("Visitor", 'just"not"right@example.com', "ticket text"),
+        ("Visitor", "this still'notallowed@example.com", "ticket text"),
     ])
     def test_ticket_save_bad_request(self, api_client, name, email, message):
         data = {
