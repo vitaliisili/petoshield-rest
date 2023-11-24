@@ -1,19 +1,38 @@
 import stripe
 from django.conf import settings
+from drf_spectacular.types import OpenApiTypes
+from drf_spectacular.utils import extend_schema, extend_schema_view
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework import viewsets, status
 from apps.payment.models import StripeSession, StripeCustomer, StripeSubscription
+from apps.payment.permissions import StripePermission
 from apps.payment.serializer import StripeCheckOutSerializer, CancelInsuranceSerializer
 from django.utils.translation import gettext_lazy as _
 from rest_framework.exceptions import ValidationError as RestValidationError
 from apps.pet.models import Pet
 from apps.policy.models import Policy
-from apps.core.utils import EmailSender
 
 
+@extend_schema(tags=['Stripe'])
+@extend_schema_view(
+    list=extend_schema(exclude=True),
+    retrieve=extend_schema(exclude=True),
+    create=extend_schema(exclude=True),
+    update=extend_schema(exclude=True),
+    partial_update=extend_schema(exclude=True),
+    destroy=extend_schema(exclude=True),
+    webhook=extend_schema(exclude=True),
+    create_checkout=extend_schema(request=StripeCheckOutSerializer,
+                                  responses={'checkout_url': OpenApiTypes.STR}),
+    public_key=extend_schema(responses={'key': OpenApiTypes.STR}),
+    checkout_confirm=extend_schema(request={'session_id': OpenApiTypes.STR},
+                                   responses={'message': OpenApiTypes.STR, 'invoice_url': OpenApiTypes.STR}),
+    cancel_insurance=extend_schema(request=CancelInsuranceSerializer, responses={'message': OpenApiTypes.STR})
+)
 class StripeViewSet(viewsets.ModelViewSet):
     stripe.api_key = settings.STRIPE_SECRET_KEY
+    permission_classes = (StripePermission,)
 
     @action(detail=False, methods=['post'])
     def create_checkout(self, request):
@@ -62,9 +81,13 @@ class StripeViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['post'])
     def webhook(self, request):
-        # event = stripe.Event.construct_from(request.data, settings.STRIPE_SECRET_KEY)
-
-        return Response({'success': True}, status.HTTP_200_OK)
+        event = stripe.Event.construct_from(request.data, settings.STRIPE_SECRET_KEY)
+        if event.type == 'invoice.paid':
+            invoice = event.data.object
+            # invoice.customer_email
+            # invoice.hosted_invoice_url
+            # TODO: send email with invoice
+        return Response({'success': True, 'customer_email': invoice.customer_email}, status.HTTP_200_OK)
 
     @action(detail=False, methods=['post'])
     def checkout_confirm(self, request):
@@ -83,18 +106,10 @@ class StripeViewSet(viewsets.ModelViewSet):
             invoice_id = stripe.Subscription.retrieve(stripe_subscription.id).latest_invoice
             invoice_url = stripe.Invoice.retrieve(invoice_id).hosted_invoice_url
 
-            email_data = {
-                'email': session.customer_details.email,
-                'policy_number': policy.policy_number,
-                'invoice_url': invoice_url,
-            }
-
-            EmailSender.send_mail_checkout_confirm(email_data)
-
             return Response({
                 'message': _('Payment has been accepted'),
                 'invoice_url': invoice_url
-            })
+            }, status=status.HTTP_200_OK)
 
         except Exception:
             return Response({'error': _('something went wrong when try to confirm payment')},
@@ -118,13 +133,5 @@ class StripeViewSet(viewsets.ModelViewSet):
         policy = stripe_subscription.policy
         policy.status = 'invalid'
         policy.save()
-
-        email_data = {
-            'name': request.user.name,
-            'email': request.user.email,
-            'policy_number': policy.policy_number,
-        }
-
-        EmailSender.send_mail_subscription_cancelled(email_data)
 
         return Response({'message': 'Subscription has been canceled'}, status.HTTP_200_OK)

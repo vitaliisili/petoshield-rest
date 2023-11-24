@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model
+from drf_spectacular.utils import extend_schema
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
@@ -20,6 +21,7 @@ from apps.user.serializers import (
     ChangePasswordSerializer)
 
 
+@extend_schema(tags=['User'])
 class UserViewSet(viewsets.ModelViewSet):
     queryset = get_user_model().objects.all()
     parser_classes = (MultiPartParser, FormParser, JSONParser)
@@ -136,6 +138,7 @@ class UserViewSet(viewsets.ModelViewSet):
         return super().destroy(request, *args, **kwargs)
 
 
+@extend_schema(tags=['Role'])
 class RoleViewSet(viewsets.ModelViewSet):
     serializer_class = RoleSerializer
     queryset = Role.objects.all()

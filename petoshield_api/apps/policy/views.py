@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model
+from drf_spectacular.utils import extend_schema, extend_schema_view
 from rest_framework import viewsets, status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -20,6 +21,7 @@ from apps.policy.filters import (PolicyFilter,
 from apps.core.utils import EmailSender, JwtToken
 
 
+@extend_schema(tags=['ServiceProvider'])
 class ServiceProviderViewSet(viewsets.ModelViewSet):
     serializer_class = ServiceProviderSerializer
     queryset = ServiceProvider.objects.all()
@@ -45,8 +47,11 @@ class ServiceProviderViewSet(viewsets.ModelViewSet):
         return Response(JwtToken.get_jwt_token(user_instance), status=status.HTTP_201_CREATED)
 
 
+@extend_schema(tags=['Policy'])
+@extend_schema_view(create=extend_schema(exclude=True))
 class PolicyViewSet(viewsets.ModelViewSet):
     serializer_class = PolicySerializer
+    queryset = Policy.objects.none()
     permission_classes = (IsAuthenticated, PolicyPermissions)
     search_fields = ['policy_number']
     ordering_fields = ['created_at', 'start_date', 'end_date']
@@ -61,8 +66,10 @@ class PolicyViewSet(viewsets.ModelViewSet):
         return Policy.objects.all()
 
 
+@extend_schema(tags=['InsuranceCase'])
 class InsuranceCaseViewSet(viewsets.ModelViewSet):
     serializer_class = InsuranceCaseSerializer
+    queryset = InsuranceCase.objects.none()
     permission_classes = (IsAuthenticated, InsuranceCasePermissions)
     ordering_fields = ['created_at', 'claim_date']
     filterset_class = InsuranceCaseFilter
@@ -80,8 +87,10 @@ class InsuranceCaseViewSet(viewsets.ModelViewSet):
         return super().update(request, *args, **kwargs)
 
 
+@extend_schema(tags=['IncomingInvoice'])
 class IncomingInvoiceViewSet(viewsets.ModelViewSet):
     serializer_class = IncomingInvoiceSerializer
+    queryset = IncomingInvoice.objects.none()
     permission_classes = (IsAuthenticated, IncomingInvoicePermissions)
     ordering_fields = ['created_at', 'invoice_date', 'amount']
     filterset_class = IncomingInvoiceFilter

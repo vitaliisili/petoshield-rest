@@ -1,5 +1,6 @@
 import uuid
 from django.contrib.auth import get_user_model
+from drf_spectacular.utils import extend_schema
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -16,8 +17,10 @@ from apps.policy import utils
 from config import settings
 
 
+@extend_schema(tags=['Pet'])
 class PetViewSet(viewsets.ModelViewSet):
     serializer_class = PetSerializer
+    queryset = Pet.objects.none()
     permission_classes = (PetPermission,)
     search_fields = ['$name']
     ordering_fields = ['created_at', 'name', 'gender', 'species', 'age']
@@ -105,6 +108,7 @@ class PetViewSet(viewsets.ModelViewSet):
         return Pet.objects.all()
 
 
+@extend_schema(tags=['Breed'])
 class BreedViewSet(viewsets.ModelViewSet):
     queryset = Breed.objects.all()
     permission_classes = (BreedPermissions,)
