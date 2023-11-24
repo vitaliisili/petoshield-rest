@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from apps.pet.models import Pet, Breed
 from apps.policy.serializers import PolicySerializer
-from apps.user.serializers import BaseUserSerializer
+from apps.user.serializers import RegisterUserSerializer
 
 
 class PetSerializer(serializers.ModelSerializer):
@@ -30,7 +30,7 @@ class ExtendPetSerializer(serializers.ModelSerializer):
 
 
 class PetUserCombinedSerializer(serializers.Serializer):
-    user = BaseUserSerializer()
+    user = RegisterUserSerializer()
     pet = ExtendPetSerializer()
 
 
