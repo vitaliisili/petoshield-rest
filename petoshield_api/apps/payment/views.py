@@ -87,7 +87,7 @@ class StripeViewSet(viewsets.ModelViewSet):
             # invoice.customer_email
             # invoice.hosted_invoice_url
             # TODO: send email with invoice
-        return Response({'success': True, 'customer_email': invoice.customer_email}, status.HTTP_200_OK)
+        return Response({'success': True}, status.HTTP_200_OK)
 
     @action(detail=False, methods=['post'])
     def checkout_confirm(self, request):
