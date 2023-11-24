@@ -33,8 +33,11 @@ const Account = () => {
                     setIsLoading(false)
                 }
             }).catch(error => {
-                console.log(error)
                 toast.error('Failed to load profile')
+                if (error.response.status === 401) {
+                    removeCookie('accessToken')
+                    navigate('/login')
+                }
             })
     }, [])
 
@@ -50,6 +53,10 @@ const Account = () => {
             }
         }).catch(error => {
             toast.error('Failed to load pets')
+            if (error.response.status === 401) {
+                removeCookie('accessToken')
+                navigate('/login')
+            }
         })
     }, [])
 
