@@ -77,11 +77,14 @@ class UserViewSet(viewsets.ModelViewSet):
 
         password = request.data.get('password')
         Validate.password_validation(password)
+
         serializer = RegisterUserSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
+
         EmailSender.send_welcome_email(user)
         EmailSender.send_confirmation_email(user, request.META.get('HTTP_REFERER'))
+
         return Response(JwtToken.get_jwt_token(user), status=status.HTTP_201_CREATED)
 
     @action(detail=False, methods=['get'])
@@ -109,8 +112,10 @@ class UserViewSet(viewsets.ModelViewSet):
 
         token = request.data.get('token')
         mail_verification_token_instance = MailVerificationTokens.objects.filter(confirmation_token=token).first()
+
         if not mail_verification_token_instance:
             raise RestValidationError(_('Email verification fail'))
+
         get_user_model().objects.filter(pk=mail_verification_token_instance.user.id).update(is_verified=True)
         return Response({'message': _('Email was verified')}, status=status.HTTP_200_OK)
 
@@ -127,9 +132,11 @@ class UserViewSet(viewsets.ModelViewSet):
 
         serializer = ResetPasswordSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
+
         user_instance = get_user_model().objects.filter(email=serializer.data.get('email')).first()
         if not user_instance:
             raise RestValidationError(_(f'User not found with email: {serializer.data.get("email")}'))
+
         EmailSender.send_password_reset_email(user_instance, serializer.data.get('redirect_link'))
         return Response({'message': "Email was send"}, status=status.HTTP_200_OK)
 
@@ -146,15 +153,20 @@ class UserViewSet(viewsets.ModelViewSet):
 
         token = request.data.get('token')
         mail_verification_token_instance = MailVerificationTokens.objects.filter(confirmation_token=token).first()
+
         if not mail_verification_token_instance:
             raise RestValidationError(_('Invalid token'))
+
         user_instance = get_user_model().objects.filter(pk=mail_verification_token_instance.user.id).first()
         if not user_instance:
             raise RestValidationError(_('User not found'))
+
         password = request.data.get('password')
         Validate.password_validation(password)
+
         user_instance.set_password(request.data.get('password'))
         user_instance.save()
+
         return Response({'message': _('Password has been reset successfully')}, status=status.HTTP_200_OK)
 
     @action(detail=False, methods=['post'])
@@ -170,16 +182,22 @@ class UserViewSet(viewsets.ModelViewSet):
 
         serializer = ChangePasswordSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
+
         old_password = request.data.get('old_password')
         new_password = request.data.get('new_password')
         user = request.user
+
         if not user.check_password(old_password):
             raise RestValidationError(_('Old password is not correct'))
+
         password = request.data.get('new_password')
         Validate.password_validation(password)
+
         user.set_password(new_password)
         user.save()
+
         EmailSender.send_reset_password_warning_email(user)
+
         return Response({'message': 'Password has been changed successfully'})
 
     def destroy(self, request, *args, **kwargs):
@@ -196,9 +214,17 @@ class UserViewSet(viewsets.ModelViewSet):
 
         instance = self.get_object()
         policies = Policy.objects.filter(pet__user=instance, status='valid')
+
         if policies:
             raise RestValidationError(_('You have active insurance subscription, cancel them first'))
-        # TODO: send email that account will be deleted
+
+        email_data = {
+            "name": instance.name,
+            "email": instance.email,
+        }
+
+        EmailSender.send_mail_account_deleted(email_data)
+
         return super().destroy(request, *args, **kwargs)
 
 

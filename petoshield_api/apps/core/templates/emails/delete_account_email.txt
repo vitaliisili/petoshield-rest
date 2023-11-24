@@ -1,0 +1,15 @@
+Subject: Notice: Account Deletion
+
+Dear {{ name }},
+
+We regret to inform you that your account has been deleted.
+
+We sincerely apologize for any inconvenience this may have caused. Your presence and support have always been valued at Petoshield Pet Insurance, and we would be delighted to welcome you back at any time.
+
+Should you have any queries or wish to reinstate your account, please don't hesitate to contact us. We're here to assist you in any way possible.
+
+Thank you for considering Petoshield Pet Insurance. We hope to have the opportunity to serve you again in the future.
+
+Best Regards,
+
+Your Petoshield Pet Insurance Team
