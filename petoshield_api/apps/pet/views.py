@@ -19,6 +19,8 @@ from config import settings
 
 @extend_schema(tags=['Pet'])
 class PetViewSet(viewsets.ModelViewSet):
+    """A viewset for interacting with the Pet model."""
+
     serializer_class = PetSerializer
     queryset = Pet.objects.none()
     permission_classes = (PetPermission,)
@@ -110,6 +112,8 @@ class PetViewSet(viewsets.ModelViewSet):
 
 @extend_schema(tags=['Breed'])
 class BreedViewSet(viewsets.ModelViewSet):
+    """A viewset for interacting with the Breed model."""
+
     queryset = Breed.objects.all()
     permission_classes = (BreedPermissions,)
     search_fields = ['$name']

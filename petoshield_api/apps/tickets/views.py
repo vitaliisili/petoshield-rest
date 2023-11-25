@@ -9,6 +9,8 @@ from apps.core.utils import EmailSender
 
 @extend_schema(tags=['Ticket'])
 class TicketViewSet(viewsets.ModelViewSet):
+    """A viewset for interacting with the Ticket model."""
+
     queryset = Ticket.objects.all()
     permission_classes = (AnyCreateOnlyStaffUpdate,)
     serializer_class = TicketSerializer
@@ -33,6 +35,8 @@ class TicketViewSet(viewsets.ModelViewSet):
 
 @extend_schema(tags=['JobTicket'])
 class JobTicketViewSet(viewsets.ModelViewSet):
+    """A viewset for interacting with the JobTicket model."""
+
     queryset = JobTicket.objects.all()
     permission_classes = (AnyCreateOnlyStaffUpdate,)
     serializer_class = JobTicketSerializer
@@ -58,6 +62,8 @@ class JobTicketViewSet(viewsets.ModelViewSet):
 
 @extend_schema(tags=['PartnerTicket'])
 class PartnerTicketViewSet(viewsets.ModelViewSet):
+    """A viewset for interacting with the PartnerTicket model."""
+
     queryset = PartnerTicket.objects.all()
     permission_classes = (AnyCreateOnlyStaffUpdate,)
     serializer_class = PartnerTicketSerializer
