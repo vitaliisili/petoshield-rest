@@ -34,3 +34,7 @@ seamless and inclusive.*
 
 ## :page_with_curl: License:
 Petoshield is open-source software licensed under the [MIT License](LICENSE)
+
+<div align="center">
+  <img src="docs/images/ds-removebg-preview.png" alt="pets">
+</div>
