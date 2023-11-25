@@ -16,4 +16,3 @@ stripe==7.4.0
 drf-spectacular==0.26.5
 django-cleanup==8.0.0
 django-extensions==3.2.3
-pygraphviz==1.11

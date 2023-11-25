@@ -67,9 +67,3 @@ create-env:
 
 spectacular:
 	cd petoshield_api && python -m manage spectacular --file schema.yml
-
-graph:
-	cd petoshield_api && python -m manage graph_models -a -o petoshield-models.png
-
-show-urls:
-	cd petoshield_api && python -m manage show_urls
