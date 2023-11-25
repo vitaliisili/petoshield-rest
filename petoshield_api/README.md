@@ -15,7 +15,7 @@ This documentation provides a detailed guide on how to utilize the API to manage
 ## Api Endpoints Example: [api.petoshield.com](https://api.petoshield.com) :link:
 
 
-## Get Started
+## :hammer_and_wrench: Get Started
 - Clone Project
 ```bash
 git clone https://github.com/vitaliisili/petoshield-rest.git
@@ -39,7 +39,7 @@ source .venv/bin/activate
 > ### :grey_exclamation: **Note**
 > - Next commands will be run with `make`. If make is not installed, just copy commands from `Makefile` 
 
-> ### :exclamation: **Warning**
+> ### :warning: **Warning**
 > - All commands with `make` must be run from root folder 
 > - If you do not use `make` cd to folder `petoshield_api` and run commands manually there
 
@@ -49,7 +49,7 @@ make create-env
 ```
 > ### **Note**
 > - This will create `.env` file in `petoshield_api` folder fill all environment variable with valid data
-> - You will need a smtp for sending emails
+> - You will need a smtp :incoming_envelope: for sending emails
 > - You will need a stripe account to manage payments
 
 
@@ -81,8 +81,8 @@ make runserver
 - Open the browser and go to [http://localhost:8000](http://localhost:8000)
 
 ## Postman Collections
-- [Postman collection v2](../docs/postman_collection/Petoshield.postman_collection_v2.json)
-- [Postman collection v2.1](../docs/postman_collection/Petoshield.postman_collection_v2.json)
+- :closed_book: [Postman collection v2](../docs/postman_collection/Petoshield.postman_collection_v2.json)
+- :blue_book: [Postman collection v2.1](../docs/postman_collection/Petoshield.postman_collection_v2.json)
 
-## Models Graph
+## 	:card_index_dividers: Models Graph
 ![Graph](../docs/images/petoshield-models.png)
