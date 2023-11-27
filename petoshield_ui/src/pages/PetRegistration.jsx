@@ -8,10 +8,14 @@ import axios from "axios";
 import {getCookie, setCookie} from "../utils/cookiesUtils";
 import {toast, ToastContainer} from "react-toastify";
 import {FaRegEye, FaRegEyeSlash} from "react-icons/fa";
+import TermsModal from "../components/TermsModal";
+import PrivacyPolicyModal from "../components/PrivacyPolicyModal";
 
 const PetRegistration = () => {
     const location = useLocation()
     const navigate = useNavigate()
+    const [termsModalEnable, setTermsModalEnable] = useState(false)
+    const [policyModalEnable, setPolicyModalEnable] = useState(false)
     const [isHidden, setIsHidden] = useState(true)
 
     const [petName, setPetName] = useState('')
@@ -93,11 +97,17 @@ const PetRegistration = () => {
         })
     }
 
+    const closeModal = () => {
+        setTermsModalEnable(false)
+        setPolicyModalEnable(false)
+    }
     return (
         <div className='text-black flex flex-col h-screen'>
             <ToastContainer/>
             <HelpModal/>
             <NavBar/>
+            {termsModalEnable && <TermsModal callback={closeModal}/>}
+            {policyModalEnable && <PrivacyPolicyModal callback={closeModal}/>}
 
             <main className='flex-grow pt-44 flex justify-center items-center pb-28 px-4 font-lato text-black bg-black-haze'>
                 <div className='flex flex-col'>
@@ -194,7 +204,9 @@ const PetRegistration = () => {
                             </div>
                         </div>
                     </div>
-                    <div className='text-sm text-center self-center text-nobel-dark w-80 lg:w-full'>To click button bellow you are agree with <Link className='text-rose' to="#">Terms</Link> and <Link className='text-rose' to="#">Privacy Policy</Link></div>
+                    <div className='text-sm text-center text-nobel-dark'>
+                        To click button bellow you are agree with <span onClick={() => setTermsModalEnable(true)} className='text-rose cursor-pointer'>Terms</span> and <span onClick={() => setPolicyModalEnable(true)} className='text-rose cursor-pointer'>Privacy Policy</span>
+                    </div>
                     <button onClick={onSubmitHandler}
                             className='w-80 lg:w-96 mt-5 self-center rounded-md bg-rose hover:bg-rose-dark font-bold transition-all duration-300 shadow-[rgba(255,0,131,0.5)_0px_10px_40px_-10px] p-3.5 text-white'>GET YOUR QUOTE
                     </button>

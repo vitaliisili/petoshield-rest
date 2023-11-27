@@ -14,14 +14,13 @@ const SideMenu = (props) => {
                 <ul className='flex flex-col text-white space-y-5 font-lato'>
                     <Link to='/'><li className='transition-all duration-300 hover:text-rose'>Home</li></Link>
                     <Link to='/price'><li className='transition-all duration-300 hover:text-rose'>Price</li></Link>
-                    {/*<Link to='/blog'><li className='transition-all duration-300 hover:text-rose'>Blog</li></Link>*/}
                     <Link to='/partners'><li className='transition-all duration-300 hover:text-rose'>Partners Program</li></Link>
                     <Link to='/account'><li className='transition-all duration-300 hover:text-rose'>My Account</li></Link>
                 </ul>
 
                 <div className='flex justify-around'>
-                    <Link to='https://www.facebook.com/petoshield.eu/' target="_blank" rel="noopener noreferrer"><div className='w-14 h-14 bg-black text-white rounded-full transition-all duration-300 flex justify-center items-center hover:bg-rose cursor-pointer'><FaFacebookF className='text-3xl'/></div></Link>
-                    <Link to='https://www.instagram.com/petoshield.eu/' target="_blank" rel="noopener noreferrer"><div className='w-14 h-14 bg-black text-white rounded-full transition-all duration-300 flex justify-center items-center hover:bg-rose cursor-pointer'><FaInstagram className='text-3xl'/></div></Link>
+                    <Link to='https://www.facebook.com/PetoshieldCare/' target="_blank" rel="noopener noreferrer"><div className='w-14 h-14 bg-black text-white rounded-full transition-all duration-300 flex justify-center items-center hover:bg-rose cursor-pointer'><FaFacebookF className='text-3xl'/></div></Link>
+                    <Link to='https://www.instagram.com/petoshieldcare/' target="_blank" rel="noopener noreferrer"><div className='w-14 h-14 bg-black text-white rounded-full transition-all duration-300 flex justify-center items-center hover:bg-rose cursor-pointer'><FaInstagram className='text-3xl'/></div></Link>
                     <Link to='https://twitter.com/petoshield' target="_blank" rel="noopener noreferrer"><div className='w-14 h-14 bg-black text-white rounded-full transition-all duration-300 flex justify-center items-center hover:bg-rose cursor-pointer'><FaTwitter className='text-3xl'/></div></Link>
                 </div>
             </div>
