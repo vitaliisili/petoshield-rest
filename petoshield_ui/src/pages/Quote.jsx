@@ -94,19 +94,31 @@ const Quote = () => {
                                     className='text-rose px-2'>|</span> {pet.age} years old
                                 </div>
                                 <div className='flex space-x-8 mt-8'>
-                                    <div>
+                                    <div className='space-y-2'>
                                         <div className='font-bold'>Coverage:</div>
-                                        <div className='flex items-center text-sm'>Annual
-                                            Coverage: {pet.policy.initial_limit} <BsCurrencyEuro/></div>
-                                        <div className='flex items-center text-sm'>Deductible: {pet.policy.deductible}
-                                            <BsCurrencyEuro/></div>
+                                        <div className='flex text-sm flex-col md:flex-row'>
+                                            <div className=''>Annual Coverage:</div>
+                                            <div className='flex  items-center ml-0 md:ml-2'>{pet.policy.initial_limit} <BsCurrencyEuro/></div>
+                                        </div>
+                                        <div className='flex text-sm flex-col md:flex-row'>
+                                            <div className=''>ADeductible:</div>
+                                            <div className='flex  items-center ml-0 md:ml-2'>{pet.policy.deductible}<BsCurrencyEuro/></div>
+                                        </div>
                                         <div className='flex items-center text-sm'>Giveback: 80%</div>
                                     </div>
 
-                                    <div>
+                                    <div className='flex flex-col space-y-2'>
                                         <div className='font-bold'>Insurance Period:</div>
-                                        <div className='flex items-center text-sm'>Start date: {pet.policy.start_date}</div>
-                                        <div className='flex items-center text-sm'>End date: {pet.policy.end_date}</div>
+
+                                        <div className='flex text-sm flex-col lg:flex-row'>
+                                            <div>Start date:</div>
+                                            <div className='ml-0 lg:ml-2'>{pet.policy.start_date}</div>
+                                        </div>
+
+                                        <div className='flex text-sm flex-col lg:flex-row'>
+                                            <div>End date:</div>
+                                            <div className='ml-0 lg:ml-2'>{pet.policy.end_date}</div>
+                                        </div>
                                     </div>
                                 </div>
 
