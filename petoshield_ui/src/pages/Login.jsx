@@ -40,6 +40,11 @@ const Login = () => {
         })
     }
 
+    const keyPressedHandler = (e) => {
+        if (e.code === 'Enter') {
+            loginHandler()
+        }
+    }
     return (
         <div className='text-black flex flex-col h-screen bg-black-haze'>
             <ToastContainer
@@ -59,7 +64,7 @@ const Login = () => {
                             <input onChange={(e) => setEmail(e.target.value)} value={email} type="email" id='email' className='input-focus p-3.5 outline-0 border border-gallery rounded-md focus:border-gallery focus:ring-0' placeholder='Email'/>
                         </div>
 
-                        <div className='flex flex-col relative justify-center'>
+                        <div onKeyDown={keyPressedHandler} className='flex flex-col relative justify-center'>
                             <input onChange={(e) => setPassword(e.target.value)} value={password} type={isHidden ? "password" : "text"} id='password' className=' w-full input-focus p-3.5 outline-0 border border-gallery rounded-md focus:border-gallery focus:ring-0' placeholder='Password'/>
                             {isHidden ?
                                 <FaRegEyeSlash className='text-2xl absolute right-4'  onClick={() => setIsHidden(!isHidden)}/> :

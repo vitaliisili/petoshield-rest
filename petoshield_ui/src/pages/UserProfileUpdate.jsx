@@ -113,6 +113,13 @@ const UserProfileUpdate = () => {
             }
         })
     }
+
+    const keyPressedHandler = (e) => {
+        if (e.code === 'Enter') {
+            changePasswordHandler()
+        }
+    }
+
     return (
         <div className='text-black flex flex-col h-screen'>
             <ToastContainer/>
@@ -165,7 +172,7 @@ const UserProfileUpdate = () => {
                                     <FaRegEyeSlash className='text-2xl absolute right-4'  onClick={() => setIsHidden(!isHidden)}/> :
                                     <FaRegEye className='text-2xl absolute right-4' onClick={() => setIsHidden(!isHidden)}/>}
                             </div>
-                            <div className='flex flex-col relative justify-center'>
+                            <div onKeyDown={keyPressedHandler} className='flex flex-col relative justify-center'>
                                 <input onChange={(e) => setVerifyNewPassword(e.target.value)} value={verifyNewPassword} type={isHidden ? "password" : "text"} className='input-focus p-3 outline-0 border border-gallery rounded-md focus:border-gallery focus:ring-0' placeholder='Verify new password'/>
                                 {isHidden ?
                                     <FaRegEyeSlash className='text-2xl absolute right-4'  onClick={() => setIsHidden(!isHidden)}/> :

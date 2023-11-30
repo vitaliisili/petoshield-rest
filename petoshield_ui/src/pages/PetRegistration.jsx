@@ -97,6 +97,11 @@ const PetRegistration = () => {
         })
     }
 
+    const keyPressedHandler = (e) => {
+        if (e.code === 'Enter') {
+            onSubmitHandler()
+        }
+    }
     const closeModal = () => {
         setTermsModalEnable(false)
         setPolicyModalEnable(false)
@@ -195,7 +200,7 @@ const PetRegistration = () => {
                                         <FaRegEye className='text-2xl absolute right-4' onClick={() => setIsHidden(!isHidden)}/>}
                                 </div>
 
-                                <div className='flex flex-col relative justify-center'>
+                                <div onKeyDown={keyPressedHandler} className='flex flex-col relative justify-center'>
                                     <input onChange={(e) => setUserVerifyPassword(e.target.value)} value={userVerifyPassword} type={isHidden ? "password" : "text"} id='user-verify-password' className=' w-full input-focus p-3.5 outline-0 border border-gallery rounded-md focus:border-gallery focus:ring-0' placeholder='Verify password'/>
                                     {isHidden ?
                                         <FaRegEyeSlash className='text-2xl absolute right-4'  onClick={() => setIsHidden(!isHidden)}/> :

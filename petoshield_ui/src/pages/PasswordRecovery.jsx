@@ -36,6 +36,13 @@ const PasswordRecovery = () => {
 
 
     }
+
+    const keyPressedHandler = (e) => {
+        if (e.code === 'Enter') {
+            submitHandler()
+        }
+    }
+
     return (
         <div className='text-black flex flex-col h-screen'>
             <ToastContainer/>
@@ -45,7 +52,9 @@ const PasswordRecovery = () => {
             <main className='flex flex-grow flex-col pt-28 items-center font-lato justify-end bg-lilac'>
                 <div className='flex flex-col items-center w-96 -mb-32 z-10'>
                     <div className='text-rose font-dancing font-bold text-3xl'>Please insert your email</div>
-                    <input onChange={(e) => setEmail(e.target.value)} value={email} type="email" id='email' className='bg-lilac w-full mt-8 input-focus p-3.5 outline-0 border border-gallery rounded-md focus:border-gallery focus:ring-0 shadow-md' placeholder='Email'/>
+                    <div onKeyDown={keyPressedHandler} className='w-full'>
+                        <input onChange={(e) => setEmail(e.target.value)} value={email} type="email" id='email' className='bg-lilac w-full mt-8 input-focus p-3.5 outline-0 border border-gallery rounded-md focus:border-gallery focus:ring-0 shadow-md' placeholder='Email'/>
+                    </div>
                 </div>
                 <img className='cursor-pointer' onClick={submitHandler} src={handClick} alt="hand"/>
             </main>
