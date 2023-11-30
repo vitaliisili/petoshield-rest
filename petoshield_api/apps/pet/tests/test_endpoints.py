@@ -520,7 +520,7 @@ class TestPetsEndpoints:
         assert json.loads(response.content).get('gender') == pet.gender
         assert json.loads(response.content).get('species') == pet.species
         assert json.loads(response.content).get('breed') == pet.breed.name
-        assert json.loads(response.content).get('user') == pet.user.id
+        assert json.loads(response.content).get('user') == str(pet.user.id)
 
     def test_pets_put_with_staff_user_success(self, staff_user, api_client, pet, breed):
         api_client.force_authenticate(staff_user)
@@ -573,7 +573,7 @@ class TestPetsEndpoints:
         }
         response = api_client.put(f'{self.endpoint}{pet.id}/', data=data, format='json')
         assert response.status_code == 200
-        assert json.loads(response.content).get('user') == simple_user.id
+        assert json.loads(response.content).get('user') == str(simple_user.id)
 
     @pytest.mark.parametrize('name, age, gender, species', [
         ('', 2, 'F', 'cat'),
