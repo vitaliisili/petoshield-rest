@@ -18,7 +18,7 @@ insert into user_role(created_at, updated_at, name, description) values ('2023-0
 
 
 -- USER TABLE
--- INSERT INTO public.user_user (is_verified, image, role_id, password, last_login, is_superuser, email, name, is_active, is_staff, created_at, updated_at) VALUES (true, NULL, 2, 'pbkdf2_sha256$600000$NxtDXwYFo349VfKTw1lQJN$ywdRommTzYnkiQWbk1oCwJqSh8gESadpWzlIi0tBmrU=', '2023-08-23 00:00:00.000000 +00:00', true, 'petoshield@gmail.com', 'Admin User', true, true, '2023-09-20 00:00:00.000000 +00:00', '2023-10-14 00:00:00.000000 +00:00');
+INSERT INTO public.user_user (id, is_verified, image, role_id, password, last_login, is_superuser, email, name, is_active, is_staff, created_at, updated_at) VALUES ('c2d29867-3d0b-d497-9191-18a9d8ee7830', true, NULL, 2, 'pbkdf2_sha256$600000$NxtDXwYFo349VfKTw1lQJN$ywdRommTzYnkiQWbk1oCwJqSh8gESadpWzlIi0tBmrU=', '2023-08-23 00:00:00.000000 +00:00', true, 'petoshield@gmail.com', 'Admin User', true, true, '2023-09-20 00:00:00.000000 +00:00', '2023-10-14 00:00:00.000000 +00:00');
 
 -- BREED_TABLE
 -- breed cats
