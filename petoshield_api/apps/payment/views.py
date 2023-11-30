@@ -62,7 +62,7 @@ class StripeViewSet(viewsets.ModelViewSet):
                         'quantity': 1,
                     },
                 ],
-                payment_method_types=['card', 'paypal'],
+                payment_method_types=['card', 'paypal', 'ideal', 'sofort', 'sepa_debit'],
                 mode='subscription',
                 customer=customer.id,
                 client_reference_id=pet.id,
