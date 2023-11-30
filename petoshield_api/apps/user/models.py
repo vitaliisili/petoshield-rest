@@ -1,3 +1,5 @@
+import uuid
+
 from django.contrib.auth.models import PermissionsMixin, BaseUserManager, AbstractBaseUser
 from django.db import models
 from django_cleanup import cleanup
@@ -79,7 +81,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         objects (UserManager): The user manager object for creating and managing user accounts.
         USERNAME_FIELD (str): The field used as the unique identifier for the user.
     """
-
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     email = models.EmailField(max_length=255, unique=True)
     name = models.CharField(max_length=255)
     is_active = models.BooleanField(default=True)
@@ -89,6 +91,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     updated_at = models.DateTimeField(auto_now=True)
     image = models.ImageField(upload_to='profile_pictures', null=True)
     is_verified = models.BooleanField(default=False)
+
     objects = UserManager()
     USERNAME_FIELD = 'email'
 
