@@ -32,7 +32,7 @@ from apps.core.utils import EmailSender
     cancel_insurance=extend_schema(request=CancelInsuranceSerializer, responses={'message': OpenApiTypes.STR})
 )
 class StripeViewSet(viewsets.ModelViewSet):
-    """A viewset for interacting with the Stripe API."""
+    """A viewset for interacting with the Stripe API. """
 
     stripe.api_key = settings.STRIPE_SECRET_KEY
     permission_classes = (StripePermission,)
