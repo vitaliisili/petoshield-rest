@@ -112,7 +112,7 @@ const Account = () => {
                     }
 
                     <div className='right flex flex-col bg-white rounded-md py-8 px-4 md:p-8 ml-4 shadow-md align-top mt-8 lg:mt-0'>
-                        <div className='flex justify-between min-w-[400px]'>
+                        <div className='flex justify-between min-w-[350px] md:min-w-[400px]'>
                             <div className='text-xl font-bold'>Pet Information</div>
                             <Link to='/new-pet'><button className='rounded-md bg-rose hover:bg-rose-dark font-bold transition-all duration-300 shadow-[rgba(255,0,131,0.5)_0px_10px_40px_-10px] py-2 px-3 text-sm text-white uppercase'>Add new pet</button></Link>
                         </div>
