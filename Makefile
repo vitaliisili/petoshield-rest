@@ -40,8 +40,8 @@ testprint:
 test-cov:
 	cd petoshield_api && python -m pytest --cov
 
-test-cov-class:
-	cd petoshield_api && python -m pytest --cov -k $(class)
+test-cov-detail:
+	cd petoshield_api && python -m pytest --cov-report term-missing --cov
 
 shell:
 	cd petoshield_api && python -m manage shell
