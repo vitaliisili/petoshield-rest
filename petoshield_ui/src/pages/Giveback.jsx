@@ -80,7 +80,7 @@ const Giveback = () => {
 
                 <section className='px-4 flex flex-col justify-center items-center py-12'>
                     <img src={givebackHearth} alt="hearth"/>
-                    <h2 className='text-[40px] mt-8 font-bold font-lato text-center'>Join the Giveback movemen</h2>
+                    <h2 className='text-[40px] mt-8 font-bold font-lato text-center'>Join the Giveback movement</h2>
                     <p className='text-center max-w-[520px] mt-4'>
                         Tens of thousands of members already support causes they care about,
                         simply by getting a Petoshield insurance policy. As our Petoshield

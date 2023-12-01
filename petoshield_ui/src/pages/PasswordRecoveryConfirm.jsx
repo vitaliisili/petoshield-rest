@@ -43,6 +43,12 @@ const PasswordRecoveryConfirm = () => {
         }
     }
 
+    const keyPressedHandler = (e) => {
+        if (e.code === 'Enter') {
+            submitHandler()
+        }
+    }
+
     return (
         <div className='text-black flex flex-col h-screen'>
             <ToastContainer/>
@@ -50,7 +56,7 @@ const PasswordRecoveryConfirm = () => {
             <HelpModal/>
 
             <main className='flex flex-grow flex-col pt-28 items-center font-lato justify-end bg-lilac'>
-                <div className='flex flex-col items-center w-96 -mb-32 z-10'>
+                <div onKeyDown={keyPressedHandler} className='flex flex-col items-center w-96 -mb-32 z-10'>
                     <div className='text-rose font-dancing font-bold text-3xl'>Reset Password</div>
                     <input onChange={(e) => setPassword(e.target.value)} value={password} type="password" id='reset-password' className='bg-lilac w-full mt-8 input-focus p-3.5 outline-0 border border-gallery rounded-md focus:border-gallery focus:ring-0 shadow-md' placeholder='Password'/>
                     <input onChange={(e) => setCheckPassword(e.target.value)} value={checkPassword} type="password" id='check-reset-password' className='bg-lilac w-full mt-8 input-focus p-3.5 outline-0 border border-gallery rounded-md focus:border-gallery focus:ring-0 shadow-md' placeholder='Check Password'/>

@@ -55,6 +55,12 @@ const Register = () => {
         })
     }
 
+    const keyPressedHandler = (e) => {
+        if (e.code === 'Enter') {
+            registerHandler()
+        }
+    }
+
     const closeModal = () => {
         setTermsModalEnable(false)
         setPolicyModalEnable(false)
@@ -75,7 +81,7 @@ const Register = () => {
                     <div>
                         <h1 className='text-center font-bold font-lato text-2xl pb-10'>Create your account</h1>
                     </div>
-                    <div className='flex flex-col space-y-8'>
+                    <div onKeyDown={keyPressedHandler} className='flex flex-col space-y-8'>
                         <div className='flex flex-col relative'>
                             <input onChange={(e) => setEmail(e.target.value)} value={email} type="email" id='email' className='input-focus p-3.5 outline-0 border border-gallery rounded-md focus:border-gallery focus:ring-0' placeholder='Email'/>
                         </div>

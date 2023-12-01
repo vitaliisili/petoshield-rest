@@ -404,6 +404,22 @@ class TestUserEndpoints:
         response = api_client.post(f'{self.endpoint}reset_password_confirm/', data=data, format='json')
         assert response.status_code == 400
 
+    def test_user_confirm_email_success(self, api_client, simple_user, confirmation_token):
+        api_client.force_authenticate(simple_user)
+        data = {
+            'token': confirmation_token.confirmation_token
+        }
+        response = api_client.post(f'{self.endpoint}verify_email/', data=data, format='json')
+        assert response.status_code == 200
+
+    def test_user_confirm_email_wrong_token(self, api_client, simple_user, confirmation_token):
+        api_client.force_authenticate(simple_user)
+        data = {
+            'token': 'wrong_token'
+        }
+        response = api_client.post(f'{self.endpoint}verify_email/', data=data, format='json')
+        assert response.status_code == 400
+
 
 class TestRoleEndpoints:
     endpoint = '/api/roles/'

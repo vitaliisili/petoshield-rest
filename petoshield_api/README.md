@@ -84,5 +84,8 @@ make runserver
 - :closed_book: [Postman collection v2](../docs/postman_collection/Petoshield.postman_collection_v2.json)
 - :blue_book: [Postman collection v2.1](../docs/postman_collection/Petoshield.postman_collection_v2.json)
 
+## Database Diagram
+- :file_cabinet: [Database diagram view](https://dbdocs.io/timur.v.shakirov/Petoshield-T)
+
 ## 	:card_index_dividers: Models Graph
 ![Graph](../docs/images/petoshield-models.png)

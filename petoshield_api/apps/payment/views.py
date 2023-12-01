@@ -32,7 +32,7 @@ from apps.core.utils import EmailSender
     cancel_insurance=extend_schema(request=CancelInsuranceSerializer, responses={'message': OpenApiTypes.STR})
 )
 class StripeViewSet(viewsets.ModelViewSet):
-    """A viewset for interacting with the Stripe API."""
+    """A viewset for interacting with the Stripe API. """
 
     stripe.api_key = settings.STRIPE_SECRET_KEY
     permission_classes = (StripePermission,)
@@ -62,7 +62,7 @@ class StripeViewSet(viewsets.ModelViewSet):
                         'quantity': 1,
                     },
                 ],
-                payment_method_types=['card', 'paypal'],
+                payment_method_types=['card', 'paypal', 'ideal', 'sofort', 'sepa_debit'],
                 mode='subscription',
                 customer=customer.id,
                 client_reference_id=pet.id,

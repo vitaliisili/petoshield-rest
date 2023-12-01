@@ -12,7 +12,7 @@ services:
       POSTGRES_DB: $DB_NAME
     restart: always
     volumes:
-      - petoshield_data:/var/lib/postgresql/data/
+      - petoshield_database:/var/lib/postgresql/data/
 
   petoshield_api:
     build:
@@ -32,5 +32,5 @@ services:
       - /var/www/petoshield-data/media:/api/media
 
 volumes:
-  petoshield_data:
+  petoshield_database:
 
