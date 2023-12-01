@@ -40,8 +40,8 @@ const Team = () => {
             'location': 'Remote'
         },
         {
-            'name': 'Senior Backend Engineer',
-            'shortName' : 'Backend Engineer',
+            'name': 'Senior FrontEnd',
+            'shortName' : 'Senior FrontEnd',
             'location': 'Remote'
         },
         {
