@@ -59,6 +59,29 @@ class TestTicketEndpoint:
         response = api_client.get(self.endpoint)
         assert response.status_code == 401
 
+    @pytest.mark.parametrize('page, size, count', [
+        (1, 2, 2),
+        (2, 1, 1),
+        (1, 3, 3),
+    ])
+    def test_ticket_list_pagination_with_staff_user_success(self, api_client,
+                                                            staff_user,
+                                                            ticket_list,
+                                                            page, size, count):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}?page={page}&page_size={size}')
+        assert response.status_code == 200
+        assert len(json.loads(response.content).get('results')) == count
+
+    @pytest.mark.parametrize('page, size', [
+        (-1, 2),
+        (2, -2),
+    ])
+    def test_ticket_list_pagination_not_found(self, api_client, staff_user, ticket_list, page, size):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}?page={page}&page_size={size}')
+        assert response.status_code == 404
+
     def test_ticket_update_success(self, api_client, staff_user, ticket):
         api_client.force_authenticate(staff_user)
         patch_data = {
@@ -142,6 +165,31 @@ class TestTicketEndpoint:
         api_client.force_authenticate(simple_user)
         response = api_client.delete(f'{self.endpoint}{ticket.id}/')
         assert response.status_code == 403
+
+    @pytest.mark.parametrize('name, count', [
+        ('Amanda', 1),
+        ('ie', 2),
+        ('MATILDA', 1),
+        ('a', 2),
+        ('not exist', 0),
+    ])
+    def test_ticket_search_by_position_success(self, api_client, staff_user, name, count, ticket_list):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}?search={name}')
+        assert response.status_code == 200
+        assert len(json.loads(response.content)) == count
+
+    def test_ticket_filter_by_email(self, api_client, staff_user, ticket_list):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}?visitor_email={ticket_list[0].visitor_email}')
+        assert response.status_code == 200
+        assert len(json.loads(response.content)) == 1
+
+    def test_ticket_filter_by_email_not_exist(self, api_client, staff_user, ticket_list):
+        api_client.force_authenticate(staff_user)
+        response = api_client.get(f'{self.endpoint}?visitor_email=notexist@mail.com')
+        assert response.status_code == 200
+        assert len(json.loads(response.content)) == 0
 
 
 class TestJobTicketEndpoints:

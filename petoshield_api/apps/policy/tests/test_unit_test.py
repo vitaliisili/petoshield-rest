@@ -68,3 +68,23 @@ class TestPolicyUtils:
         mock_pet.breed.risk_level = 9
         price = get_policy_price(mock_pet)
         assert price == 25.41
+
+
+class TestPolicyUnitTest:
+    def test_policy_string_representation(self, policy):
+        assert str(policy) == policy.policy_number
+
+
+class TestInsuranceCaseUnitTest:
+    def test_insurance_case_string_representation(self, insurance_case):
+        assert str(insurance_case) == f'{insurance_case.claim_date}-{insurance_case.status}'
+
+
+class TestIncomingInvoiceUnitTest:
+    def test_incoming_invoice_string_representation(self, incoming_invoice):
+        assert str(incoming_invoice) == str(incoming_invoice.amount)
+
+
+class TestServiceProviderUnitTest:
+    def test_service_provider_string_representation(self, service_provider):
+        assert str(service_provider) == service_provider.company_name

@@ -14,7 +14,7 @@ class Ticket(BaseModel):
     ticket_status = models.CharField(choices=STATUS_CHOICES, default='new')
 
     def __str__(self) -> str:
-        return f'Ticket|{self.pk}|{self.user_message[:50]}'
+        return f'Ticket|{self.pk}|{self.visitor_message[:50]}'
 
 
 class JobTicket(BaseModel):
