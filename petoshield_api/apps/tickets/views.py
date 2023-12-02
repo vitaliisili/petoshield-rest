@@ -17,7 +17,7 @@ class TicketViewSet(viewsets.ModelViewSet):
     ordering_fields = ['created_at', 'visitor_name', 'visitor_email', 'ticket_status']
     ordering = ['-created_at']
     filterset_class = TicketFilter
-    search_fields = ['$visitor_email', '$visitor_message']
+    search_fields = ['$visitor_name']
 
     def create(self, request, *args, **kwargs):
         serializer = TicketSerializer(data=request.data)
