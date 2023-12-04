@@ -5,7 +5,7 @@ install:
 	cd petoshield_api && pip install -r requirements.txt
 
 makemigrations:
-	python petoshield_api/manage.py makemigrations
+	cd petoshield_api && python manage.py makemigrations
 
 migrate:
 	python petoshield_api/manage.py migrate
