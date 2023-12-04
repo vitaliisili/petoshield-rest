@@ -3,10 +3,11 @@ import uuid
 from django.contrib.auth.models import PermissionsMixin, BaseUserManager, AbstractBaseUser
 from django.db import models
 from django_cleanup import cleanup
+from django_prometheus.models import ExportModelOperationsMixin
 from apps.core.models import BaseModel
 
 
-class Role(BaseModel):
+class Role(ExportModelOperationsMixin('role'), BaseModel):
     """A model representing a role.
     Attributes:
         name (CharField): The name of the role. Max length is 100 characters. Must be unique.
@@ -66,7 +67,7 @@ class UserManager(BaseUserManager):
 
 
 @cleanup.select
-class User(AbstractBaseUser, PermissionsMixin):
+class User(ExportModelOperationsMixin('user'), AbstractBaseUser, PermissionsMixin):
     """User in the system.
     Attributes:
         email (EmailField): The email address of the user. Max length is 255 characters. Must be unique.

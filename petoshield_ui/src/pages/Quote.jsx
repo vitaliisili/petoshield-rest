@@ -101,7 +101,7 @@ const Quote = () => {
                                             <div className='flex  items-center ml-0 md:ml-2'>{pet.policy.initial_limit} <BsCurrencyEuro/></div>
                                         </div>
                                         <div className='flex text-sm flex-col md:flex-row'>
-                                            <div className=''>ADeductible:</div>
+                                            <div className=''>Deductible:</div>
                                             <div className='flex  items-center ml-0 md:ml-2'>{pet.policy.deductible}<BsCurrencyEuro/></div>
                                         </div>
                                         <div className='flex items-center text-sm'>Giveback: 80%</div>

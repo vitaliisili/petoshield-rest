@@ -1,12 +1,14 @@
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from django_prometheus.models import ExportModelOperationsMixin
+
 from apps.core.models import BaseModel
 from apps.pet.models import Pet
 from config import settings
 
 
-class ServiceProvider(BaseModel):
+class ServiceProvider(ExportModelOperationsMixin('service_provider'), BaseModel):
     """Model representing a service provider.
     Attributes:
         company_name (CharField): The name of the company. Max length is 255 characters.
@@ -34,7 +36,7 @@ class ServiceProvider(BaseModel):
         return self.company_name
 
 
-class Policy(BaseModel):
+class Policy(ExportModelOperationsMixin('policy'), BaseModel):
     """Model representing a policy.
     Attributes:
         POLICY_STATUS (tuple): Choices for the status of the policy.
@@ -85,7 +87,7 @@ class Policy(BaseModel):
         verbose_name_plural = 'policies'
 
 
-class InsuranceCase(BaseModel):
+class InsuranceCase(ExportModelOperationsMixin('insurance_case'), BaseModel):
     """Model representing an insurance case.
     Attributes:
         INSURANCE_STATUS (tuple): Choices for the status of the insurance case.
@@ -121,7 +123,7 @@ class InsuranceCase(BaseModel):
         return f'{self.claim_date}-{self.status}'
 
 
-class IncomingInvoice(BaseModel):
+class IncomingInvoice(ExportModelOperationsMixin('incoming_invoice'), BaseModel):
     """Model representing an incoming invoice.
     Attributes:
         invoice_date (DateField): The date of the invoice.

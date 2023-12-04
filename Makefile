@@ -5,7 +5,7 @@ install:
 	cd petoshield_api && pip install -r requirements.txt
 
 makemigrations:
-	python petoshield_api/manage.py makemigrations
+	cd petoshield_api && python manage.py makemigrations
 
 migrate:
 	python petoshield_api/manage.py migrate
@@ -43,6 +43,9 @@ test-cov:
 test-cov-detail:
 	cd petoshield_api && python -m pytest --cov-report term-missing --cov
 
+collectstatic:
+	cd petoshield_api && python -m manage collectstatic
+
 shell:
 	cd petoshield_api && python -m manage shell
 
@@ -67,6 +70,9 @@ create-env:
 	echo 'STRIPE_SECRET_KEY="Stripe_Secret_key_from_stripe.com"' >> .env && \
 	echo 'STRIPE_PUBLIC_KEY="Stripe_public_key_from_stripe.com"' >> .env && \
 	echo 'STRIPE_WEBHOOK_SECRET="Stripe_webhook_key_from_stripe.com"' >> .env
+
+create-env-ui:
+	cd petoshield_ui && echo 'REACT_APP_BACKEND_URL=http://localhost:8000' > .env
 
 spectacular:
 	cd petoshield_api && python -m manage spectacular --file schema.yml
