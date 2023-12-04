@@ -33,8 +33,6 @@ services:
 
   prometheus:
     image: prom/prometheus:latest
-#    ports:
-#      - "9090:9090"
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
       - '--web.enable-lifecycle'
@@ -46,8 +44,6 @@ services:
 
   grafana:
     image: grafana/grafana:latest
-#    ports:
-#      - "3001:3000"
     environment:
       GF_INSTALL_PLUGINS: "grafana-clock-panel,grafana-simple-json-datasource"
     volumes:
