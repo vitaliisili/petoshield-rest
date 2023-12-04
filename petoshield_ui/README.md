@@ -21,6 +21,11 @@ and visually appealing design.*
 make install-web
 ```
 
+- Create `.env` file
+```Bash
+make create-env-ui
+```
+
 - Run react application
 ```Bash
 make start-web 
