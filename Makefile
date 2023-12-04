@@ -43,6 +43,9 @@ test-cov:
 test-cov-detail:
 	cd petoshield_api && python -m pytest --cov-report term-missing --cov
 
+collectstatic:
+	cd petoshield_api && python -m manage collectstatic
+
 shell:
 	cd petoshield_api && python -m manage shell
 
