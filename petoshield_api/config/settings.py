@@ -33,6 +33,7 @@ THIRD_PARTY_APPS = [
     'django_filters',
     'drf_spectacular',
     'django_cleanup.apps.CleanupConfig',
+    'django_prometheus',
 ]
 
 INSTALLED_APPS = [
@@ -71,6 +72,7 @@ SIMPLE_JWT = {
 }
 
 MIDDLEWARE = [
+    'django_prometheus.middleware.PrometheusBeforeMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -80,6 +82,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django_prometheus.middleware.PrometheusAfterMiddleware',
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -104,7 +107,7 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': f'django.db.backends.{env("DATABASE_ENGINE")}',
+        'ENGINE': f'django_prometheus.db.backends.{env("DATABASE_ENGINE")}',
         'NAME': env('DB_NAME'),
         'USER': env('DB_USER'),
         'PASSWORD': env('DB_PASSWORD'),
@@ -112,6 +115,14 @@ DATABASES = {
         'PORT': env('DB_PORT'),
     }
 }
+
+# CACHES = {
+#     "default": {
+#         "BACKEND": "django_prometheus.cache.backends.redis.RedisCache",
+#     }
+# }
+
+PROMETHEUS_EXPORT_MIGRATIONS = env.bool("PROMETHEUS_EXPORT_MIGRATIONS", True)
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -170,3 +181,6 @@ STRIPE_PUBLIC_KEY = env.str('STRIPE_PUBLIC_KEY')
 STRIPE_WEBHOOK_SECRET = env.str('STRIPE_WEBHOOK_SECRET')
 STRIPE_ANNUAL = 'prod_P1tPcS5M08kBzS'
 STRIPE_MONTHLY = 'prod_P1tMY3EowRzxBq'
+
+# PROMETHEUS_LATENCY_BUCKETS = (0.01, 0.025, 0.05, 0.075, 0.1, 0.25, 0.5, 0.75, 1.0,
+#                               2.5, 5.0,7.5, 10.0, 25.0, 50.0, 75.0, float("inf"),)

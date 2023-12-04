@@ -1,8 +1,10 @@
 from django.db import models
+from django_prometheus.models import ExportModelOperationsMixin
+
 from apps.core.models import BaseModel
 
 
-class Ticket(BaseModel):
+class Ticket(ExportModelOperationsMixin('ticket'), BaseModel):
     STATUS_CHOICES = (
         ('new', 'New'),
         ('in_process', 'In Process'),
@@ -17,7 +19,7 @@ class Ticket(BaseModel):
         return f'Ticket|{self.pk}|{self.visitor_message[:50]}'
 
 
-class JobTicket(BaseModel):
+class JobTicket(ExportModelOperationsMixin('job_ticket'), BaseModel):
     position = models.CharField(max_length=250)
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
@@ -27,7 +29,7 @@ class JobTicket(BaseModel):
         return f'{self.position}'
 
 
-class PartnerTicket(BaseModel):
+class PartnerTicket(ExportModelOperationsMixin('partner_ticket'), BaseModel):
     name = models.CharField(max_length=100)
     business_name = models.CharField(max_length=100)
     email = models.EmailField()

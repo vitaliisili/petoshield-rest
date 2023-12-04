@@ -1,6 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from django_prometheus.models import ExportModelOperationsMixin
 from rest_framework.exceptions import ValidationError
 from apps.core.models import BaseModel
 from django.core.validators import MinValueValidator, MaxValueValidator
@@ -10,7 +11,7 @@ def get_default_breed():
     return Breed.objects.get_or_create(name='deleted', age_min=1, age_max=20)[0]
 
 
-class Breed(BaseModel):
+class Breed(ExportModelOperationsMixin('breed'), BaseModel):
     BREED_SPECIES = (
         ('cat', _('Cat')),
         ('dog', _('Dog')),
@@ -41,7 +42,7 @@ class Breed(BaseModel):
         return self.name
 
 
-class Pet(BaseModel):
+class Pet(ExportModelOperationsMixin('pet'), BaseModel):
     PET_GENDER = (
         ('M', _('Male')),
         ('F', _('Female')),
