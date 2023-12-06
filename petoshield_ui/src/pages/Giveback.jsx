@@ -32,7 +32,11 @@ const Giveback = () => {
                     <h2 className='text-[40px] font-bold font-lato mt-8'>Making a change</h2>
 
                     <p className='text-center max-w-[700px] mt-4'>
-                        Lemonade takes a flat fee and treats the rest of the money as yours, not ours. We use it to pay claims, and give what’s left to charities you choose, so we never fight over the same coin.
+                        Petoshield operates on a transparent fee structure, charging a flat fee and allocating the
+                        remaining funds entirely to you, not co-mingling them with our own. These funds are utilized
+                        to settle claims, and any surplus is directed towards charities of your choice. This approach
+                        ensures a clear delineation of your financial resources and minimizes any potential conflicts
+                        over shared assets.
                     </p>
 
                     <h4 className='font-bold mt-10 flex text-lg'>This means:</h4>
