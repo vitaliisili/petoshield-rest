@@ -68,9 +68,9 @@ make makemigration
  make migrate
 ```
 
-- Create `superuser`
-```Bash
-make createsuperuser
+- Populate Database
+```text
+Populate database with data from file `petoshield_api/mock_db/reset.sql`
 ```
 
 - Run server
