@@ -72,7 +72,7 @@ create-env:
 	echo 'STRIPE_WEBHOOK_SECRET="Stripe_webhook_key_from_stripe.com"' >> .env
 
 create-env-ui:
-	cd petoshield_ui && echo 'REACT_APP_BACKEND_URL=http://localhost:8000' > .env
+	cd petoshield_ui && echo REACT_APP_BACKEND_URL=http://localhost:8000 > .env
 
 spectacular:
 	cd petoshield_api && python -m manage spectacular --file schema.yml
