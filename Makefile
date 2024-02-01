@@ -29,13 +29,14 @@ build-web:
 	cd petoshield_ui && npm run build
 
 test:
-	cd petoshield_api && python -m pytest
+	cd petoshield_api && python -m pytest -n auto
 
 test-class:
-	cd petoshield_api && python -m pytest -k $(class)
+# 	cd petoshield_api && python -m pytest -k $(class)
+	cd petoshield_api && python -m pytest -k $(class) -n auto
 
 testprint:
-	cd petoshield_api && python -m pytest -s
+	cd petoshield_api && python -m pytest -s -k $(class)
 
 test-cov:
 	cd petoshield_api && python -m pytest --cov

@@ -19,3 +19,4 @@ django-cleanup==8.0.0
 django-extensions==3.2.3
 django-prometheus==2.3.1
 django-redis==5.4.0
+pytest-xdist==3.5.0

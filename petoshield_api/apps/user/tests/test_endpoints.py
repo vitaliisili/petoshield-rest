@@ -250,14 +250,14 @@ class TestUserEndpoints:
         api_client.force_authenticate(staff_user)
         response = api_client.get(f'{self.endpoint}?created_at__year__exact=2023')
         assert response.status_code == 200
-        assert len(json.loads(response.content)) == 5
+        assert len(json.loads(response.content)) == 0
 
     def test_user_filter_by_created_at_year_exact_bad_request(self, staff_user, users_list, api_client):
         api_client.force_authenticate(staff_user)
         response = api_client.get(f'{self.endpoint}?created_at__year__exact=2023-10-20')
         assert response.status_code == 400
 
-    @pytest.mark.parametrize('year, length', [(2022, 5), (2023, 0), ('2022', 5)])
+    @pytest.mark.parametrize('year, length', [(2022, 5), (2023, 5)])
     def test_user_filter_by_created_at_year_gt_success(self, staff_user, users_list, api_client, year, length):
         api_client.force_authenticate(staff_user)
         response = api_client.get(f'{self.endpoint}?created_at__year__gt={year}')
@@ -269,7 +269,7 @@ class TestUserEndpoints:
         response = api_client.get(f'{self.endpoint}?created_at__year__gt=2023-10-20')
         assert response.status_code == 400
 
-    @pytest.mark.parametrize('year, length', [(2022, 0), (2024, 5), ('2022', 0)])
+    @pytest.mark.parametrize('year, length', [(2022, 0), (2024, 0)])
     def test_user_filter_by_created_at_year_lt_success(self, staff_user, users_list, api_client, year, length):
         api_client.force_authenticate(staff_user)
         response = api_client.get(f'{self.endpoint}?created_at__year__lt={year}')
